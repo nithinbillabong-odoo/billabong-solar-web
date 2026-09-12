@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllPosts, getPostBySlug } from '@/data/blogPosts';
 import AuthorAvatar from '@/components/blog/AuthorAvatar';
+import BlogImage from '@/components/blog/BlogImage';
 
 interface PageProps {
   params: {
@@ -164,11 +164,12 @@ export default function BlogPostPage({ params }: PageProps) {
             <article className="lg:col-span-8 bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-gray-100">
               {/* Featured Image */}
               <div className="relative w-full h-[280px] sm:h-[400px] md:h-[440px] rounded-2xl overflow-hidden shadow-md mb-10 border border-gray-100">
-                <Image
+                <BlogImage
                   src={post.image}
                   alt={post.title}
                   fill
                   priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
                   className="object-cover"
                 />
               </div>
@@ -316,10 +317,11 @@ export default function BlogPostPage({ params }: PageProps) {
                         className="group flex gap-3.5 items-center p-2 rounded-2xl hover:bg-white/5 transition-colors"
                       >
                         <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 shadow-inner">
-                          <Image
+                          <BlogImage
                             src={rPost.image}
                             alt={rPost.title}
                             fill
+                            sizes="64px"
                             className="object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                         </div>
@@ -368,10 +370,11 @@ export default function BlogPostPage({ params }: PageProps) {
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group hover:-translate-y-1"
               >
                 <div className="relative h-48 w-full overflow-hidden bg-slate-100">
-                  <Image
+                  <BlogImage
                     src={rPost.image}
                     alt={rPost.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3 bg-[#1E2560]/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { getAllPosts } from '@/data/blogPosts';
 import AuthorAvatar from '@/components/blog/AuthorAvatar';
+import BlogImage from '@/components/blog/BlogImage';
 
 export const metadata: Metadata = {
   title: 'Solar News & Industry Guides Victoria | Billabong Solar Blog',
@@ -83,10 +83,11 @@ export default function BlogPage() {
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group hover:-translate-y-1"
               >
                 <div className="relative h-56 w-full overflow-hidden bg-slate-100">
-                  <Image
+                  <BlogImage
                     src={post.image}
                     alt={post.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-4 left-4 bg-[#FF5E00] text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">

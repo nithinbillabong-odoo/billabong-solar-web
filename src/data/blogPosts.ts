@@ -35,7 +35,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '6 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-1-670x268-1.jpg?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-1-best-installers.jpg',
     excerpt: 'Choosing the right solar installer can make or break your investment. Learn what to look for, pricing traps to avoid, warranty essentials, and why CEC accreditation is non-negotiable in Victoria.',
     metaTitle: 'How to Find the Best Solar Panel Installers in Victoria | Billabong Solar',
     metaDescription: 'Expert guide on choosing accredited solar installers in Victoria. Avoid cheap cowboy installs, understand 25-year performance warranties, and ensure CEC compliance.',
@@ -93,7 +93,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '5 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-3-670x268-1.jpg?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-2-insurance.jpg',
     excerpt: 'Wondering if your home insurance policy covers rooftop solar panels against hail, fire, or storm damage? Here is how solar insurance, warranties, and liability coverage work in Australia.',
     metaTitle: 'Are Solar Panels Covered by Insurance in Victoria? | Billabong Solar',
     metaDescription: 'Discover whether your building insurance policy covers solar panels in Victoria, and how installer public liability insurance protects your property.',
@@ -158,7 +158,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '4 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-4-670x268-1.jpg?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-3-rain-cloudy.jpg',
     excerpt: 'Victoria is famous for having four seasons in one day. Discover how modern photovoltaic cells generate electricity through Melbourne rain, clouds, and overcast winter skies.',
     metaTitle: 'Do Solar Panels Work in Rain or Cloudy Weather in Victoria? | Billabong Solar',
     metaDescription: 'Find out how solar panels perform during Melbourne rainy days and cloudy winter weather. Photovoltaic efficiency explained by certified Victorian engineers.',
@@ -200,7 +200,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '6 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-2-670x268-1.jpg?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-4-residential-vs-commercial.jpg',
     excerpt: 'Explore STCs, LGCs, instant asset write-offs, and Victoria government solar incentives. Learn how commercial businesses and homeowners maximize tax savings.',
     metaTitle: 'Tax Incentives for Solar Power in Australia | Commercial & Residential',
     metaDescription: 'Comprehensive breakdown of Australian solar tax incentives: Small-scale Technology Certificates (STCs), Instant Asset Write-Off, and Victoria Solar Homes rebates.',
@@ -238,7 +238,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '7 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-670x268-1.jpg?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-5-is-it-worth-it.jpg',
     excerpt: 'With electricity bills rising across Victoria, calculate the real return on investment (ROI), payback timelines, and long-term financial benefits of rooftop solar.',
     metaTitle: 'Is It Worth Getting Solar Panels in Australia in 2025? | ROI & Savings',
     metaDescription: 'Discover why rooftop solar remains one of the highest-yielding domestic investments in Victoria, with typical payback periods between 3 and 5 years.',
@@ -273,7 +273,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '4 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/img-solar-panels-min.webp?fit=670%2C268&ssl=1',
+    image: '/images/blog/post-6-feed-in-tariffs.jpg',
     excerpt: 'Find out whether natural rainfall is enough to maintain your solar panel efficiency, or when professional cleaning and inspection is required for maximum generation.',
     metaTitle: 'Does Rain Clean Solar Panels? Maintenance Tips for Victorian Homes',
     metaDescription: 'Learn how rainfall washes away light dust from solar panels and when manual cleaning is needed to preserve peak power production.',
@@ -308,7 +308,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '8 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider_Commercial-Victoria-Slide1-1-1.webp?w=1200&ssl=1',
+    image: '/images/blog/post-7-commercial-solar.webp',
     excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 500kW commercial solar systems combined with instant asset write-offs and STC/LGC rebates deliver ROI in under 3 years.',
     metaTitle: 'Commercial Solar Victoria: Tax Write-Offs & Rebate Guide 2025/2026 | Billabong Solar',
     metaDescription: 'Essential commercial solar guide for Melbourne & Victorian businesses. Learn how STCs, LGCs, tax depreciation, and battery storage accelerate commercial payback.',
@@ -398,7 +398,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '7 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-28-at-11.12.50-AM.jpeg?fit=1600%2C841&ssl=1',
+    image: '/images/blog/post-8-melbourne-batteries.webp',
     excerpt: 'Comparing the top three solar battery storage systems for Melbourne and Victorian homes in 2026. Discover capacity, blackout backup speed, warranty duration, and whole-home energy independence.',
     metaTitle: 'Best Solar Battery Storage Melbourne: Tesla vs Enphase vs Sungrow | Billabong Solar',
     metaDescription: 'Detailed comparison of Tesla Powerwall, Enphase IQ, and Sungrow battery systems in Victoria. Find out which battery storage system fits your energy needs and budget.',
@@ -460,7 +460,7 @@ export const blogPosts: BlogPost[] = [
       avatar: '/images/authors/nithin.svg'
     },
     readTime: '6 min read',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Tax-Incentive-For-Solar-Power-In-Arkansas.jpg?fit=1500%2C1001&ssl=1',
+    image: '/images/blog/post-9-solar-homes-rebate.webp',
     excerpt: 'Step-by-step instructions on claiming the Solar Victoria $1,400 rebate and matching interest-free loan. Check your eligibility criteria and learn how Billabong Solar streamlines your application.',
     metaTitle: 'Victorian Solar Homes Rebate Guide: Claim $1,400 + Loan | Billabong Solar',
     metaDescription: 'Step-by-step guide to the Solar Victoria Homes Program rebate and interest-free loan in 2026. Check income and property criteria and get started.',
