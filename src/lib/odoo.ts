@@ -83,7 +83,7 @@ export async function createCRMLead(data: OdooLeadData): Promise<number> {
               phone: data.phone,
               street: data.address,
               description: data.message || '',
-              type: 'lead',
+              type: 'opportunity',
             }],
           ],
         },
