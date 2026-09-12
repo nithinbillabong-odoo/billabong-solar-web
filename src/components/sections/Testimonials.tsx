@@ -1,6 +1,10 @@
-import Link from 'next/link';
+import React from 'react';
 
 export default function Testimonials() {
+  const googleReviewsUrl =
+    process.env.NEXT_PUBLIC_GOOGLE_REVIEWS_URL ||
+    'https://www.google.com/search?q=Billabong+Solar+Victoria+reviews';
+
   return (
     <section className="bg-[#272E7D] py-[80px] px-4 text-white">
       <div className="container mx-auto max-w-[800px] flex flex-col items-center text-center">
@@ -19,10 +23,21 @@ export default function Testimonials() {
           <span className="font-bold text-lg">Joel Koshy</span>
         </div>
 
-        <div className="mt-12">
-          <Link href="#" className="underline hover:text-gray-300 transition-colors">
-            Read more reviews on Google
-          </Link>
+        <div className="mt-10">
+          <a
+            href={googleReviewsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white transition-all font-semibold text-sm hover:scale-105 shadow-sm active:scale-95"
+          >
+            <svg className="w-4 h-4 text-[#FFD700] fill-current" viewBox="0 0 24 24">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <span>Read more reviews on Google</span>
+            <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
         </div>
       </div>
     </section>
