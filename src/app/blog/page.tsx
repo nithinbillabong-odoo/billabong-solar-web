@@ -1,89 +1,159 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
+import { getAllPosts } from '@/data/blogPosts';
 
 export const metadata: Metadata = {
-  title: 'Solar News & Tips | Billabong Solar Blog',
-  description: 'Stay updated with the latest solar news, tips, rebates, and industry updates from Billabong Solar Victoria.',
+  title: 'Solar News & Industry Guides Victoria | Billabong Solar Blog',
+  description:
+    'Stay updated with the latest solar news, Victoria rebate guides, battery storage tips, and commercial solar analysis from Billabong Solar.',
+  keywords: [
+    'solar blog victoria',
+    'solar news melbourne',
+    'solar rebate guides 2025',
+    'best solar panel installers victoria',
+    'battery storage guide melbourne',
+  ],
+  alternates: {
+    canonical: '/blog',
+  },
 };
 
-const posts = [
-  {
-    id: 1,
-    title: "Understanding the Victoria Solar Rebate 2024",
-    category: "Rebates",
-    excerpt: "Everything you need to know about claiming the latest Solar Homes Program rebate in Victoria.",
-    image: "/images/blog/solar-rebate.jpg"
-  },
-  {
-    id: 2,
-    title: "Is a Solar Battery Worth It?",
-    category: "Battery Storage",
-    excerpt: "We break down the costs and benefits of adding a Tesla Powerwall or Enphase battery to your home.",
-    image: "/images/blog/solar-battery.jpg"
-  },
-  {
-    id: 3,
-    title: "Top 5 Benefits of Commercial Solar",
-    category: "Commercial",
-    excerpt: "How businesses are slashing their operating costs and boosting their green credentials.",
-    image: "/images/blog/commercial.jpg"
-  },
-  {
-    id: 4,
-    title: "How to Maintain Your Solar Panels",
-    category: "Maintenance",
-    excerpt: "Simple tips to ensure your solar system runs at maximum efficiency all year round.",
-    image: "/images/blog/maintenance.jpg"
-  },
-  {
-    id: 5,
-    title: "Microinverters vs String Inverters",
-    category: "Technology",
-    excerpt: "Which inverter technology is right for your roof? A comprehensive comparison.",
-    image: "/images/blog/inverters.jpg"
-  },
-  {
-    id: 6,
-    title: "What Happens to Solar in Winter?",
-    category: "General",
-    excerpt: "Debunking common myths about solar energy production during the colder months.",
-    image: "/images/blog/winter-solar.jpg"
-  }
-];
-
 export default function BlogPage() {
+  const posts = getAllPosts();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://billabongsolar.com.au';
+
+  const blogListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Billabong Solar News & Insights',
+    description: 'Latest residential and commercial solar insights, battery storage tips, and Victorian solar news.',
+    url: `${siteUrl}/blog`,
+    blogPost: posts.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `${siteUrl}/blog/${post.slug}`,
+      datePublished: post.dateISO,
+      image: post.image,
+      author: {
+        '@type': 'Person',
+        name: post.author.name,
+      },
+    })),
+  };
+
   return (
     <>
-      <div className="bg-slate-900 py-12 text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-sm mb-4 text-gray-400">
-            <Link href="/" className="hover:text-white transition">Home</Link> <span className="mx-2">{'>'}</span> <span>Blog</span>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListSchema) }}
+      />
+
+      {/* Hero Header */}
+      <div className="bg-slate-950 text-white py-16">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <nav className="text-sm text-gray-400 mb-4 flex items-center gap-2">
+            <Link href="/" className="hover:text-white transition">Home</Link>
+            <span>/</span>
+            <span className="text-white">Blog</span>
+          </nav>
+          <div className="inline-block bg-[#FF5E00] text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
+            Solar Insights & Education
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white">Solar News & Tips</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            Solar News & Expert Guides
+          </h1>
+          <p className="text-gray-300 text-lg max-w-2xl">
+            Everything you need to know about rooftop solar, commercial installations, battery storage, and government incentives in Victoria.
+          </p>
         </div>
       </div>
 
-      <section className="py-20 bg-gray-50 min-h-screen">
-        <div className="container mx-auto px-4">
+      {/* Blog Cards Grid */}
+      <section className="py-16 md:py-24 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <article key={post.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col group">
-                <div className="h-56 bg-gray-200 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium bg-slate-100 group-hover:scale-105 transition-transform duration-500">
-                    Blog Image Placeholder
+              <article
+                key={post.id}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group hover:-translate-y-1"
+              >
+                <div className="relative h-56 w-full overflow-hidden bg-slate-100">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-[#FF5E00] text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+                    {post.category}
                   </div>
                 </div>
+
                 <div className="p-8 flex flex-col flex-grow">
-                  <div className="text-sm font-bold text-orange-500 mb-3 uppercase tracking-wider">{post.category}</div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-orange-500 transition-colors">{post.title}</h2>
-                  <p className="text-gray-600 mb-8 flex-grow leading-relaxed">{post.excerpt}</p>
-                  <Link href={`/blog/${post.id}`} className="text-slate-900 font-bold hover:text-orange-500 transition-colors inline-flex items-center w-max">
-                    Read More 
-                    <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
+                    <span>{post.date}</span>
+                    <span>•</span>
+                    <span>{post.readTime}</span>
+                  </div>
+
+                  <Link href={`/blog/${post.slug}`} className="group-hover:text-[#FF5E00] transition-colors">
+                    <h2 className="text-xl font-bold text-gray-900 mb-3 leading-snug">
+                      {post.title}
+                    </h2>
                   </Link>
+
+                  <p className="text-gray-600 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-7 h-7 rounded-full overflow-hidden bg-gray-200">
+                        <Image
+                          src={post.author.avatar}
+                          alt={post.author.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <span className="text-xs font-medium text-gray-600">{post.author.name}</span>
+                    </div>
+
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-slate-900 font-bold text-sm hover:text-[#FF5E00] transition-colors inline-flex items-center gap-1 group-hover:translate-x-1 duration-200"
+                    >
+                      Read More
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
               </article>
             ))}
+          </div>
+
+          {/* Bottom Lead Gen Box */}
+          <div className="mt-20 rounded-3xl bg-slate-950 p-8 md:p-14 text-white text-center shadow-2xl relative overflow-hidden border border-slate-800">
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <span className="text-[#FF5E00] font-bold text-sm uppercase tracking-wider block mb-2">
+                Victorian Clean Energy Experts
+              </span>
+              <h3 className="text-3xl md:text-4xl font-extrabold mb-4">
+                Ready to Slash Your Power Bills with Solar?
+              </h3>
+              <p className="text-gray-300 text-base mb-8">
+                Get a custom solar design tailored to your energy consumption and claim up to $5,000 in Victorian rebates.
+              </p>
+              <Link
+                href="/get-a-free-quote"
+                className="inline-block bg-[#FF5E00] hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg"
+              >
+                Get Your Free Solar Quote
+              </Link>
+            </div>
           </div>
         </div>
       </section>

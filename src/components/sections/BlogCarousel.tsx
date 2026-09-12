@@ -6,57 +6,25 @@ import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
+import { getAllPosts } from '@/data/blogPosts';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const posts = [
-  {
-    title: 'How to find the best solar panel installers in Victoria',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-1-670x268-1-417x268.jpg',
-    category: 'Commercial, Solar News',
-    url: '/blog/best-solar-panel-installers-victoria/'
-  },
-  {
-    title: 'Are Solar Panels covered by Insurance?',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/1920-x-1280-3-670x268-1-417x268.jpg',
-    category: 'Commercial, Solar News',
-    url: '/blog/solar-panels-covered-insurance/'
-  },
-  {
-    title: 'How to find accredited Solar Installers in Melbourne',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Accredited-Solar-Blog-Image-2-670x268-1-417x268.png',
-    category: 'Commercial, Solar News',
-    url: '/blog/accredited-solar-installers-melbourne/'
-  },
-  {
-    title: 'What is the Solar Panel Installation Process?',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/solar-panel-installation-melbourne-billabong-solar-670x268-1-417x268.png',
-    category: 'Solar News',
-    url: '/blog/solar-panel-installation-process/'
-  },
-  {
-    title: 'Harnessing the Power of Renewables: Exploring Sustainable Energy Sources',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Exploring-Sustainable-Energy-Sources-670x268-1-417x268.jpg',
-    category: 'Solar News',
-    url: '/blog/harnessing-power-renewables/'
-  },
-  {
-    title: 'Understanding the Different Types of Solar PV Systems',
-    image: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Blog_Different-types-of-Solar-PV-Systems-Banner-image-670x268-1-417x268.jpg',
-    category: 'Solar News',
-    url: '/blog/types-solar-pv-systems/'
-  }
-];
-
 export default function BlogCarousel() {
   const swiperRef = useRef<SwiperType>();
+  const posts = getAllPosts();
 
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">Solar News</h2>
+          <div>
+            <span className="text-[#FF660D] text-xs font-bold uppercase tracking-wider block mb-1">
+              Latest Updates
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900">Solar News & Insights</h2>
+          </div>
           <div className="flex gap-3">
             <button 
               onClick={() => swiperRef.current?.slidePrev()}
@@ -93,30 +61,36 @@ export default function BlogCarousel() {
           }}
           className="pb-6"
         >
-          {posts.map((post, idx) => (
-            <SwiperSlide key={idx} className="h-auto">
-              <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col border border-gray-100">
-                <div className="relative h-60 w-full">
+          {posts.map((post) => (
+            <SwiperSlide key={post.id} className="h-auto">
+              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-gray-100 group">
+                <div className="relative h-60 w-full overflow-hidden bg-slate-100">
                   <Image 
                     src={post.image} 
                     alt={post.title} 
                     fill 
-                    className="object-cover"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="text-[#FF660D] text-sm font-bold mb-3 uppercase tracking-wider">
+                  <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded">
                     {post.category}
                   </div>
-                  <Link href={post.url} className="group">
-                    <h3 className="text-xl font-bold text-gray-800 mb-4 group-hover:underline line-clamp-3 leading-tight">
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="text-xs text-gray-400 mb-2">
+                    {post.date} • {post.readTime}
+                  </div>
+                  <Link href={`/blog/${post.slug}`} className="group">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#FF660D] line-clamp-2 leading-snug transition-colors">
                       {post.title}
                     </h3>
                   </Link>
-                  <div className="mt-auto pt-4">
-                    <Link href={post.url} className="text-[#272E7D] font-bold hover:text-opacity-80 flex items-center gap-2 transition-colors">
-                      Read More
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  <p className="text-gray-600 text-sm line-clamp-3 mb-6 flex-grow leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                  <div className="mt-auto pt-4 border-t border-gray-100">
+                    <Link href={`/blog/${post.slug}`} className="text-[#272E7D] font-bold text-sm hover:text-[#FF660D] flex items-center gap-2 transition-colors">
+                      Read Full Article
+                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </Link>
                   </div>
                 </div>
