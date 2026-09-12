@@ -9,14 +9,13 @@ import { usePathname } from 'next/navigation';
 interface NavItem {
   label: string;
   href: string;
-  badge?: string;
 }
 
 const navItems: NavItem[] = [
   { label: 'Residential', href: '/residential' },
   { label: 'Commercial', href: '/commercial' },
   { label: 'Battery Storage', href: '/battery-storage' },
-  { label: 'Solar Rebates', href: '/solar-rebates-victoria', badge: 'Rebates' },
+  { label: 'Rebates', href: '/solar-rebates-victoria' },
   { label: 'About', href: '/about-us' },
   { label: 'Blog', href: '/blog' },
   { label: 'FAQs', href: '/faq' },
@@ -60,15 +59,15 @@ export default function Header() {
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-md py-2.5'
-            : 'bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-3.5'
+            ? 'bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-md py-2'
+            : 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm py-2.5 xl:py-3'
         }`}
       >
-        <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between">
+        <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between gap-2 xl:gap-4">
           {/* Brand Logo */}
           <Link
             href="/"
-            className="flex-shrink-0 relative w-40 sm:w-48 md:w-52 h-10 sm:h-11 md:h-12 group transition-transform duration-200 hover:scale-[1.02]"
+            className="flex-shrink-0 relative w-36 sm:w-44 xl:w-48 h-9 sm:h-10 xl:h-11 group transition-transform duration-200 hover:scale-[1.02]"
           >
             <Image
               src="https://billabongsolar.com.au/wp-content/uploads/2024/06/log-new.webp"
@@ -80,7 +79,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1 flex-shrink-0">
             {navItems.map((item) => {
               const isActive =
                 pathname === item.href ||
@@ -90,50 +89,40 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+                  className={`whitespace-nowrap px-2.5 xl:px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'text-[#FF5E00] bg-orange-50 font-bold shadow-sm'
+                      ? 'text-[#FF5E00] bg-orange-50 font-bold shadow-xs'
                       : 'text-[#1E2560] hover:text-[#FF5E00] hover:bg-orange-50/50'
                   }`}
                 >
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] text-white px-1.5 py-0.5 rounded-full shadow-xs">
-                      {item.badge}
-                    </span>
-                  )}
+                  {item.label}
                 </Link>
               );
             })}
           </nav>
 
           {/* Right Actions: Phone + Quote Button */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-2.5 xl:space-x-4 flex-shrink-0">
             {/* Phone Call Support Badge */}
             <a
               href="tel:1300897221"
-              className="flex items-center gap-2 group transition-transform duration-200 hover:scale-[1.02]"
+              className="whitespace-nowrap flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200/80 bg-gray-50/70 hover:bg-orange-50 hover:border-orange-200 text-[#1E2560] hover:text-[#FF5E00] transition-colors group"
               aria-label="Call Support at 1300 897 221"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF5E00] to-[#FF7A00] flex items-center justify-center text-white shadow-sm group-hover:rotate-12 transition-transform duration-300">
-                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <div className="w-6 h-6 rounded-full bg-[#FF5E00] text-white flex items-center justify-center flex-shrink-0 shadow-xs group-hover:rotate-12 transition-transform duration-300">
+                <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                   <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                 </svg>
               </div>
-              <div className="text-left leading-tight">
-                <span className="block text-[9px] font-bold uppercase tracking-wider text-gray-400">
-                  Call Support
-                </span>
-                <span className="block text-xs xl:text-sm font-extrabold text-[#1E2560] group-hover:text-[#FF5E00] transition-colors">
-                  1300 897 221
-                </span>
-              </div>
+              <span className="text-xs xl:text-sm font-extrabold">
+                1300 897 221
+              </span>
             </a>
 
-            {/* Premium Quote CTA Button */}
+            {/* Quote CTA Button */}
             <Link
               href="/get-a-free-quote"
-              className="relative inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-xs xl:text-sm text-white overflow-hidden shadow-md bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:shadow-lg hover:scale-105 active:scale-100 transition-all duration-200"
+              className="whitespace-nowrap px-4 xl:px-5 py-2 xl:py-2.5 rounded-full font-extrabold text-xs xl:text-sm text-white bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:shadow-lg hover:scale-105 active:scale-100 transition-all duration-200 shadow-sm"
             >
               <span>Get a Free Quote</span>
             </Link>
@@ -164,7 +153,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Fullscreen Mobile Drawer Portal (Attached directly to document.body to prevent containing block bugs) */}
+      {/* Fullscreen Mobile Drawer Portal */}
       {mounted &&
         createPortal(
           <div
@@ -225,14 +214,7 @@ export default function Header() {
                           : 'text-[#1E2560] hover:bg-gray-50 hover:text-[#FF5E00]'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
-                        <span>{item.label}</span>
-                        {item.badge && (
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#FF5E00] text-white px-2 py-0.5 rounded-full">
-                            {item.badge}
-                          </span>
-                        )}
-                      </div>
+                      <span>{item.label}</span>
                       <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                       </svg>
