@@ -42,6 +42,20 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/code-of-conduct',
+        destination: '/docs/code-of-conduct-certificate.pdf',
+        permanent: true,
+      },
+      {
+        source: '/wp-content/uploads/:path*/codeofconductCertificatePDF-3.pdf',
+        destination: '/docs/code-of-conduct-certificate.pdf',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
