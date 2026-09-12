@@ -14,7 +14,7 @@ export default function NewEnergyTech() {
               height={205} 
               className="mb-8"
             />
-            <Link href="/get-a-quote" className="bg-[#FF660D] text-white px-8 py-3 rounded-md font-bold uppercase hover:bg-orange-600 transition-colors">
+            <Link href="/get-a-free-quote" className="bg-[#FF660D] text-white px-8 py-3 rounded-md font-bold uppercase hover:bg-orange-600 transition-colors">
               Get a Free Quote
             </Link>
           </div>

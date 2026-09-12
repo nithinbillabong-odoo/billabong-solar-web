@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'billabongsolar.com.au',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
   // Enable proper canonical URLs for Vercel
