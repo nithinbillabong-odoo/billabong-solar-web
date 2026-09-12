@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Roboto+Slab:wght@400;600&family=Roboto:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --orange: #FF660D;
+    --orange-light: #FF8C42;
+    --navy: #272E7D;
+    --navy-dark: #002244;
+    --navy-deeper: #072032;
+    --solar-gray: #54595F;
+    --solar-text: #7A7A7A;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--solar-gray);
+    @apply bg-white antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', sans-serif;
+    color: inherit;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-[1300px] mx-auto px-6;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-[#FF660D] text-white font-medium py-3 px-8 rounded transition-colors duration-300 hover:bg-[#FF8C42];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center border-2 border-[#FF660D] text-[#FF660D] font-medium py-3 px-8 rounded transition-colors duration-300 hover:bg-[#FF660D] hover:text-white;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-['DM_Sans'];
+  }
+
+  .section-subtitle {
+    @apply text-sm md:text-base text-[#FF660D] uppercase font-bold tracking-wider mb-2;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-left {
+    animation: fade-left 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-right {
+    animation: fade-right 0.6s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* Custom Swiper Styles */
+.swiper-pagination-bullet {
+  background-color: var(--navy);
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--orange);
+  opacity: 1;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--orange);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: var(--orange-light);
+}
