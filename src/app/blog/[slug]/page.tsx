@@ -115,28 +115,30 @@ export default function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      {/* Header Banner */}
-      <div className="bg-slate-950 text-white py-12 border-b border-slate-800">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <nav className="text-sm text-gray-400 mb-4 flex items-center gap-2 flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
-            <span>/</span>
-            <span className="text-gray-300 truncate max-w-xs md:max-w-md">{post.title}</span>
-          </nav>
-          
-          <div className="inline-block bg-[#FF5E00] text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">
-            {post.category}
-          </div>
+      {/* Royal Navy Blue Glass Hero Banner */}
+      <div className="relative bg-gradient-to-r from-[#171D4D] via-[#242C7D] to-[#1C2366] text-white py-14 md:py-20 overflow-hidden shadow-md">
+        {/* Subtle decorative glass glow orbs */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#FF5E00]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 left-10 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
 
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-6 max-w-4xl">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          {/* Breadcrumbs with clean contrast */}
+          <nav className="text-xs uppercase tracking-wider font-bold mb-5 flex items-center gap-2 text-blue-200/80">
+            <Link href="/" className="hover:text-white transition-colors">Residential</Link>
+            <span className="text-[#FF5E00]">›</span>
+            <Link href="/blog" className="hover:text-white transition-colors">Latest News</Link>
+            <span className="text-[#FF5E00]">›</span>
+            <span className="text-orange-300 truncate max-w-xs md:max-w-md">{post.category}</span>
+          </nav>
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6 max-w-4xl tracking-tight">
             {post.title}
           </h1>
 
-          <div className="flex items-center gap-4 text-sm text-gray-400 flex-wrap">
-            <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-800 border border-slate-700">
+          {/* Author & Meta Pill */}
+          <div className="inline-flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 rounded-full text-sm text-blue-100 flex-wrap">
+            <div className="flex items-center gap-2.5">
+              <div className="relative w-7 h-7 rounded-full overflow-hidden bg-white/20 border border-white/30">
                 <Image
                   src={post.author.avatar}
                   alt={post.author.name}
@@ -144,27 +146,25 @@ export default function BlogPostPage({ params }: PageProps) {
                   className="object-cover"
                 />
               </div>
-              <div>
-                <span className="text-white font-medium block">{post.author.name}</span>
-                <span className="text-xs text-gray-400">{post.author.role}</span>
-              </div>
+              <span className="text-white font-semibold">{post.author.name}</span>
             </div>
-            <span className="hidden sm:inline">•</span>
+            <span className="text-white/40">•</span>
             <span>{post.date}</span>
-            <span className="hidden sm:inline">•</span>
-            <span>{post.readTime}</span>
+            <span className="text-white/40">•</span>
+            <span className="text-orange-300 font-medium">{post.readTime}</span>
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <section className="py-12 md:py-16 bg-white min-h-screen">
+      <section className="py-12 md:py-20 bg-[#F8FAFC] min-h-screen">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-12">
+            
             {/* Article Column */}
-            <article className="lg:col-span-8">
+            <article className="lg:col-span-8 bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-gray-100">
               {/* Featured Image */}
-              <div className="relative w-full h-[280px] sm:h-[400px] md:h-[450px] rounded-2xl overflow-hidden shadow-lg mb-10 border border-gray-100">
+              <div className="relative w-full h-[280px] sm:h-[400px] md:h-[440px] rounded-2xl overflow-hidden shadow-md mb-10 border border-gray-100">
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -176,19 +176,19 @@ export default function BlogPostPage({ params }: PageProps) {
 
               {/* Body Content */}
               <div
-                className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
+                className="prose prose-slate prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
                 dangerouslySetInnerHTML={{ __html: post.contentHtml }}
               />
 
-              {/* Share and Tags */}
-              <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-gray-800 text-sm">Share article:</span>
+              {/* Share and Navigation */}
+              <div className="mt-14 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-gray-800 text-sm">Share:</span>
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${siteUrl}/blog/${post.slug}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-slate-100 hover:bg-[#FF5E00] hover:text-white transition-colors"
+                    className="w-10 h-10 rounded-full bg-blue-50 text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-colors flex items-center justify-center shadow-sm"
                     aria-label="Share on Facebook"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
@@ -197,16 +197,25 @@ export default function BlogPostPage({ params }: PageProps) {
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${siteUrl}/blog/${post.slug}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-slate-100 hover:bg-[#FF5E00] hover:text-white transition-colors"
+                    className="w-10 h-10 rounded-full bg-blue-50 text-[#0A66C2] hover:bg-[#0A66C2] hover:text-white transition-colors flex items-center justify-center shadow-sm"
                     aria-label="Share on LinkedIn"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                  </a>
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${post.title} - ${siteUrl}/blog/${post.slug}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-green-50 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-colors flex items-center justify-center shadow-sm"
+                    aria-label="Share on WhatsApp"
+                  >
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 17.65c-1.49 0-2.95-.4-4.23-1.16l-.3-.18-3.14.82.84-3.06-.2-.31c-.84-1.33-1.28-2.88-1.28-4.47 0-4.63 3.77-8.4 8.4-8.4 2.24 0 4.36.87 5.95 2.46a8.348 8.348 0 012.46 5.94c0 4.63-3.77 8.4-8.4 8.4z"/></svg>
                   </a>
                 </div>
 
                 <Link
                   href="/blog"
-                  className="text-sm font-semibold text-slate-800 hover:text-[#FF5E00] transition-colors inline-flex items-center gap-1"
+                  className="text-sm font-bold text-[#1E2560] hover:text-[#FF5E00] transition-colors inline-flex items-center gap-1.5"
                 >
                   ← Back to all articles
                 </Link>
@@ -215,40 +224,56 @@ export default function BlogPostPage({ params }: PageProps) {
 
             {/* Sidebar Column */}
             <aside className="lg:col-span-4 space-y-8">
-              {/* Quote CTA Box */}
-              <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl border border-slate-800 sticky top-24">
-                <div className="w-12 h-12 rounded-xl bg-[#FF5E00] flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              {/* Glassmorphism Quote Card */}
+              <div className="bg-gradient-to-br from-[#171D4D] via-[#242C7D] to-[#1C2366] text-white rounded-3xl p-7 shadow-xl border border-blue-900/40 relative overflow-hidden sticky top-28">
+                {/* Background ambient glow */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#FF5E00]/20 rounded-full blur-2xl pointer-events-none" />
+
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FF5E00] to-[#FF7A00] flex items-center justify-center mb-5 shadow-lg shadow-orange-500/30">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Get Up to $20,000/yr in Solar Savings</h3>
-                <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                  Switch to Tier-1 solar with accredited installers in Victoria. Claim up to $5,000 in Government rebates today.
+
+                <span className="text-[#FF8A3D] font-extrabold text-xs uppercase tracking-wider block mb-1">
+                  Solar Homes Program
+                </span>
+                <h3 className="text-2xl font-extrabold mb-3 leading-snug">
+                  Save Up to $20,000/year With Solar
+                </h3>
+                <p className="text-blue-100/80 text-sm mb-6 leading-relaxed">
+                  Join thousands of Victoria families saving big on electricity with Tier-1 panels and battery storage.
                 </p>
+
                 <Link
                   href="/get-a-free-quote"
-                  className="block text-center w-full bg-[#FF5E00] hover:bg-orange-600 text-white font-bold py-3.5 px-6 rounded-xl transition-colors shadow-md"
+                  className="block text-center w-full bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-extrabold py-3.5 px-6 rounded-full transition-all shadow-lg shadow-orange-500/30 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Get a Free Quote
                 </Link>
 
-                <div className="mt-6 pt-6 border-t border-slate-800 text-xs text-gray-400 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                <div className="mt-6 pt-6 border-t border-white/10 text-xs text-blue-100/80 space-y-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center flex-shrink-0">
+                      ✓
+                    </div>
                     <span>New Energy Tech Approved Seller</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center flex-shrink-0">
+                      ✓
+                    </div>
                     <span>25-Year Performance Warranty</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
-                    <span>Accredited Clean Energy Electricians</span>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center flex-shrink-0">
+                      ✓
+                    </div>
+                    <span>Clean Energy Council Accredited</span>
                   </div>
                 </div>
 
-                {/* Recent Articles Widget */}
-                <div className="mt-8 pt-8 border-t border-slate-800">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
+                {/* Recent Posts Glass Widget */}
+                <div className="mt-8 pt-8 border-t border-white/10">
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-blue-200 mb-4">
                     Recent Articles
                   </h4>
                   <div className="space-y-4">
@@ -256,21 +281,21 @@ export default function BlogPostPage({ params }: PageProps) {
                       <Link
                         key={rPost.id}
                         href={`/blog/${rPost.slug}`}
-                        className="group flex gap-3 items-center"
+                        className="group flex gap-3.5 items-center p-2 rounded-2xl hover:bg-white/5 transition-colors"
                       >
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-slate-800">
+                        <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 shadow-inner">
                           <Image
                             src={rPost.image}
                             alt={rPost.title}
                             fill
-                            className="object-cover group-hover:scale-105 transition-transform"
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                         </div>
                         <div className="flex-grow">
-                          <h5 className="text-xs font-semibold text-gray-200 group-hover:text-[#FF5E00] line-clamp-2 transition-colors">
+                          <h5 className="text-xs font-bold text-white group-hover:text-[#FF8A3D] line-clamp-2 transition-colors leading-snug">
                             {rPost.title}
                           </h5>
-                          <span className="text-[11px] text-gray-500 mt-1 block">
+                          <span className="text-[11px] text-blue-200/60 mt-1 block">
                             {rPost.date}
                           </span>
                         </div>
@@ -285,17 +310,22 @@ export default function BlogPostPage({ params }: PageProps) {
       </section>
 
       {/* Bottom Related Posts Section */}
-      <section className="py-16 bg-gray-50 border-t border-gray-100">
+      <section className="py-16 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-              Related Articles
-            </h2>
+            <div>
+              <span className="text-[#FF5E00] text-xs font-bold uppercase tracking-wider block mb-1">
+                Keep Reading
+              </span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1E2560]">
+                Related Solar Articles
+              </h2>
+            </div>
             <Link
               href="/blog"
               className="text-[#FF5E00] font-bold text-sm hover:underline"
             >
-              View All Articles →
+              View All →
             </Link>
           </div>
 
@@ -303,27 +333,27 @@ export default function BlogPostPage({ params }: PageProps) {
             {recentPosts.map((rPost) => (
               <article
                 key={rPost.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col group"
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group hover:-translate-y-1"
               >
-                <div className="relative h-48 w-full overflow-hidden">
+                <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                   <Image
                     src={rPost.image}
                     alt={rPost.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded">
+                  <div className="absolute top-3 left-3 bg-[#1E2560]/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
                     {rPost.category}
                   </div>
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <span className="text-xs text-gray-400 mb-2">{rPost.date}</span>
                   <Link href={`/blog/${rPost.slug}`}>
-                    <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-[#FF5E00] transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-lg font-bold text-[#1E2560] mb-3 group-hover:text-[#FF5E00] transition-colors line-clamp-2 leading-snug">
                       {rPost.title}
                     </h3>
                   </Link>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
+                  <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow leading-relaxed">
                     {rPost.excerpt}
                   </p>
                   <Link
