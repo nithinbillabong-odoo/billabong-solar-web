@@ -5,10 +5,10 @@ import nodemailer from 'nodemailer';
 
 const contactSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
-  email: z.string().email({ message: 'Invalid email address' }),
-  phone: z.string().min(6, { message: 'Phone number is too short' }),
-  address: z.string().optional().default('Victoria, Australia'),
-  message: z.string().optional(),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  phone: z.string().min(1, { message: 'Phone number is required' }),
+  address: z.string().optional().nullable().transform((v) => (v && v.trim().length > 0 ? v.trim() : 'Victoria, Australia')),
+  message: z.string().optional().nullable().transform((v) => v || ''),
 });
 
 export async function POST(request: NextRequest) {
@@ -76,8 +76,9 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
+      const firstMessage = error.errors[0]?.message || 'Please check the required fields.';
       return NextResponse.json(
-        { success: false, errors: error.errors },
+        { success: false, message: firstMessage, errors: error.errors },
         { status: 400 }
       );
     }
