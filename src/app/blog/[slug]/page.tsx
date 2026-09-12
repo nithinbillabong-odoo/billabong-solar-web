@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllPosts, getPostBySlug } from '@/data/blogPosts';
+import AuthorAvatar from '@/components/blog/AuthorAvatar';
 
 interface PageProps {
   params: {
@@ -138,14 +139,12 @@ export default function BlogPostPage({ params }: PageProps) {
           {/* Author & Meta Pill */}
           <div className="inline-flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 rounded-full text-sm text-blue-100 flex-wrap">
             <div className="flex items-center gap-2.5">
-              <div className="relative w-7 h-7 rounded-full overflow-hidden bg-white/20 border border-white/30">
-                <Image
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <AuthorAvatar
+                name={post.author.name}
+                avatarUrl={post.author.avatar}
+                size={28}
+                className="border border-white/40"
+              />
               <span className="text-white font-semibold">{post.author.name}</span>
             </div>
             <span className="text-white/40">•</span>
@@ -180,8 +179,41 @@ export default function BlogPostPage({ params }: PageProps) {
                 dangerouslySetInnerHTML={{ __html: post.contentHtml }}
               />
 
+              {/* Author Bio Box - Google E-E-A-T Authority Boost */}
+              <div className="my-10 p-6 md:p-8 rounded-2xl bg-gradient-to-r from-slate-50 to-orange-50/40 border border-slate-200/80 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-sm">
+                <AuthorAvatar
+                  name={post.author.name}
+                  avatarUrl={post.author.avatar}
+                  size={68}
+                  className="shadow-md ring-2 ring-orange-400/40"
+                />
+                <div className="text-center sm:text-left flex-1">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                    <h4 className="font-extrabold text-slate-900 text-lg">{post.author.name}</h4>
+                    <span className="text-xs bg-orange-100 text-[#FF5E00] font-bold px-2.5 py-0.5 rounded-full border border-orange-200">
+                      CEC Accredited Specialist
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 font-semibold mb-3">
+                    {post.author.role} • Billabong Solar Victoria
+                  </p>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Nithin is a Clean Energy Council accredited solar engineer with over a decade of hands-on experience designing residential and commercial solar arrays and battery storage solutions across Melbourne and regional Victoria.
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs font-bold text-[#171D4D]">
+                    <Link href="/residential" className="hover:text-[#FF5E00] transition-colors underline">Residential Solar</Link>
+                    <span>•</span>
+                    <Link href="/commercial" className="hover:text-[#FF5E00] transition-colors underline">Commercial Solar</Link>
+                    <span>•</span>
+                    <Link href="/battery-storage" className="hover:text-[#FF5E00] transition-colors underline">Battery Storage</Link>
+                    <span>•</span>
+                    <Link href="/get-a-free-quote" className="hover:text-[#FF5E00] transition-colors underline">Free Quote</Link>
+                  </div>
+                </div>
+              </div>
+
               {/* Share and Navigation */}
-              <div className="mt-14 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-gray-800 text-sm">Share:</span>
                   <a

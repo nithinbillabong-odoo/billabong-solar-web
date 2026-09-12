@@ -2,9 +2,12 @@ import { Metadata } from 'next';
 
 export const siteConfig = {
   name: 'Billabong Solar',
-  description: 'Leading provider of solar energy solutions in Victoria, Australia.',
+  description:
+    'Accredited residential and commercial solar panels and battery storage installer in Melbourne & Victoria. Save up to $20,000/yr with Tier-1 panels, CEC accredited electricians, and Victorian Government rebates.',
   url: 'https://billabongsolar.com.au',
-  ogImage: 'https://billabongsolar.com.au/og-image.jpg',
+  ogImage: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider-Residential-Solar-Save-Electricity-Bill.webp?w=1200&ssl=1',
+  telephone: '1300 897 221',
+  email: 'info@billabongsolar.com.au',
   socialHandles: {
     facebook: 'https://facebook.com/billabongsolar',
     instagram: 'https://instagram.com/billabongsolar',
@@ -15,11 +18,28 @@ export const siteConfig = {
 export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
   return {
     title: {
-      default: siteConfig.name,
+      default: `${siteConfig.name} | Melbourne & Victoria Solar & Battery Specialists`,
       template: `%s | ${siteConfig.name}`,
     },
     description: siteConfig.description,
     metadataBase: new URL(siteConfig.url),
+    keywords: [
+      'commercial solar victoria',
+      'commercial solar melbourne',
+      'commercial battery storage victoria',
+      'commercial battery storage melbourne',
+      'residential solar victoria',
+      'residential solar melbourne',
+      'residential battery storage victoria',
+      'residential battery storage melbourne',
+      'tesla powerwall melbourne',
+      'sungrow battery victoria',
+      'enphase microinverter melbourne',
+      'solar rebate victoria 2026',
+      'solar homes program rebate $1400',
+      'CEC accredited solar installer victoria',
+      'tier 1 solar panels melbourne'
+    ],
     alternates: {
       canonical: '/',
     },
@@ -35,7 +55,7 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: siteConfig.name,
+          alt: 'Billabong Solar - Melbourne & Victoria Solar Specialists',
         },
       ],
     },
@@ -48,7 +68,9 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
     },
     other: {
       'geo.region': 'AU-VIC',
-      'geo.placename': 'Victoria, Australia',
+      'geo.placename': 'Melbourne, Victoria, Australia',
+      'geo.position': '-37.8136;144.9631',
+      ICBM: '-37.8136, 144.9631',
     },
     ...overrides,
   };
@@ -56,16 +78,15 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
 
 export const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "ElectricalContractor"],
+  "@type": ["LocalBusiness", "ElectricalContractor", "EnergyAuditor"],
   "name": "Billabong Solar",
-  "image": "https://billabongsolar.com.au/logo.png",
-  "@id": "https://billabongsolar.com.au",
+  "image": "https://billabongsolar.com.au/wp-content/uploads/2024/06/log-new.webp",
+  "@id": "https://billabongsolar.com.au/#business",
   "url": "https://billabongsolar.com.au",
-  "telephone": "+61 3 0000 0000",
+  "telephone": "1300 897 221",
   "email": "info@billabongsolar.com.au",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "123 Solar Way",
     "addressLocality": "Melbourne",
     "addressRegion": "VIC",
     "postalCode": "3000",
@@ -76,12 +97,67 @@ export const localBusinessSchema = {
     "latitude": -37.8136,
     "longitude": 144.9631
   },
+  "areaServed": [
+    { "@type": "City", "name": "Melbourne" },
+    { "@type": "AdministrativeArea", "name": "Victoria" },
+    { "@type": "City", "name": "Geelong" },
+    { "@type": "City", "name": "Ballarat" },
+    { "@type": "City", "name": "Bendigo" },
+    { "@type": "AdministrativeArea", "name": "Mornington Peninsula" },
+    { "@type": "City", "name": "Shepparton" },
+    { "@type": "City", "name": "Traralgon" },
+    { "@type": "City", "name": "Warrnambool" }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Solar & Battery Storage Solutions Victoria",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Residential Solar Panel Installation",
+          "description": "High-efficiency Tier-1 residential solar power systems for Melbourne & Victorian homes."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Residential Solar Battery Storage",
+          "description": "Home battery storage systems including Tesla Powerwall, Enphase, and Sungrow for blackout protection."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Commercial Solar Power Systems",
+          "description": "Turnkey commercial solar installations from 30kW to 500kW+ for businesses across Victoria."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Commercial Battery Storage Systems",
+          "description": "Industrial and commercial battery storage for peak demand shaving and critical load backup."
+        }
+      }
+    ]
+  },
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday"],
       "opens": "09:00",
-      "closes": "17:00"
+      "closes": "14:00"
     }
   ],
   "priceRange": "$$"

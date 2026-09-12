@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#171D4D" />
+      <stop offset="50%" stop-color="#242C7D" />
+      <stop offset="100%" stop-color="#FF5E00" />
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5A882" />
+      <stop offset="100%" stop-color="#CF8B60" />
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#171D4D" />
+      <stop offset="100%" stop-color="#0E1235" />
+    </linearGradient>
+    <linearGradient id="vestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6A00" />
+      <stop offset="100%" stop-color="#E04800" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Ring with Solar Flare / Gold Edge -->
+  <circle cx="80" cy="80" r="79" fill="url(#bgGrad)" stroke="#FFFFFF" stroke-width="2" />
+
+  <!-- Background Circle Interior -->
+  <circle cx="80" cy="80" r="74" fill="#F0F4F8" />
+
+  <!-- Subtle Solar Grid Motif in Background -->
+  <path d="M40 80 L120 80 M80 40 L80 120 M52 52 L108 108 M52 108 L108 52" stroke="#E2E8F0" stroke-width="1.5" stroke-opacity="0.6" />
+
+  <!-- Torso / Engineer High-Vis Polo -->
+  <path d="M36 150 C36 122 55 106 80 106 C105 106 124 122 124 150 Z" fill="url(#suitGrad)" />
+  <!-- High-Vis Collar & Accents -->
+  <path d="M54 150 L64 116 L80 134 L96 116 L106 150 Z" fill="url(#vestGrad)" />
+  <path d="M72 134 L80 148 L88 134 Z" fill="#FFFFFF" opacity="0.9" />
+
+  <!-- Neck -->
+  <path d="M70 94 L90 94 L87 114 L73 114 Z" fill="url(#skinGrad)" />
+
+  <!-- Head -->
+  <ellipse cx="80" cy="74" rx="23" ry="27" fill="url(#skinGrad)" />
+
+  <!-- Professional Hair -->
+  <path d="M57 68 C56 50 68 44 80 44 C92 44 104 50 103 68 C100 55 93 50 80 50 C67 50 60 55 57 68 Z" fill="#1C2127" />
+  <path d="M57 66 C55 60 56 54 60 50 C65 46 72 45 80 45 C89 45 96 47 101 51 C104 55 105 61 103 67 C100 60 95 53 82 53 C69 53 62 60 57 66 Z" fill="#2D3748" />
+
+  <!-- Eyes & Eyebrows -->
+  <path d="M68 64 C70 63 74 63 76 64" stroke="#1C2127" stroke-width="2" stroke-linecap="round" fill="none" />
+  <path d="M84 64 C86 63 90 63 92 64" stroke="#1C2127" stroke-width="2" stroke-linecap="round" fill="none" />
+  <circle cx="72" cy="71" r="2.5" fill="#1C2127" />
+  <circle cx="88" cy="71" r="2.5" fill="#1C2127" />
+  <circle cx="73" cy="70" r="0.8" fill="#FFFFFF" />
+  <circle cx="89" cy="70" r="0.8" fill="#FFFFFF" />
+
+  <!-- Nose -->
+  <path d="M80 71 L78 79 L82 80" stroke="#B8734A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Smile -->
+  <path d="M73 86 C76 89 84 89 87 86" stroke="#8C4A2A" stroke-width="2" stroke-linecap="round" fill="none" />
+
+  <!-- Clean Trimmed Beard -->
+  <path d="M66 78 C68 93 74 99 80 99 C86 99 92 93 94 78 C91 82 86 84 80 84 C74 84 69 82 66 78 Z" fill="#1C2127" opacity="0.4" />
+
+  <!-- CEC / Solar Engineer Verified Badge on right corner -->
+  <g transform="translate(108, 108)">
+    <circle cx="16" cy="16" r="16" fill="#FF5E00" stroke="#FFFFFF" stroke-width="2" />
+    <path d="M11 16 L15 20 L22 12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+</svg>

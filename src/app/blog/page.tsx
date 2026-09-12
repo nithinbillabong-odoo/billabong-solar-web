@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllPosts } from '@/data/blogPosts';
+import AuthorAvatar from '@/components/blog/AuthorAvatar';
 
 export const metadata: Metadata = {
   title: 'Solar News & Industry Guides Victoria | Billabong Solar Blog',
@@ -112,15 +113,12 @@ export default function BlogPage() {
 
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-2">
-                      <div className="relative w-7 h-7 rounded-full overflow-hidden bg-gray-200">
-                        <Image
-                          src={post.author.avatar}
-                          alt={post.author.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <span className="text-xs font-medium text-gray-600">{post.author.name}</span>
+                      <AuthorAvatar
+                        name={post.author.name}
+                        avatarUrl={post.author.avatar}
+                        size={28}
+                      />
+                      <span className="text-xs font-semibold text-gray-700">{post.author.name}</span>
                     </div>
 
                     <Link

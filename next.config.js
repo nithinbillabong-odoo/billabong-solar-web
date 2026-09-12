@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'secure.gravatar.com',
+      },
     ],
   },
   // Enable proper canonical URLs for Vercel
