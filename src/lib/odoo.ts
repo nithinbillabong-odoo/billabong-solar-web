@@ -16,7 +16,7 @@ export interface OdooResponse {
   };
 }
 
-const ODOO_URL = process.env.ODOO_URL || '';
+const ODOO_URL = (process.env.ODOO_URL || '').replace(/\/+$/, '');
 const ODOO_DB = process.env.ODOO_DB || '';
 const ODOO_USERNAME = process.env.ODOO_USERNAME || '';
 const ODOO_API_KEY = process.env.ODOO_API_KEY || '';
