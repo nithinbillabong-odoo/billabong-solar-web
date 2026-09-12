@@ -23,7 +23,7 @@ const ODOO_API_KEY = process.env.ODOO_API_KEY || '';
 
 export async function authenticateOdoo(): Promise<number | null> {
   try {
-    const response = await fetch(`${ODOO_URL}/web/dataset/call_kw`, {
+    const response = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function createCRMLead(data: OdooLeadData): Promise<number> {
   }
 
   try {
-    const response = await fetch(`${ODOO_URL}/web/dataset/call_kw`, {
+    const response = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,18 +68,24 @@ export async function createCRMLead(data: OdooLeadData): Promise<number> {
         jsonrpc: '2.0',
         method: 'call',
         params: {
-          model: 'crm.lead',
-          method: 'create',
-          args: [[{
-            name: `Website Lead - ${data.name}`,
-            contact_name: data.name,
-            email_from: data.email,
-            phone: data.phone,
-            street: data.address,
-            description: data.message || '',
-            type: 'lead',
-          }]],
-          kwargs: {},
+          service: 'object',
+          method: 'execute_kw',
+          args: [
+            ODOO_DB,
+            uid,
+            ODOO_API_KEY,
+            'crm.lead',
+            'create',
+            [{
+              name: `Website Lead - ${data.name}`,
+              contact_name: data.name,
+              email_from: data.email,
+              phone: data.phone,
+              street: data.address,
+              description: data.message || '',
+              type: 'lead',
+            }],
+          ],
         },
         id: Math.floor(Math.random() * 1000000000),
       }),
