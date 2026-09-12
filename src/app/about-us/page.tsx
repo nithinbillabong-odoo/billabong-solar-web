@@ -149,6 +149,34 @@ export default function AboutUsPage() {
                   </div>
                 ))}
               </div>
+
+              {/* Clean Energy Council Certificate Card */}
+              <div className="mt-8 p-5 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#FF5E00] text-white flex items-center justify-center font-black flex-shrink-0">
+                    ★
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-[#171D4D] text-sm sm:text-base">
+                      Clean Energy Council Approved Solar Retailer
+                    </h4>
+                    <p className="text-xs text-gray-600">
+                      Committed to consumer protection and ethical solar installation standards.
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href="/docs/code-of-conduct-certificate.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whitespace-nowrap px-4 py-2 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>View Certificate (PDF)</span>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>
