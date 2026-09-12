@@ -3,21 +3,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const quickLinks = [
-  { label: 'Residential', href: '/' },
-  { label: 'Commercial', href: '/commercial/' },
-  { label: 'Battery Storage', href: '/battery-storage/' },
-  { label: 'About Us', href: '/about-us/' },
-  { label: 'Blog', href: '/blog/' },
-  { label: 'FAQs', href: '/faq/' },
-  { label: 'Contact Us', href: '/contact-us/' },
+  { label: 'Residential Solar', href: '/residential' },
+  { label: 'Commercial Solar', href: '/commercial' },
+  { label: 'Battery Storage', href: '/battery-storage' },
+  { label: 'Victorian Solar Rebates', href: '/solar-rebates-victoria' },
+  { label: 'About Us', href: '/about-us' },
+  { label: 'Solar Blog', href: '/blog' },
+  { label: 'FAQs', href: '/faq' },
+  { label: 'Contact Us', href: '/contact-us' },
 ];
 
 const serviceLinks = [
-  { label: 'Residential Solar', href: '/' },
-  { label: 'Commercial Solar', href: '/commercial/' },
-  { label: 'Battery Storage', href: '/battery-storage/' },
-  { label: 'Solar Monitoring', href: '#' },
-  { label: 'Get a Free Quote', href: '/get-a-free-quote/' },
+  { label: '6.6kW - 13.2kW Home Solar', href: '/residential' },
+  { label: 'Commercial Solar (30kW-100kW+)', href: '/commercial' },
+  { label: 'Tesla & Sungrow Battery Storage', href: '/battery-storage' },
+  { label: '$2,800 Solar Victoria Rebate & Loan', href: '/solar-rebates-victoria' },
+  { label: 'Get a Free Quote', href: '/get-a-free-quote' },
 ];
 
 export default function Footer() {
