@@ -4,10 +4,10 @@ import { createCRMLead, sendLeadEmail } from '@/lib/odoo';
 import nodemailer from 'nodemailer';
 
 const contactSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters long' }),
+  name: z.string().min(1, { message: 'Name is required' }),
   email: z.string().email({ message: 'Invalid email address' }),
-  phone: z.string().min(8, { message: 'Phone number is too short' }),
-  address: z.string().min(5, { message: 'Please provide a full address' }),
+  phone: z.string().min(6, { message: 'Phone number is too short' }),
+  address: z.string().optional().default('Victoria, Australia'),
   message: z.string().optional(),
 });
 

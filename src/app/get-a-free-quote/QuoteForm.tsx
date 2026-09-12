@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 export default function QuoteForm() {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     propertyType: '',
     billAmount: '',
@@ -16,10 +18,38 @@ export default function QuoteForm() {
   const handleNext = () => setStep(s => s + 1);
   const handleBack = () => setStep(s => s - 1);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission to /api/contact
-    setStep(4); // Success step
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address || 'Victoria, Australia',
+          message: `Quote Request Details:\n- Property Type: ${formData.propertyType}\n- Estimated Monthly Bill: ${formData.billAmount}`,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setStep(4); // Success step
+      } else {
+        setSubmitError(data.message || 'Failed to submit quote request. Please try again.');
+      }
+    } catch (error) {
+      console.error('Quote form submission error:', error);
+      setSubmitError('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const updateData = (field: string, value: string) => {
@@ -69,6 +99,12 @@ export default function QuoteForm() {
         </div>
 
         <form onSubmit={handleSubmit}>
+          {submitError && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+              {submitError}
+            </div>
+          )}
+
           {step === 1 && (
             <div className="animate-fadeIn">
               <h2 className="text-2xl font-bold mb-6 text-gray-900">What type of property is this for?</h2>
@@ -134,8 +170,22 @@ export default function QuoteForm() {
                   <input required type="text" value={formData.address} onChange={(e) => updateData('address', e.target.value)} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow" placeholder="Your property address" />
                 </div>
               </div>
-              <button type="submit" className="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300">
-                Get My Free Quote
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300 disabled:opacity-70 flex justify-center items-center"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting Quote Request...
+                  </span>
+                ) : (
+                  'Get My Free Quote'
+                )}
               </button>
             </div>
           )}
