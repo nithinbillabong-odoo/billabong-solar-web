@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import HeroSlider from "@/components/sections/HeroSlider";
 import HowItWorks from "@/components/sections/HowItWorks";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import SolarAnimation from "@/components/sections/SolarAnimation";
-import SolarCalculator from "@/components/sections/SolarCalculator";
 import NewEnergyTech from "@/components/sections/NewEnergyTech";
 import GetInTouchForm from "@/components/sections/GetInTouchForm";
 import Testimonials from "@/components/sections/Testimonials";
@@ -78,12 +76,6 @@ export default function HomePage() {
 
       {/* Why Choose Billabong Solar - Accordion + image */}
       <WhyChooseUs />
-
-      {/* Solar Live Energy Generation Animation */}
-      <SolarAnimation />
-
-      {/* Solar Savings Calculator */}
-      <SolarCalculator />
 
       {/* New Energy Tech Approved Seller + Warranty Badges */}
       <NewEnergyTech />
