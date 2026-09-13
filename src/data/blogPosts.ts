@@ -298,7 +298,7 @@ export const blogPosts: BlogPost[] = [
     id: 7,
     slug: 'commercial-solar-victoria-guide',
     aliases: ['commercial-solar-tax-write-offs-victoria'],
-    title: 'Commercial Solar in Victoria: Tax Write-Offs, STC & LGC Incentives (2025/2026 Guide)',
+    title: 'Commercial Solar in Victoria: Tax Write-Offs, STC, LGC & VEEC Incentives (2025/2026 Guide)',
     category: 'Commercial Solar',
     date: 'January 18, 2026',
     dateISO: '2026-01-18T08:00:00.000Z',
@@ -307,14 +307,18 @@ export const blogPosts: BlogPost[] = [
       role: 'Senior Solar Energy Engineer',
       avatar: '/images/authors/billabong-admin.svg'
     },
-    readTime: '8 min read',
+    readTime: '9 min read',
     image: '/images/blog/post-7-commercial-solar.webp',
-    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 1,000kW commercial solar systems combined with instant asset write-offs and STC/LGC rebates deliver ROI in under 3 years.',
-    metaTitle: 'Commercial Solar Victoria: Tax Write-Offs & Rebate Guide 2025/2026 | Billabong Solar',
-    metaDescription: 'Essential commercial solar guide for Melbourne & Victorian businesses. Learn how STCs, LGCs, tax depreciation, and battery storage accelerate commercial payback.',
+    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 1,000kW commercial solar systems combined with instant asset write-offs, federal STC/LGC rebates, and Victorian VEEC incentives deliver ROI in under 3 years.',
+    metaTitle: 'Commercial Solar Victoria: Tax Write-Offs, STC, LGC & VEEC Guide | Billabong Solar',
+    metaDescription: 'Essential commercial solar guide for Victorian businesses. Learn how STCs, LGCs, Victorian VEECs (VEU), tax depreciation, and battery storage accelerate commercial payback.',
     keywords: [
       'commercial solar victoria',
       'commercial solar melbourne',
+      'VEECs for solar victoria',
+      'VEEC commercial solar',
+      'victorian energy upgrades solar',
+      'VEU commercial solar rebates',
       'commercial solar tax write off australia',
       'commercial solar STC rebates',
       'solar for businesses victoria',
@@ -322,30 +326,96 @@ export const blogPosts: BlogPost[] = [
       'commercial solar ROI melbourne'
     ],
     contentHtml: `
-      <p class="lead text-xl text-gray-700 font-medium mb-6">For Victorian business owners, commercial electricity rates have surged over the past 24 months. Operating manufacturing machinery, warehouse refrigeration, IT servers, and HVAC systems during peak daytime hours can represent one of your largest operational expenditures. Installing commercial solar in Victoria transforms idle roof space into a major revenue-saving energy asset.</p>
+      <p class="lead text-xl text-gray-700 font-medium mb-6">For Victorian business owners, commercial electricity rates have surged over the past 24 months. Operating manufacturing machinery, warehouse refrigeration, IT servers, and HVAC systems during peak daytime hours can represent one of your largest operational expenditures. Installing a commercial solar system (from 30 kW up to 1,000 kW / 1MW) in Victoria transforms idle roof space into a major revenue-saving clean energy powerhouse.</p>
 
       <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Why Victorian Businesses Are Moving Fast on Commercial Solar</h2>
-      <p>Unlike residential solar where peak generation often occurs when homeowners are at work, commercial properties consume electricity precisely during the middle of the day. This creates an ideal <strong>1:1 direct consumption ratio</strong> where solar power is consumed instantaneously behind the meter, circumventing expensive grid retail prices.</p>
+      <p>Unlike residential solar where peak generation often occurs when homeowners are at work, commercial properties consume electricity precisely during the middle of the day. This creates an ideal <strong>1:1 direct consumption ratio</strong> where solar power is consumed instantaneously behind the meter, circumventing expensive grid retail prices, peak demand network charges, and surging wholesale volatility.</p>
 
-      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Key Government Incentives for Victorian Commercial Solar</h2>
-      <div class="space-y-4 my-6">
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-xl">
-          <h3 class="text-lg font-bold text-[#171D4D] mb-2">1. Small-scale Technology Certificates (Systems up to 100kW)</h3>
-          <p class="text-gray-700 text-sm">Commercial systems under 100kW qualify for upfront federal STCs. For a 30kW to 99kW commercial array, this incentive can reduce total upfront installation costs by <strong>up to 30% to 35%</strong> directly at invoice settlement.</p>
+      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Major Government Incentives & Rebates for Victorian Commercial Solar</h2>
+      <p class="text-gray-700 mb-6">Victoria offers one of Australia’s most lucrative combinations of Federal and State renewable energy incentive frameworks. By stacking certificate programs, businesses can slash upfront capital costs by up to <strong>40% to 50%+</strong>:</p>
+
+      <div class="space-y-6 my-6">
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-black uppercase tracking-wider">Federal • Clean Energy Regulator</span>
+            <h3 class="text-lg font-bold text-[#171D4D]">1. Small-scale Technology Certificates (STCs) — Systems up to 100kW</h3>
+          </div>
+          <p class="text-gray-700 text-sm leading-relaxed">Commercial solar arrays up to 100 kW in inverter capacity qualify for the federal Small-scale Renewable Energy Scheme (SRES). STCs are calculated based on the total expected clean generation until the scheme’s 2030 phase-out. For a typical 30 kW to 99 kW commercial installation, STCs act as an immediate point-of-sale discount, reducing total installation invoices by <strong>up to 30% to 35%</strong> upfront.</p>
         </div>
 
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-xl">
-          <h3 class="text-lg font-bold text-[#171D4D] mb-2">2. Large-scale Generation Certificates (Systems > 100kW)</h3>
-          <p class="text-gray-700 text-sm">Large warehouses and distribution centers with systems greater than 100kW generate tradeable LGC certificates for every megawatt-hour of green electricity created over a multi-year horizon, producing an annuity income stream.</p>
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 text-xs font-black uppercase tracking-wider">Federal • Large Scale</span>
+            <h3 class="text-lg font-bold text-[#171D4D]">2. Large-scale Generation Certificates (LGCs) — Systems > 100kW</h3>
+          </div>
+          <p class="text-gray-700 text-sm leading-relaxed">For large industrial factories, distribution centers, and agribusinesses installing commercial systems over 100 kW (up to 1,000 kW / 1MW), the project is accredited under the Large-scale Renewable Energy Target (LRET). The system earns <strong>1 LGC for every 1 MWh</strong> of verified green electricity generated. These certificates can be surrendered for ongoing annuity income, sold to liable corporations on the spot market, or contracted under long-term Power Purchase Agreements (PPAs).</p>
         </div>
 
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-xl">
-          <h3 class="text-lg font-bold text-[#171D4D] mb-2">3. Accelerated Depreciation & Instant Asset Write-Offs</h3>
-          <p class="text-gray-700 text-sm">Under current ATO business asset provisions, qualifying businesses can claim immediate tax write-offs and capital depreciation against company earnings, effectively reducing the net cash outlay.</p>
+        <div class="p-6 bg-emerald-50/70 border border-emerald-200 rounded-2xl shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-xs font-black uppercase tracking-wider">State Level • Victoria (VEU / ESC)</span>
+            <h3 class="text-lg font-bold text-emerald-900">3. Victorian Energy Efficiency Certificates (VEECs) — The VEU Program</h3>
+          </div>
+          <p class="text-gray-700 text-sm leading-relaxed mb-3">Administered by the <strong>Essential Services Commission (ESC)</strong> under the <em>Victorian Energy Efficiency Target (VEET) Act 2007</em>, the Victorian Energy Upgrades (VEU) program provides substantial extra cash incentives for commercial energy reductions and electrification projects across Victoria.</p>
+          <div class="bg-white p-4 rounded-xl border border-emerald-200/80 space-y-2 text-xs text-gray-700">
+            <p><strong>How VEECs Work for Solar & Commercial Facilities:</strong></p>
+            <ul class="list-disc pl-5 space-y-1.5 text-gray-600">
+              <li><strong>1 VEEC = 1 Tonne of CO2-e Abated:</strong> Each certificate represents one deemed or measured tonne of greenhouse gas emissions avoided by displacing dirty grid electricity in Victoria.</li>
+              <li><strong>High Market Value ($60 – $90+ per VEEC):</strong> Victorian energy retailers are legally mandated to acquire and surrender an annual statutory quota of VEECs, driving strong and consistent certificate cash demand.</li>
+              <li><strong>Project-Based Activities (PBA) & Deemed Methods:</strong> Commercial enterprises replacing heavy fossil gas equipment, electrifying operations, or installing qualifying commercial energy management upgrades can create thousands of VEECs, yielding tens of thousands of dollars in project subsidies.</li>
+              <li><strong>Stacking VEECs with Federal Rebates:</strong> Because VEECs operate at the Victorian state level, qualifying commercial energy projects can often access both Federal certificates (STCs/LGCs) and Victorian energy certificates, compounding financial returns.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 text-xs font-black uppercase tracking-wider">Tax Provisions • ATO</span>
+            <h3 class="text-lg font-bold text-[#171D4D]">4. Instant Asset Write-Offs & Accelerated Capital Depreciation</h3>
+          </div>
+          <p class="text-gray-700 text-sm leading-relaxed">Under current Australian Taxation Office (ATO) business asset guidelines, commercial solar systems and battery storage represent depreciable plant and equipment. Eligible businesses can claim upfront deductions, accelerated depreciation, or instant asset write-offs against their taxable income, reducing the net cash impact of the installation in the first financial year.</p>
         </div>
       </div>
 
-      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Typical Commercial System Sizing & Expected Returns</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Federal vs. Victorian Solar Certificate Comparison</h2>
+      <div class="overflow-x-auto my-6">
+        <table class="min-w-full border border-gray-200 text-left text-xs sm:text-sm">
+          <thead class="bg-[#171D4D] text-white font-bold">
+            <tr>
+              <th class="p-3 border border-slate-700">Certificate</th>
+              <th class="p-3 border border-slate-700">Governing Body</th>
+              <th class="p-3 border border-slate-700">System Sizing</th>
+              <th class="p-3 border border-slate-700">Payout Mechanism</th>
+              <th class="p-3 border border-slate-700">Typical Value / Impact</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr>
+              <td class="p-3 font-bold text-blue-900">STC (Small-scale)</td>
+              <td class="p-3">Clean Energy Regulator (Federal)</td>
+              <td class="p-3">Up to 100 kW</td>
+              <td class="p-3">Upfront point-of-sale invoice deduction</td>
+              <td class="p-3 text-emerald-600 font-bold">~30%–35% off system cost</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-purple-900">LGC (Large-scale)</td>
+              <td class="p-3">Clean Energy Regulator (Federal)</td>
+              <td class="p-3">> 100 kW (up to 1MW+)</td>
+              <td class="p-3">Ongoing annual generation trading (1 LGC / MWh)</td>
+              <td class="p-3 font-semibold">Multi-year annuity cash stream</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-emerald-900">VEEC (Victorian)</td>
+              <td class="p-3">Essential Services Commission (VIC)</td>
+              <td class="p-3">Eligible VEU commercial upgrades</td>
+              <td class="p-3">Traded on certificate spot market via AP</td>
+              <td class="p-3 text-emerald-600 font-bold">$60 – $90+ per tonne CO2-e avoided</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Typical Commercial System Sizing & Expected Returns in Victoria</h2>
       <div class="overflow-x-auto my-6">
         <table class="min-w-full border border-gray-200 text-left text-sm">
           <thead class="bg-[#171D4D] text-white font-bold">
@@ -370,18 +440,33 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3 text-emerald-600 font-bold">2.5 – 3.2 Years</td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold">100kW+</td>
+              <td class="p-3 font-semibold">100kW - 250kW</td>
               <td class="p-3">Warehouses, cold storage, manufacturing plants</td>
-              <td class="p-3">~150,000+ kWh/yr</td>
+              <td class="p-3">~150,000 - 380,000 kWh/yr</td>
               <td class="p-3 text-emerald-600 font-bold">2.2 – 3.0 Years</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold">250kW - 1,000kW (1MW)</td>
+              <td class="p-3">Heavy industrial factories, food processors, logistics hubs</td>
+              <td class="p-3">~400,000 - 1,500,000+ kWh/yr</td>
+              <td class="p-3 text-emerald-600 font-bold">2.0 – 2.8 Years</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Pairing Commercial Solar with Commercial Battery Storage</h2>
-      <p>Many Victorian businesses pay high <strong>kVA demand charges</strong> on their commercial power bills. By adding commercial battery storage, your system can automatically discharge stored energy during network peak windows (known as "peak shaving"), radically reducing network capacity charges.</p>
-      <p>Speak to our CEC Accredited engineering team at Billabong Solar for a full complimentary commercial load profile audit and financial feasibility report.</p>
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Pairing Commercial Solar with Commercial Battery Storage</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">Many Victorian businesses pay high <strong>kVA maximum demand charges</strong> on their commercial power bills. By adding commercial battery storage (such as modular Sig Energy, Alpha ESS, or GoodWe commercial racks), your system can automatically discharge stored solar energy during network peak windows (known as "peak shaving"), radically reducing network capacity charges.</p>
+      <p class="text-gray-700 leading-relaxed">Commercial storage also guarantees complete business continuity and zero downtime during sudden Victorian storm blackouts, keeping automated machinery, refrigeration, and server rooms operational 24/7.</p>
+
+      <div class="mt-8 p-6 bg-gradient-to-r from-[#171D4D] to-[#252E6D] rounded-2xl text-white">
+        <h3 class="text-xl font-bold mb-2">Request a Complimentary Commercial Solar & VEEC Audit</h3>
+        <p class="text-sm text-gray-300 mb-4 leading-relaxed">Our CEC Accredited commercial engineering team handles full interval smart meter data analysis, DNSP grid connection pre-approvals (CitiPower, Powercor, AusNet, Jemena, United Energy), and certificate modeling to maximize your STC, LGC, and VEEC returns.</p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="/get-a-free-quote" class="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-6 py-3 rounded-full text-xs uppercase tracking-wider text-center transition-all shadow-lg">Get Free Commercial Feasibility Audit →</a>
+          <a href="tel:1300897221" class="border border-white/40 hover:bg-white/10 text-white font-bold px-6 py-3 rounded-full text-xs text-center transition-all">Call 1300 897 221</a>
+        </div>
+      </div>
     `
   },
   {

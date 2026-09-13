@@ -168,7 +168,7 @@ export default function BatteryStoragePage() {
                 model: "SigenStor 5-in-1 Energy Storage",
                 capacity: "Modular 5.0 kWh to 48.0 kWh",
                 desc: "Groundbreaking 5-in-1 AI-powered system integrating solar inverter, battery storage, and EV DC charging into a sleek stackable tower with 0ms UPS backup.",
-                warranty: "Up to 15 Years Warranty",
+                warranty: "10 Years Warranty",
                 badge: "AI-Powered 5-in-1",
                 image: "/images/sigenergy-sigenstor-ev.png"
               },
