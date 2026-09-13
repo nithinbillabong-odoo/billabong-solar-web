@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import EvChargingAnimation from '@/components/sections/EvChargingAnimation';
 
 export const metadata: Metadata = {
   title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
@@ -185,7 +186,7 @@ export default function BatteryStoragePage() {
                 desc: "Groundbreaking 5-in-1 AI-powered system integrating solar inverter, battery storage, and EV DC charging into a sleek stackable tower with 0ms UPS backup.",
                 warranty: "Up to 15 Years Warranty",
                 badge: "AI-Powered 5-in-1",
-                image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/img-solar-panels-min.webp?fit=800%2C530&ssl=1"
+                image: "/images/sigenergy-sigenstor-ev.png"
               },
               {
                 name: "GoodWe",
@@ -243,6 +244,13 @@ export default function BatteryStoragePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Interactive Sigenergy & Tesla EV DC Fast Charging Section */}
+      <section className="py-20 bg-slate-950 text-white relative">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <EvChargingAnimation />
         </div>
       </section>
 
