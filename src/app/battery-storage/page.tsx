@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import EvChargingAnimation from '@/components/sections/EvChargingAnimation';
+import RealtimeTeslaChargingHero from '@/components/sections/RealtimeTeslaChargingHero';
 
 export const metadata: Metadata = {
   title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     description: 'Store your daytime solar energy and power your home at night with premium Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome battery systems.',
     images: [
       {
-        url: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-28-at-11.12.50-AM.jpeg?fit=1600%2C841&ssl=1',
-        width: 1600,
-        height: 841,
-        alt: 'Solar Battery Storage Installation in Victoria',
+        url: '/images/sigenstor-tesla-garage.jpg',
+        width: 1376,
+        height: 768,
+        alt: 'Sigenergy SigenStor Solar Battery and Tesla EV Charging in Victorian Garage',
       },
     ],
   },
@@ -76,26 +76,10 @@ export default function BatteryStoragePage() {
         </div>
       </section>
 
-      {/* Featured Battery Showcase Image from authentic live site */}
-      <section className="py-12 bg-white">
+      {/* Featured Sigenergy SigenStor & Tesla Real-time Charging Interactive Section */}
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-gray-100 aspect-[16/8] w-full">
-            <Image
-              src="https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-28-at-11.12.50-AM.jpeg?fit=1600%2C841&ssl=1"
-              alt="Victorian Solar Battery Installation by Billabong Solar"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#171D4D]/90 via-transparent to-transparent flex items-end p-6 md:p-10">
-              <div className="text-white max-w-2xl">
-                <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-[#FF5E00] bg-white/20 backdrop-blur-md px-3 py-1 rounded-full inline-block mb-2">
-                  Whole-Home Blackout Backup
-                </span>
-                <h3 className="text-2xl md:text-3xl font-bold">Uninterrupted Clean Power, 24 Hours a Day</h3>
-              </div>
-            </div>
-          </div>
+          <RealtimeTeslaChargingHero />
         </div>
       </section>
 
@@ -247,12 +231,6 @@ export default function BatteryStoragePage() {
         </div>
       </section>
 
-      {/* Interactive Sigenergy & Tesla EV DC Fast Charging Section */}
-      <section className="py-20 bg-slate-950 text-white relative">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <EvChargingAnimation />
-        </div>
-      </section>
 
       {/* How Battery Storage Works */}
       <section className="py-20 bg-slate-900 text-white relative">
