@@ -30,6 +30,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Billabong Solar" }],
   creator: "Billabong Solar",
   publisher: "Billabong Solar",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png' },
+    ],
+  },
   robots: {
     index: true,
     follow: true,
