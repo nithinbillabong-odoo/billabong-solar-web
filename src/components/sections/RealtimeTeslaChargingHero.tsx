@@ -28,7 +28,6 @@ export default function RealtimeTeslaChargingHero() {
       cost: '$0.00 / km',
       primaryColor: '#10B981', // emerald
       glowColor: 'rgba(16, 185, 129, 0.8)',
-      flowSpeedClass: 'duration-1000',
       badge: '100% Free Sunshine',
     },
     boost: {
@@ -39,7 +38,6 @@ export default function RealtimeTeslaChargingHero() {
       cost: '$0.02 / km',
       primaryColor: '#FF5E00', // vibrant orange
       glowColor: 'rgba(255, 94, 0, 0.9)',
-      flowSpeedClass: 'duration-700',
       badge: 'Ultra-Fast DC Speed',
     },
     v2h: {
@@ -50,36 +48,103 @@ export default function RealtimeTeslaChargingHero() {
       cost: 'Zero Blackouts',
       primaryColor: '#3B82F6', // blue
       glowColor: 'rgba(59, 130, 246, 0.8)',
-      flowSpeedClass: 'duration-1200',
       badge: 'Vehicle-to-Home',
     },
   };
 
   const current = modeData[chargingMode];
 
+  // Reusable Telemetry Card component
+  const TelemetryCard = ({ className = '' }: { className?: string }) => (
+    <div className={`bg-slate-950/95 backdrop-blur-md p-4 rounded-2xl border border-white/15 text-white shadow-2xl ${className}`}>
+      <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center gap-2">
+          <div
+            style={{ backgroundColor: current.primaryColor }}
+            className="w-2.5 h-2.5 rounded-full animate-ping"
+          />
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
+            Tesla Charging Telemetry
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsCharging(!isCharging)}
+          className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border transition-colors ${
+            isCharging
+              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+              : 'bg-slate-800 text-slate-400 border-slate-700'
+          }`}
+        >
+          {isCharging ? '● Live Active' : '○ Paused'}
+        </button>
+      </div>
+
+      {/* Battery Level Progress Bar */}
+      <div className="space-y-1.5">
+        <div className="flex justify-between text-xs font-bold">
+          <span className="text-slate-300">Battery Level (Tesla Model 3)</span>
+          <span style={{ color: current.primaryColor }} className="font-black text-sm">
+            {batteryLevel}%
+          </span>
+        </div>
+        <div className="w-full bg-slate-800/90 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700">
+          <div
+            style={{
+              width: `${batteryLevel}%`,
+              backgroundColor: current.primaryColor,
+              boxShadow: `0 0 10px ${current.primaryColor}`,
+            }}
+            className="h-full rounded-full transition-all duration-500"
+          />
+        </div>
+      </div>
+
+      {/* Quick Metrics */}
+      <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-slate-800/80 text-[11px]">
+        <div>
+          <span className="text-slate-400 block text-[10px]">DC Power</span>
+          <span className="font-extrabold text-white">
+            {isCharging ? current.speed : '0.0 kW'}
+          </span>
+        </div>
+        <div>
+          <span className="text-slate-400 block text-[10px]">Range / Hr</span>
+          <span className="font-extrabold text-white">
+            {isCharging ? current.rate : 'Paused'}
+          </span>
+        </div>
+        <div>
+          <span className="text-slate-400 block text-[10px]">Cost / km</span>
+          <span className="font-extrabold text-emerald-400">{current.cost}</span>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full">
       {/* Title & Mode Switcher Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-5 sm:mb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>Interactive Live Simulation • Sigenergy SigenStor & Tesla</span>
+            <span>Interactive Live Simulation • Sigenergy & Tesla</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-[#171D4D] tracking-tight">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#171D4D] tracking-tight">
             Charge Your <span className="text-[#FF5E00]">Tesla</span> Straight from SigenStor Solar
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+          <p className="text-gray-600 text-xs sm:text-sm lg:text-base mt-1.5 sm:mt-2 max-w-2xl leading-relaxed">
             See how the Sigenergy SigenStor 5-in-1 battery system feeds pure DC solar energy directly into a Tesla Model 3 without inefficient AC inverter conversions.
           </p>
         </div>
 
-        {/* Mode Selector Tabs */}
-        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 flex-shrink-0 shadow-inner">
+        {/* Mode Selector Tabs (Fully responsive grid on mobile) */}
+        <div className="grid grid-cols-3 gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 flex-shrink-0 shadow-inner w-full lg:w-auto">
           <button
             type="button"
             onClick={() => setChargingMode('solar')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
+            className={`px-2 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all text-center ${
               chargingMode === 'solar'
                 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
                 : 'text-slate-600 hover:text-slate-900'
@@ -90,18 +155,18 @@ export default function RealtimeTeslaChargingHero() {
           <button
             type="button"
             onClick={() => setChargingMode('boost')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
+            className={`px-2 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all text-center ${
               chargingMode === 'boost'
                 ? 'bg-[#FF5E00] text-white shadow-md shadow-orange-500/30'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            ⚡ 25kW Fast DC
+            ⚡ 25kW Boost
           </button>
           <button
             type="button"
             onClick={() => setChargingMode('v2h')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
+            className={`px-2 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all text-center ${
               chargingMode === 'v2h'
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
                 : 'text-slate-600 hover:text-slate-900'
@@ -113,7 +178,8 @@ export default function RealtimeTeslaChargingHero() {
       </div>
 
       {/* Main Visual Stage: Photorealistic Garage with Real-time Energy Overlays */}
-      <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 aspect-[16/9] w-full bg-slate-950 group select-none">
+      {/* On mobile: aspect-[16/10] giving generous vertical view so Tesla & SigenStor are 100% visible */}
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200 aspect-[16/10] sm:aspect-[16/9] w-full bg-slate-950 group select-none">
         {/* Photorealistic SigenStor + Tesla Garage Image */}
         <Image
           src="/images/sigenstor-tesla-garage.jpg"
@@ -124,8 +190,8 @@ export default function RealtimeTeslaChargingHero() {
           className="object-cover"
         />
 
-        {/* Ambient Darkened Gradient at Top & Bottom for HUD Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-950/40 pointer-events-none" />
+        {/* Ambient Darkened Gradient at Top & Bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/30 pointer-events-none" />
 
         {/* SVG Live Charging Overlay (Aligned 1:1 with 1376x768 aspect) */}
         <svg
@@ -134,7 +200,6 @@ export default function RealtimeTeslaChargingHero() {
           className="absolute inset-0 w-full h-full pointer-events-none"
         >
           <defs>
-            {/* Pulsing Glow Filters */}
             <filter id="chargerGlow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
               <feMerge>
@@ -150,16 +215,9 @@ export default function RealtimeTeslaChargingHero() {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-
-            {/* Gradient along the charging cable */}
-            <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#06b6d4" />
-              <stop offset="50%" stopColor={current.primaryColor} />
-              <stop offset="100%" stopColor={current.primaryColor} />
-            </linearGradient>
           </defs>
 
-          {/* 1. SigenStor Vertical Cyan Light Bar Glow (x: 457, y: 310 to 575) */}
+          {/* 1. SigenStor Vertical Cyan Light Bar Glow */}
           {isCharging && (
             <line
               x1="457"
@@ -175,7 +233,7 @@ export default function RealtimeTeslaChargingHero() {
             />
           )}
 
-          {/* 2. Electric Cable Energy Conduit Flow (From Holster 586,410 to Tesla Port 775,460) */}
+          {/* 2. Electric Cable Energy Conduit Flow */}
           {isCharging && (
             <>
               {/* Outer Energy Aura along Cable */}
@@ -185,7 +243,7 @@ export default function RealtimeTeslaChargingHero() {
                 stroke={current.primaryColor}
                 strokeWidth="8"
                 strokeLinecap="round"
-                opacity="0.4"
+                opacity="0.45"
                 filter="url(#chargerGlow)"
               />
 
@@ -213,9 +271,9 @@ export default function RealtimeTeslaChargingHero() {
                 d="M 586 410 C 586 520, 610 595, 680 590 C 730 585, 760 520, 775 460"
                 fill="none"
                 stroke="#FFFFFF"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeDasharray="6 24"
-                opacity="0.9"
+                opacity="0.95"
               >
                 <animate
                   attributeName="stroke-dashoffset"
@@ -228,10 +286,9 @@ export default function RealtimeTeslaChargingHero() {
             </>
           )}
 
-          {/* 3. Tesla Vehicle Charging Port Dynamic Ring (775, 460) */}
+          {/* 3. Tesla Vehicle Charging Port Dynamic Ring */}
           {isCharging && (
             <g transform="translate(775, 460)">
-              {/* Outer Ripple Wave */}
               <circle
                 r="18"
                 fill="none"
@@ -240,7 +297,6 @@ export default function RealtimeTeslaChargingHero() {
                 opacity="0.8"
                 className="animate-ping"
               />
-              {/* Mid Glow */}
               <circle
                 r="10"
                 fill="none"
@@ -248,7 +304,6 @@ export default function RealtimeTeslaChargingHero() {
                 strokeWidth="4"
                 filter="url(#chargerGlow)"
               />
-              {/* Solid Core Light */}
               <circle r="6" fill="#FFFFFF" className="animate-pulse" />
             </g>
           )}
@@ -262,7 +317,7 @@ export default function RealtimeTeslaChargingHero() {
                 x2="457"
                 y2="295"
                 stroke="#FBBF24"
-                strokeWidth="2.5"
+                strokeWidth="3"
                 strokeDasharray="4 8"
               >
                 <animate
@@ -277,11 +332,11 @@ export default function RealtimeTeslaChargingHero() {
           )}
         </svg>
 
-        {/* Interactive Hotspot Badges directly on the image */}
+        {/* Hotspot Badges on Image (Hidden on very small screens to avoid clutter, visible on sm+) */}
         {/* Rooftop Solar Hotspot */}
         <div
           style={{ top: '8%', left: '38%' }}
-          className="absolute z-20 transform -translate-x-1/2"
+          className="hidden sm:block absolute z-20 transform -translate-x-1/2"
         >
           <div
             onMouseEnter={() => setActiveHotspot('solar')}
@@ -296,7 +351,7 @@ export default function RealtimeTeslaChargingHero() {
         {/* SigenStor Battery Hotspot */}
         <div
           style={{ top: '34%', left: '33%' }}
-          className="absolute z-20 transform -translate-x-1/2"
+          className="hidden sm:block absolute z-20 transform -translate-x-1/2"
         >
           <div
             onMouseEnter={() => setActiveHotspot('battery')}
@@ -311,7 +366,7 @@ export default function RealtimeTeslaChargingHero() {
         {/* Tesla Car Hotspot */}
         <div
           style={{ top: '53%', left: '67%' }}
-          className="absolute z-20 transform -translate-x-1/2"
+          className="hidden sm:block absolute z-20 transform -translate-x-1/2"
         >
           <div
             onMouseEnter={() => setActiveHotspot('car')}
@@ -319,87 +374,34 @@ export default function RealtimeTeslaChargingHero() {
             className="flex items-center gap-1.5 bg-slate-950/80 hover:bg-slate-900 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-bold shadow-lg cursor-pointer transition-transform hover:scale-105"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>🚗 Tesla Model 3 • CCS2 DC Port</span>
+            <span>🚗 Tesla Model 3 • CCS2 Port</span>
           </div>
         </div>
 
-        {/* Floating Glassmorphism Telemetry HUD (Bottom Overlay) */}
-        <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 z-20 flex flex-col sm:flex-row items-stretch sm:items-end justify-between gap-3 pointer-events-none">
-          {/* Live Tesla Battery Monitor Widget */}
-          <div className="bg-slate-950/85 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/15 text-white max-w-sm w-full shadow-2xl pointer-events-auto">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div
-                  style={{ backgroundColor: current.primaryColor }}
-                  className="w-2.5 h-2.5 rounded-full animate-ping"
-                />
-                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
-                  Tesla Charging Telemetry
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsCharging(!isCharging)}
-                className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors ${
-                  isCharging
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                    : 'bg-slate-800 text-slate-400 border-slate-700'
-                }`}
-              >
-                {isCharging ? '● Live' : '○ Paused'}
-              </button>
-            </div>
+        {/* Mobile floating status chip in corner (minimal, does NOT cover car) */}
+        <div className="sm:hidden absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 text-white text-[10px] font-black">
+          <span
+            style={{ backgroundColor: current.primaryColor }}
+            className="w-2 h-2 rounded-full animate-ping"
+          />
+          <span>{current.speed} DC Active</span>
+        </div>
 
-            {/* Battery Level Progress Bar */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs font-bold">
-                <span className="text-slate-300">Battery Level</span>
-                <span style={{ color: current.primaryColor }} className="font-black text-sm">
-                  {batteryLevel}%
-                </span>
-              </div>
-              <div className="w-full bg-slate-800/90 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700">
-                <div
-                  style={{
-                    width: `${batteryLevel}%`,
-                    backgroundColor: current.primaryColor,
-                    boxShadow: `0 0 10px ${current.primaryColor}`,
-                  }}
-                  className="h-full rounded-full transition-all duration-500"
-                />
-              </div>
-            </div>
-
-            {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-slate-800 text-[10px] sm:text-[11px]">
-              <div>
-                <span className="text-slate-400 block">DC Power</span>
-                <span className="font-extrabold text-white">
-                  {isCharging ? current.speed : '0.0 kW'}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 block">Range / Hr</span>
-                <span className="font-extrabold text-white">
-                  {isCharging ? current.rate : 'Paused'}
-                </span>
-              </div>
-              <div>
-                <span className="text-slate-400 block">Cost / km</span>
-                <span className="font-extrabold text-emerald-400">{current.cost}</span>
-              </div>
-            </div>
+        {/* Desktop-only Inside HUD Overlay (Hidden on mobile to preserve unblocked view) */}
+        <div className="hidden sm:flex absolute bottom-4 left-4 right-4 lg:bottom-6 lg:left-6 lg:right-6 z-20 items-end justify-between gap-4 pointer-events-none">
+          <div className="max-w-sm w-full pointer-events-auto">
+            <TelemetryCard />
           </div>
 
-          {/* Quick Pillar Pill & Quote CTA */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pointer-events-auto">
-            <div className="hidden md:flex flex-col text-right text-xs text-white/90 bg-slate-950/70 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
+          {/* Desktop Quote CTA Button & Badge */}
+          <div className="flex flex-col items-end gap-2 pointer-events-auto">
+            <div className="flex flex-col text-right text-xs text-white/90 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/15">
               <span className="font-bold text-amber-300">0ms Blackout UPS Switch</span>
-              <span className="text-[10px] text-slate-300">Powers your home & car 24/7</span>
+              <span className="text-[10px] text-slate-300">Continuous power for your home & car</span>
             </div>
             <Link
               href="/get-a-free-quote"
-              className="bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-black px-5 py-3 rounded-2xl text-xs uppercase tracking-wider text-center transition-all shadow-xl hover:scale-105 whitespace-nowrap"
+              className="bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-black px-6 py-3 rounded-2xl text-xs uppercase tracking-wider text-center transition-all shadow-xl hover:scale-105 whitespace-nowrap"
             >
               Get SigenStor Battery Quote →
             </Link>
@@ -407,13 +409,25 @@ export default function RealtimeTeslaChargingHero() {
         </div>
       </div>
 
+      {/* MOBILE-ONLY Dedicated Telemetry HUD & CTA (Sits cleanly UNDER the image so the visual is 100% visible!) */}
+      <div className="sm:hidden mt-4 space-y-3">
+        <TelemetryCard />
+
+        <Link
+          href="/get-a-free-quote"
+          className="block w-full bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-black py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider text-center transition-all shadow-lg shadow-orange-500/20 active:scale-98"
+        >
+          Get SigenStor Battery Quote →
+        </Link>
+      </div>
+
       {/* 3 Key Technological Advantages Beneath Visual Showcase */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+        <div className="bg-slate-50 p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
           <div className="w-10 h-10 rounded-2xl bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-lg mb-3">
             ⚡
           </div>
-          <h4 className="font-black text-[#171D4D] text-base mb-1.5">
+          <h4 className="font-black text-[#171D4D] text-sm sm:text-base mb-1.5">
             Pure DC Fast Charging (Up to 25 kW)
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
@@ -421,11 +435,11 @@ export default function RealtimeTeslaChargingHero() {
           </p>
         </div>
 
-        <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-slate-50 p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
           <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-black text-lg mb-3">
             ☀️
           </div>
-          <h4 className="font-black text-[#171D4D] text-base mb-1.5">
+          <h4 className="font-black text-[#171D4D] text-sm sm:text-base mb-1.5">
             100% Free Solar Motoring
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
@@ -433,11 +447,11 @@ export default function RealtimeTeslaChargingHero() {
           </p>
         </div>
 
-        <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-slate-50 p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
           <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center font-black text-lg mb-3">
             🔄
           </div>
-          <h4 className="font-black text-[#171D4D] text-base mb-1.5">
+          <h4 className="font-black text-[#171D4D] text-sm sm:text-base mb-1.5">
             Bi-Directional V2H / V2G Ready
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">

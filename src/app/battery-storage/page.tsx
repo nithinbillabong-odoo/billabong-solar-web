@@ -77,7 +77,7 @@ export default function BatteryStoragePage() {
       </section>
 
       {/* Featured Sigenergy SigenStor & Tesla Real-time Charging Interactive Section */}
-      <section className="py-16 bg-white">
+      <section className="py-8 sm:py-16 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
           <RealtimeTeslaChargingHero />
         </div>
