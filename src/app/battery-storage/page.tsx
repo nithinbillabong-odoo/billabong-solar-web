@@ -2,17 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import RealtimeTeslaChargingHero from '@/components/sections/RealtimeTeslaChargingHero';
-import BatterySavingsCalculator from '@/components/sections/BatterySavingsCalculator';
-import BatteryPackages from '@/components/sections/BatteryPackages';
 
 export const metadata: Metadata = {
-  title: 'Solar Battery Storage Victoria | $8,800 Interest-Free Loan & Packages | Billabong Solar',
-  description: 'Store excess solar power, avoid peak 40¢ grid rates, and blackout-proof your Victorian home. Eligible for Victoria’s $8,800 interest-free battery loan. Sig Energy, GoodWe, Alpha ESS & ESY Sunhome.',
+  title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
+  description: 'Store excess solar power and protect your Victorian home from blackouts. Certified installer for Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome battery storage systems.',
   alternates: {
     canonical: '/battery-storage',
   },
   openGraph: {
-    title: 'Solar Battery Storage Victoria | $8,800 Interest-Free Loan & Packages | Billabong Solar',
+    title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
     description: 'Store your daytime solar energy and power your home at night with premium Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome battery systems.',
     images: [
       {
@@ -30,7 +28,7 @@ export default function BatteryStoragePage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Solar Battery Storage Systems Victoria",
-    "description": "Premium home and commercial battery storage systems including Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome with Solar Victoria $8,800 interest-free loan eligibility.",
+    "description": "Premium home and commercial battery storage systems including Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome.",
     "brand": {
       "@type": "Brand",
       "name": "Billabong Solar"
@@ -46,175 +44,54 @@ export default function BatteryStoragePage() {
       />
       
       {/* Hero */}
-      <section className="relative bg-gradient-to-r from-[#171D4D] via-[#242C7D] to-[#1C2366] text-white py-20 md:py-28 overflow-hidden shadow-inner">
+      <section className="relative bg-gradient-to-r from-[#171D4D] via-[#242C7D] to-[#1C2366] text-white py-24 md:py-32 overflow-hidden shadow-inner">
         <div className="absolute top-0 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#FF5E00]/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold text-orange-300 mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-semibold text-orange-300 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#FF5E00] animate-pulse" />
-            Victorian Solar Battery Specialists • NETCC Approved Seller
+            Energy Independence & Backup Power
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-6 text-white tracking-tight leading-tight">
-            Stop Giving Away Your Solar for 3.3¢. Store It for the Night.
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-white tracking-tight leading-tight">
+            Store Your Solar Power for When You Need It Most
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-200 leading-relaxed font-light">
-            Capture your surplus daytime sunshine to power your home through expensive peak evening hours and sudden storm blackouts. Eligible for Solar Victoria’s <strong className="text-amber-300">$8,800 interest-free loan</strong> with $0 upfront.
+          <p className="text-lg md:text-2xl mb-10 max-w-3xl mx-auto text-gray-200 leading-relaxed font-light">
+            Battery storage lets you save the extra energy your solar system produces during the day and use it at night, during peak tariff times, or when the grid goes down.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/get-a-free-quote"
-              className="w-full sm:w-auto inline-block bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold py-4 px-10 rounded-full text-base sm:text-lg transition duration-300 shadow-xl transform hover:-translate-y-0.5 text-center"
+              className="w-full sm:w-auto inline-block bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold py-4 px-10 rounded-full text-lg transition duration-300 shadow-xl transform hover:-translate-y-0.5"
             >
-              Get Free Battery Quote & Loan Assessment →
+              Get a Free Battery Quote →
             </Link>
             <a
               href="tel:1300897221"
-              className="w-full sm:w-auto inline-block bg-white/15 hover:bg-white/25 backdrop-blur-md text-white font-bold py-4 px-8 rounded-full text-base sm:text-lg border border-white/30 transition duration-300 text-center"
+              className="w-full sm:w-auto inline-block bg-white/15 hover:bg-white/25 backdrop-blur-md text-white font-bold py-4 px-8 rounded-full text-lg border border-white/30 transition duration-300"
             >
               Call 1300 897 221
             </a>
           </div>
-
-          {/* Quick trust metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-white/15 text-center">
-            <div>
-              <div className="text-2xl font-black text-amber-300">$8,800</div>
-              <div className="text-xs text-gray-300">Interest-Free Loan</div>
-            </div>
-            <div>
-              <div className="text-2xl font-black text-white">0 ms</div>
-              <div className="text-xs text-gray-300">Blackout UPS Backup</div>
-            </div>
-            <div>
-              <div className="text-2xl font-black text-white">10 Years</div>
-              <div className="text-xs text-gray-300">Warranty on All Brands</div>
-            </div>
-            <div>
-              <div className="text-2xl font-black text-emerald-400">NETCC</div>
-              <div className="text-xs text-gray-300">Approved Solar Seller</div>
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* Interactive Battery Savings & Blackout Runtime Calculator */}
-      <section className="py-12 md:py-16 bg-slate-900 relative">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <BatterySavingsCalculator />
-        </div>
-      </section>
-
-      {/* Tailored Battery Storage Packages (Retrofit, Whole-Home, EV) */}
-      <BatteryPackages />
 
       {/* Featured Sigenergy SigenStor & Tesla Real-time Charging Interactive Section */}
-      <section className="py-12 sm:py-20 bg-white">
+      <section className="py-8 sm:py-16 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-10">
-            <span className="text-[#FF5E00] font-extrabold text-xs uppercase tracking-widest block mb-2">
-              Next-Generation Technology
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#171D4D]">
-              Solar, Battery & EV Fast-Charging in One Sleek System
-            </h2>
-            <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto mt-2">
-              See how the revolutionary Sigenergy SigenStor charges your electric vehicle directly from stored sunshine with 0ms uninterrupted home power.
-            </p>
-          </div>
           <RealtimeTeslaChargingHero />
         </div>
       </section>
 
-      {/* Solar Victoria $8,800 Loan & VPP Profit Guide */}
-      <section className="py-16 bg-gradient-to-br from-[#101538] to-[#1D255A] text-white">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">
-                Victorian Government Incentives
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black mb-6 leading-tight">
-                How to Get a Battery with $0 Upfront in Victoria
-              </h2>
-              <p className="text-gray-200 text-sm sm:text-base leading-relaxed mb-6">
-                Under the <strong>Solar Victoria Battery Loan Program</strong>, eligible Victorian homeowners can access an interest-free loan of up to <strong>$8,800</strong> to install a home battery system.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</div>
-                  <div className="text-sm text-gray-200">
-                    <strong className="text-white">Zero Interest & Zero Hidden Fees:</strong> Repaid over 48 months at approximately ~$183 per month.
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</div>
-                  <div className="text-sm text-gray-200">
-                    <strong className="text-white">Positive Cashflow:</strong> Most households save between $150 and $220+ per month on electricity, meaning power savings cover your repayments!
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</div>
-                  <div className="text-sm text-gray-200">
-                    <strong className="text-white">Retrofit Ready:</strong> Available whether you are installing a new solar system or adding a battery to existing panels on your roof.
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                href="/get-a-free-quote?loan=battery8800"
-                className="inline-flex items-center gap-2 bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-8 py-4 rounded-full text-sm transition-all shadow-lg shadow-orange-500/30"
-              >
-                <span>Check Your Loan Eligibility Now</span>
-                <span>→</span>
-              </Link>
-            </div>
-
-            {/* VPP Card */}
-            <div className="bg-white/5 border border-white/15 rounded-3xl p-8 backdrop-blur-xl">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl">📈</span>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Virtual Power Plant (VPP) Ready</h3>
-                  <p className="text-xs text-amber-300">Earn Extra Income During Grid Heatwaves</p>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-6">
-                All batteries installed by Billabong Solar (Sigenergy, GoodWe, Alpha ESS) are VPP-compatible. With dynamic retailers like <strong>Amber Electric</strong>, your smart battery can automatically export stored power to the grid during severe heatwaves when wholesale power prices skyrocket to the regulatory cap of <strong>$15.00/kWh</strong>!
-              </p>
-              
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-                  <div className="text-[11px] text-gray-400">Standard Solar Feed-In</div>
-                  <div className="text-lg font-black text-rose-400">~3.3¢ / kWh</div>
-                  <div className="text-[10px] text-gray-400">Fixed retailer credit</div>
-                </div>
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                  <div className="text-[11px] text-emerald-300 font-semibold">VPP Spike Event</div>
-                  <div className="text-lg font-black text-emerald-400">Up to $15.00 / kWh</div>
-                  <div className="text-[10px] text-emerald-200">Wholesale grid market</div>
-                </div>
-              </div>
-
-              <div className="text-[11px] text-gray-400 flex items-center gap-2">
-                <span className="text-emerald-400">●</span>
-                <span>Automatic AI charge/discharge scheduling managed via smart app</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Grid */}
+      {/* Benefits from Live Site */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-[#171D4D] tracking-tight">
-              Why Victorian Homes are Adding Batteries
+              Benefits of Battery Storage
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              More savings, complete blackout immunity, and independence from soaring utility power bills.
+              More savings, more independence, and complete peace of mind during grid fluctuations.
             </p>
           </div>
 
@@ -222,7 +99,7 @@ export default function BatteryStoragePage() {
             {[
               {
                 title: "Reduce Electricity Bills",
-                desc: "Run your household on stored solar power rather than purchasing high-rate peak evening grid electricity at 40¢+/kWh.",
+                desc: "Drastically reduce power bills by running your household on stored solar power rather than purchasing high-rate peak evening grid electricity.",
                 icon: (
                   <svg className="w-8 h-8 text-[#FF5E00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -230,8 +107,8 @@ export default function BatteryStoragePage() {
                 )
               },
               {
-                title: "Blackout Protection (0ms UPS)",
-                desc: "Keep essential lights, refrigeration, internet routers, and medical equipment running seamlessly when storm outages strike.",
+                title: "Blackout Protection",
+                desc: "Keep essential lights, refrigeration, internet routers, and medical appliances running seamlessly whenever the main grid goes down.",
                 icon: (
                   <svg className="w-8 h-8 text-[#FF5E00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -239,8 +116,8 @@ export default function BatteryStoragePage() {
                 )
               },
               {
-                title: "Beat the 3.3¢ Feed-in Rate",
-                desc: "Stop giving your daytime energy away to energy retailers for pennies. Keep and consume 100% of your own generation.",
+                title: "Lower Reliance on Grid",
+                desc: "Become self-sufficient from utility rate hikes and surging feed-in tariff reductions by consuming 100% of your own generation.",
                 icon: (
                   <svg className="w-8 h-8 text-[#FF5E00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -248,8 +125,8 @@ export default function BatteryStoragePage() {
                 )
               },
               {
-                title: "EV Fast Charging Ready",
-                desc: "Integrate bi-directional EV charging to top up your Tesla or electric car directly with stored solar power overnight.",
+                title: "Maximise Solar ROI",
+                desc: "Capture every excess kilowatt produced during sunny midday hours instead of feeding it back to retail companies for minor feed-in credits.",
                 icon: (
                   <svg className="w-8 h-8 text-[#FF5E00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -270,7 +147,7 @@ export default function BatteryStoragePage() {
       </section>
 
       {/* Leading Brands We Install */}
-      <section className="py-20 bg-white" id="battery-brands">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16">
             <span className="text-[#FF5E00] font-extrabold text-xs uppercase tracking-wider block mb-2">
@@ -290,7 +167,7 @@ export default function BatteryStoragePage() {
                 name: "Sig Energy (Sigenergy)",
                 model: "SigenStor 5-in-1 Energy Storage",
                 capacity: "Modular 5.0 kWh to 48.0 kWh",
-                desc: "Groundbreaking 5-in-1 AI-powered system integrating solar inverter, battery storage, and EV DC fast charging into a sleek stackable tower with 0ms UPS backup.",
+                desc: "Groundbreaking 5-in-1 AI-powered system integrating solar inverter, battery storage, and EV DC charging into a sleek stackable tower with 0ms UPS backup.",
                 warranty: "10 Years Warranty",
                 badge: "AI-Powered 5-in-1",
                 image: "/images/sigenergy-sigenstor-ev.png"
@@ -354,12 +231,13 @@ export default function BatteryStoragePage() {
         </div>
       </section>
 
+
       {/* How Battery Storage Works */}
       <section className="py-20 bg-slate-900 text-white relative">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-white tracking-tight">
-              How Battery Storage Works
+              How It Works
             </h2>
             <p className="text-lg text-gray-300 max-w-xl mx-auto">
               Simple, automatic, and hassle-free operation that maximizes your daily solar usage.
@@ -376,7 +254,7 @@ export default function BatteryStoragePage() {
               {
                 step: "02",
                 title: "Battery Stores Surplus",
-                desc: "Instead of exporting extra energy to the grid for minimal 3.3¢ feed-in credits, your battery automatically charges with surplus power."
+                desc: "Instead of exporting extra energy to the grid for minimal feed-in credits, your battery automatically charges with surplus power."
               },
               {
                 step: "03",
@@ -394,12 +272,12 @@ export default function BatteryStoragePage() {
         </div>
       </section>
 
-      {/* Bottom CTA Section */}
+      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#FF5E00] to-orange-600 text-white text-center">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-3xl md:text-5xl font-black mb-6">Ready to Store Your Solar Power?</h2>
-          <p className="text-lg sm:text-xl mb-10 max-w-2xl mx-auto text-white/95 leading-relaxed">
-            Talk to our licensed Victorian solar engineers today about adding an AC-coupled battery to your existing system, or installing a brand-new complete solar and storage package with the $8,800 interest-free loan.
+          <h2 className="text-3xl md:text-5xl font-black mb-6">Ready to Store Your Solar?</h2>
+          <p className="text-xl mb-10 max-w-2xl mx-auto text-white/95">
+            Talk to our engineering team today about adding a battery to your existing system or installing a brand-new complete solar and storage package.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
