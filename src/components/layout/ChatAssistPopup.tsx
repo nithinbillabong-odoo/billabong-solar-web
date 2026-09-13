@@ -156,7 +156,7 @@ export default function ChatAssistPopup() {
             {/* Header controls: WhatsApp quick link & Close */}
             <div className="flex items-center gap-2">
               <a
-                href="https://wa.me/61400000000?text=Hi%2C%20I%20would%20like%20a%20solar%20quote"
+                href="https://wa.me/61450941413?text=Hi%20Billabong%20Solar%2C%20I%20would%20like%20a%20solar%20quote"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Chat on WhatsApp"

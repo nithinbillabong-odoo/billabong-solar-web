@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 
 export default function WhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP || '61400000000'; // Default placeholder if not set
-  const message = encodeURIComponent("Hi, I'm interested in solar panels");
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP || '61450941413';
+  const message = encodeURIComponent("Hi, I'm interested in solar panels and battery storage");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
   return (
