@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatAssistPopup from "@/components/layout/ChatAssistPopup";
 import { localBusinessSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -134,6 +135,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <WhatsAppButton />
+        <ChatAssistPopup />
       </body>
     </html>
   );

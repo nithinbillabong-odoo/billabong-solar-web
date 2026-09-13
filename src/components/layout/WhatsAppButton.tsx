@@ -9,16 +9,16 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end">
       {/* Tooltip */}
       <div
-        className={`mb-2 bg-white text-gray-800 px-3 py-1.5 rounded-lg shadow-lg text-sm font-medium transition-all duration-300 origin-bottom-right ${
-          isHovered ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+        className={`mb-2 bg-white text-gray-800 px-3 py-1.5 rounded-lg shadow-lg text-xs font-semibold transition-all duration-300 origin-bottom-right border border-gray-100 ${
+          isHovered ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
         }`}
       >
-        Chat with us on WhatsApp
+        Chat on WhatsApp
         {/* Tooltip triangle */}
-        <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-white transform rotate-45" />
+        <div className="absolute -bottom-1.5 right-5 w-3 h-3 bg-white transform rotate-45 border-r border-b border-gray-100" />
       </div>
 
       {/* Button */}
@@ -26,13 +26,13 @@ export default function WhatsAppButton() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-[#25D366] hover:bg-[#20ba59] text-white p-4 rounded-full shadow-xl transition-colors duration-300 animate-bounce flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
+        className="bg-[#25D366] hover:bg-[#20ba59] text-white p-3.5 rounded-full shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         aria-label="Chat on WhatsApp"
       >
         <svg
-          className="w-8 h-8"
+          className="w-6 h-6"
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"

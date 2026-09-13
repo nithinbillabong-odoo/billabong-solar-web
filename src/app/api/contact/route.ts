@@ -9,6 +9,7 @@ const contactSchema = z.object({
   phone: z.string().min(1, { message: 'Phone number is required' }),
   address: z.string().optional().nullable().transform((v) => (v && v.trim().length > 0 ? v.trim() : 'Victoria, Australia')),
   message: z.string().optional().nullable().transform((v) => v || ''),
+  source: z.string().optional().nullable().transform((v) => v || 'Website Contact Form'),
 });
 
 export async function POST(request: NextRequest) {
@@ -23,8 +24,12 @@ export async function POST(request: NextRequest) {
     let odooLeadId: number | null = null;
     try {
       odooLeadId = await createCRMLead({
-        ...validatedData,
-        source: 'Website Contact Form'
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        address: validatedData.address,
+        message: validatedData.message,
+        source: validatedData.source,
       });
       console.log('Successfully created Odoo lead:', odooLeadId);
     } catch (odooError) {
@@ -57,7 +62,7 @@ export async function POST(request: NextRequest) {
       await transporter.sendMail({
         from: process.env.SMTP_FROM || process.env.SMTP_USER,
         to: process.env.SMTP_TO || process.env.SMTP_USER,
-        subject: `New Contact Form Lead: ${validatedData.name}`,
+        subject: `New Lead [${validatedData.source}]: ${validatedData.name} (${validatedData.phone})`,
         html: htmlContent,
       });
       
