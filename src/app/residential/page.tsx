@@ -5,13 +5,14 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: 'Residential Solar Panels Melbourne & Victoria | Tier-1 Solar Installation | Billabong Solar',
   description:
-    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 6.6kW to 13.2kW custom systems, CEC accredited electricians, 25-year warranties, and $1,400 Solar Victoria rebates.',
+    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 10kW to 20kW custom systems, CEC accredited electricians, 25-year warranties, and $1,400 Solar Victoria rebates.',
   keywords: [
     'residential solar panels melbourne',
     'residential solar victoria',
     'home solar system packages victoria',
-    '6.6kw solar system price melbourne',
     '10kw solar system victoria',
+    '13.2kw solar system victoria',
+    '20kw solar system melbourne',
     'best home solar installer melbourne',
     'cec accredited residential solar',
   ],
@@ -28,31 +29,31 @@ export const metadata: Metadata = {
 
 const packages = [
   {
-    size: '6.6 kW System',
-    idealFor: 'Small to Medium Families (2-3 Bedrooms)',
-    panels: '15-16 x Tier-1 Monocrystalline Panels (440W)',
-    inverter: '5.0 kW High-Efficiency Inverter (Sungrow / Fronius)',
-    generation: 'Approx. 24 - 28 kWh / day average',
-    savings: 'Save $1,200 – $1,800 / year on power bills',
+    size: '10.0 kW System',
+    idealFor: 'Medium to Large Family Homes with High Day & Night Usage',
+    panels: '22-24 x Tier-1 Monocrystalline Panels (440W-450W)',
+    inverter: '8.0 kW – 8.5 kW Smart Hybrid Inverter (GoodWe / Sigenergy)',
+    generation: 'Approx. 38 - 45 kWh / day average',
+    savings: 'Save $2,000 – $2,800 / year on power bills',
     badge: 'Most Popular',
   },
   {
-    size: '10.0 kW System',
-    idealFor: 'Medium to Large Homes with High AC / EV Charging',
-    panels: '23-24 x Tier-1 Monocrystalline Panels (440W)',
-    inverter: '8.0 kW – 8.5 kW Smart Hybrid Inverter',
-    generation: 'Approx. 38 - 44 kWh / day average',
-    savings: 'Save $2,000 – $2,800 / year on power bills',
-    badge: 'Best Value for EVs',
+    size: '13.2 kW System',
+    idealFor: 'Large 3-Phase Victorian Homes, Ducted AC, EVs & Pools',
+    panels: '30 x Tier-1 High-Output Panels (440W-450W)',
+    inverter: '10.0 kW 3-Phase Smart Hybrid Inverter',
+    generation: 'Approx. 50 - 60 kWh / day average',
+    savings: 'Save $2,800 – $4,000 / year on power bills',
+    badge: 'Best Value',
   },
   {
-    size: '13.2 kW System',
-    idealFor: 'Large 3-Phase Victorian Homes & Home Businesses',
-    panels: '30 x Tier-1 High-Output Panels',
-    inverter: '10.0 kW 3-Phase Smart Inverter',
-    generation: 'Approx. 50 - 58 kWh / day average',
-    savings: 'Save $2,800 – $3,800 / year on power bills',
-    badge: 'Maximum Generation',
+    size: '20.0 kW System',
+    idealFor: 'Executive Residences, High-Demand Estates & Acreage Properties',
+    panels: '44-46 x Tier-1 Commercial-Grade Monocrystalline Panels',
+    inverter: '15.0 kW – 20.0 kW 3-Phase Smart Inverter',
+    generation: 'Approx. 76 - 90 kWh / day average',
+    savings: 'Save $4,500 – $6,500+ / year on power bills',
+    badge: 'Maximum',
   },
 ];
 
@@ -61,7 +62,7 @@ export default function ResidentialSolarPage() {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'Residential Solar Panel Systems Victoria',
-    description: 'Complete 6.6kW to 13.2kW residential solar panel systems with Tier-1 panels and 25-year performance warranty.',
+    description: 'Tailored 10kW, 13.2kW, and 20kW residential solar panel systems with Tier-1 panels and 25-year performance warranty.',
     brand: {
       '@type': 'Brand',
       name: 'Billabong Solar',
@@ -69,8 +70,8 @@ export default function ResidentialSolarPage() {
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'AUD',
-      lowPrice: '2500',
-      highPrice: '8500',
+      lowPrice: '3800',
+      highPrice: '14500',
       offerCount: '3',
     },
   };
@@ -218,8 +219,8 @@ export default function ResidentialSolarPage() {
                     ✓
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900">New Energy Tech Approved Seller</h4>
-                    <p className="text-sm text-gray-600">Committed to highest Australian consumer standards and ethical quoting.</p>
+                    <h4 className="font-bold text-slate-900">NETCC Approved Solar Seller</h4>
+                    <p className="text-sm text-gray-600">A NETCC approved solar seller is a business that follows the New Energy Tech Consumer Code, which sets high standards for honest sales, clear contracts, and consumer protection in Australia.</p>
                   </div>
                 </div>
 
@@ -229,7 +230,7 @@ export default function ResidentialSolarPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-slate-900">Battery-Ready Architecture</h4>
-                    <p className="text-sm text-gray-600">Easily connect a Tesla Powerwall, Sungrow, or Enphase battery whenever you are ready.</p>
+                    <p className="text-sm text-gray-600">Seamlessly connect leading Sigenergy, GoodWe, Alpha ESS, or ESY Sunhome battery storage whenever you are ready.</p>
                   </div>
                 </div>
               </div>

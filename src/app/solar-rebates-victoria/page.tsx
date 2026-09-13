@@ -34,7 +34,7 @@ const rebateFaqs = [
   },
   {
     q: 'Who is eligible for the Solar Victoria rebate?',
-    a: 'To qualify, you must be the owner-occupier of a residential property in Victoria with a combined household taxable income under $210,000 per year, and the property must have a Council Capital Improved Value (CIV) under $3,000,000.',
+    a: 'To qualify, you must be the owner-occupier of an existing property or a home under construction in Victoria with a combined household taxable income of all owners less than $150,000 per year, and a property value under $3,000,000.',
   },
   {
     q: 'Do I have to do the Solar Victoria portal paperwork myself?',
@@ -157,17 +157,71 @@ export default function SolarRebatesVictoriaPage() {
         </div>
       </section>
 
-      {/* Rebate Eligibility Checker Anchor */}
-      <section id="checker" className="py-16 bg-gray-50">
+      {/* Rebate Eligibility Criteria & Interactive Checker */}
+      <section id="checker" className="py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-10">
-            <span className="text-[#FF5E00] font-extrabold text-xs uppercase tracking-wider block mb-2">
-              Fast Pre-Approval
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-              Find Out If Your Home Qualifies
-            </h2>
+          {/* Official 6 Criteria Card */}
+          <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-gray-200/80 mb-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-6 mb-6">
+              <div>
+                <span className="text-[#FF5E00] font-extrabold text-xs uppercase tracking-wider block mb-1">
+                  Official Victorian Government Guidelines
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                  Check If You Are Eligible
+                </h2>
+                <p className="text-gray-600 text-sm mt-1">
+                  As a Victorian householder, you could receive a <strong>solar panel (PV) rebate</strong> if:
+                </p>
+              </div>
+              <div className="px-4 py-2 rounded-2xl bg-orange-50 border border-orange-200 text-[#FF5E00] font-black text-xs uppercase tracking-wider whitespace-nowrap">
+                Solar Homes Program
+              </div>
+            </div>
+
+            <ul className="space-y-3.5 text-sm text-gray-700">
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>You are the owner-occupier of an existing property or the owner of a home under construction where the system is to be installed.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>Combined household taxable income of all owners is <strong>less than $150,000 per year</strong>.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>Value of the property is under $3 million (for an existing home or when construction is complete).</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>Property address has not previously received a solar panel (PV) or solar battery rebate under this program.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>The property address has not had a solar panel (PV) system installed in the last 10 years.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FF5E00] flex items-center justify-center font-black text-xs flex-shrink-0 mt-0.5">✓</span>
+                <span>You received a Solar Homes rebate and/or loan but have moved house. You can apply for another incentive at your new address as an owner-occupier if the property has not received these rebates before.</span>
+              </li>
+            </ul>
+
+            <div className="mt-6 pt-5 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-gray-500">
+              <p>
+                You must use an authorised solar retailer and use only eligible products.
+              </p>
+              <span className="font-bold text-[#171D4D]">Billabong Solar is an Authorised NETCC Approved Seller</span>
+            </div>
+
+            {/* NETCC Definition Banner */}
+            <div className="mt-5 p-4 rounded-2xl bg-blue-50/70 border border-blue-200/80 text-xs text-[#171D4D] leading-relaxed flex items-center gap-3">
+              <span className="text-xl flex-shrink-0">🛡️</span>
+              <p>
+                <strong>What is a NETCC Approved Solar Seller?</strong> A NETCC approved solar seller is a business that follows the New Energy Tech Consumer Code, which sets high standards for honest sales, clear contracts, and consumer protection in Australia.
+              </p>
+            </div>
           </div>
+
           <RebateEligibilityChecker />
         </div>
       </section>

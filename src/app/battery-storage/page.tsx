@@ -3,14 +3,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Solar Battery Storage Victoria | Tesla, Enphase & Sungrow | Billabong Solar',
-  description: 'Store excess solar power for when you need it most. Protect against blackouts and slash power bills with Tesla Powerwall, Enphase IQ, and Sungrow battery systems in Victoria.',
+  title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
+  description: 'Store excess solar power and protect your Victorian home from blackouts. Certified installer for Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome battery storage systems.',
   alternates: {
     canonical: '/battery-storage',
   },
   openGraph: {
-    title: 'Solar Battery Storage Victoria | Billabong Solar',
-    description: 'Store your daytime solar energy and power your home at night with premium battery storage solutions.',
+    title: 'Solar Battery Storage Victoria | Sig Energy, GoodWe, Alpha ESS & ESY Sunhome | Billabong Solar',
+    description: 'Store your daytime solar energy and power your home at night with premium Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome battery systems.',
     images: [
       {
         url: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-28-at-11.12.50-AM.jpeg?fit=1600%2C841&ssl=1',
@@ -27,7 +27,7 @@ export default function BatteryStoragePage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Solar Battery Storage Systems Victoria",
-    "description": "Premium home and commercial battery storage systems including Tesla Powerwall, Enphase IQ, and Sungrow.",
+    "description": "Premium home and commercial battery storage systems including Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome.",
     "brand": {
       "@type": "Brand",
       "name": "Billabong Solar"
@@ -163,8 +163,11 @@ export default function BatteryStoragePage() {
 
       {/* Leading Brands We Install */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16">
+            <span className="text-[#FF5E00] font-extrabold text-xs uppercase tracking-wider block mb-2">
+              Authorised Equipment
+            </span>
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-[#171D4D] tracking-tight">
               Premium Battery Brands We Install
             </h2>
@@ -173,55 +176,68 @@ export default function BatteryStoragePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                name: "Tesla Powerwall 2 / 3",
-                capacity: "13.5 kWh Usable Capacity",
-                desc: "Integrated AC battery system providing whole-home blackout backup, intelligent energy management via Tesla app, and rugged weather-resistant design.",
-                warranty: "10 Years Warranty",
-                badge: "Most Popular",
+                name: "Sig Energy (Sigenergy)",
+                model: "SigenStor 5-in-1 Energy Storage",
+                capacity: "Modular 5.0 kWh to 48.0 kWh",
+                desc: "Groundbreaking 5-in-1 AI-powered system integrating solar inverter, battery storage, and EV DC charging into a sleek stackable tower with 0ms UPS backup.",
+                warranty: "Up to 15 Years Warranty",
+                badge: "AI-Powered 5-in-1",
                 image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/img-solar-panels-min.webp?fit=800%2C530&ssl=1"
               },
               {
-                name: "Enphase IQ Battery",
-                capacity: "Modular 5.0 kWh / 10.0 kWh",
-                desc: "Microinverter-based architecture with no high-voltage DC risks, ultra-safe Lithium Iron Phosphate (LFP) chemistry, and seamless grid failover.",
-                warranty: "15 Years Warranty",
-                badge: "Maximum Safety",
+                name: "GoodWe",
+                model: "Lynx Home U & F Series",
+                capacity: "Modular 5.4 kWh to 32.4 kWh",
+                desc: "Industry-proven Lithium Iron Phosphate (LFP) chemistry with IP65 outdoor durability, smart EPS blackout switching, and single/3-phase compatibility.",
+                warranty: "10 Years Warranty",
+                badge: "Most Popular",
+                image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/bg-13-copyright.jpg?fit=800%2C530&ssl=1"
+              },
+              {
+                name: "Alpha ESS",
+                model: "SMILE-G3 & SMILE5",
+                capacity: "Modular 2.9 kWh to 60.5 kWh",
+                desc: "German engineered with 10,000+ cycle life. Features ultra-safe chemistry, VPP virtual power plant readiness, and smart cloud app monitoring.",
+                warranty: "10 Years Warranty",
+                badge: "Best Value & Expandable",
                 image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/flexible-solar-panels-scaled-1.jpg?fit=800%2C530&ssl=1"
               },
               {
-                name: "Sungrow SBR High Voltage",
-                capacity: "9.6 kWh to 25.6 kWh",
-                desc: "High-efficiency DC-coupled storage offering expandable plug-and-play modules, emergency power supply (EPS), and outstanding price-to-performance ratio.",
+                name: "ESY Sunhome",
+                model: "HM Series All-in-One",
+                capacity: "Modular 5.1 kWh to 20.4 kWh",
+                desc: "Ultra-compact aesthetic all-in-one residential storage system. Plug-and-play installation, IP65 weatherproofing, and smart smartphone app management.",
                 warranty: "10 Years Warranty",
-                badge: "Best Value",
-                image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/bg-13-copyright.jpg?fit=800%2C530&ssl=1"
+                badge: "Sleek & Compact",
+                image: "https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider_Commercial-Victoria-Slide1-1-1.webp?w=800&ssl=1"
               }
             ].map((brand, i) => (
               <div key={i} className="bg-slate-50 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col group">
-                <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                <div className="relative h-44 w-full overflow-hidden bg-slate-900">
                   <Image
                     src={brand.image}
                     alt={brand.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                   />
-                  <div className="absolute top-4 right-4 bg-[#FF5E00] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                  <div className="absolute top-3 right-3 bg-[#FF5E00] text-white text-[11px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
                     {brand.badge}
                   </div>
                 </div>
 
-                <div className="p-8 flex-1 flex flex-col justify-between">
+                <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-2xl font-bold mb-1 text-[#171D4D]">{brand.name}</h3>
-                    <p className="text-[#FF5E00] font-semibold text-sm mb-4">{brand.capacity}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-6">{brand.desc}</p>
+                    <h3 className="text-xl font-bold text-[#171D4D] mb-0.5">{brand.name}</h3>
+                    <p className="text-xs text-gray-500 font-semibold mb-2">{brand.model}</p>
+                    <p className="text-[#FF5E00] font-bold text-xs mb-3">{brand.capacity}</p>
+                    <p className="text-gray-600 text-xs leading-relaxed mb-4">{brand.desc}</p>
                   </div>
-                  <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-gray-500">
+                  <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-[11px] font-bold text-gray-500">
                     <span>🛡️ {brand.warranty}</span>
-                    <span className="text-emerald-600">CEC Approved</span>
+                    <span className="text-emerald-600 font-semibold">CEC Approved</span>
                   </div>
                 </div>
               </div>

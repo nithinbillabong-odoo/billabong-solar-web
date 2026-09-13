@@ -64,7 +64,7 @@ export default function CommercialSolarPage() {
             Commercial Solar Solutions
           </h1>
           <p className="text-lg md:text-2xl mb-10 max-w-3xl mx-auto text-gray-200 leading-relaxed font-light">
-            Empower your business with clean, sustainable energy. Slash operating overheads, hedge against rising tariffs, and boost your ESG credentials.
+            Custom engineered commercial solar systems from <strong>30 kW to 1,000 kW (1MW)</strong>. Slash operating overheads, hedge against rising Victorian peak tariffs, and boost your enterprise ROI.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -180,7 +180,7 @@ export default function CommercialSolarPage() {
               <div className="space-y-6">
                 {[
                   {
-                    title: "Scalable Systems (30kW to 500kW+)",
+                    title: "Scalable Systems (30kW to 1,000kW / 1MW)",
                     desc: "Tailored to warehouses, manufacturing plants, retail centres, schools, and agribusinesses across Victoria."
                   },
                   {

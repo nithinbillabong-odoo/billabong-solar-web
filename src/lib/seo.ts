@@ -32,12 +32,14 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
       'residential solar melbourne',
       'residential battery storage victoria',
       'residential battery storage melbourne',
-      'tesla powerwall melbourne',
-      'sungrow battery victoria',
-      'enphase microinverter melbourne',
+      'sigenergy battery melbourne',
+      'goodwe solar battery victoria',
+      'alpha ess battery storage melbourne',
+      'esy sunhome battery victoria',
       'solar rebate victoria 2026',
       'solar homes program rebate $1400',
       'CEC accredited solar installer victoria',
+      'NETCC approved solar seller victoria',
       'tier 1 solar panels melbourne'
     ],
     alternates: {
@@ -68,9 +70,9 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
     },
     other: {
       'geo.region': 'AU-VIC',
-      'geo.placename': 'Melbourne, Victoria, Australia',
-      'geo.position': '-37.8136;144.9631',
-      ICBM: '-37.8136, 144.9631',
+      'geo.placename': 'Scoresby, Melbourne, Victoria, Australia',
+      'geo.position': '-37.8938;145.2285',
+      ICBM: '-37.8938, 145.2285',
     },
     ...overrides,
   };
@@ -87,19 +89,23 @@ export const localBusinessSchema = {
   "email": "info@billabongsolar.com.au",
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Melbourne",
+    "streetAddress": "Suite 029 Waterman Caribbean Park, 44 Lakeview Drive",
+    "addressLocality": "Scoresby",
     "addressRegion": "VIC",
-    "postalCode": "3000",
+    "postalCode": "3179",
     "addressCountry": "AU"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": -37.8136,
-    "longitude": 144.9631
+    "latitude": -37.8938,
+    "longitude": 145.2285
   },
   "areaServed": [
     { "@type": "City", "name": "Melbourne" },
+    { "@type": "City", "name": "Scoresby" },
     { "@type": "AdministrativeArea", "name": "Victoria" },
+    { "@type": "AdministrativeArea", "name": "Gippsland" },
+    { "@type": "City", "name": "Heyfield" },
     { "@type": "City", "name": "Geelong" },
     { "@type": "City", "name": "Ballarat" },
     { "@type": "City", "name": "Bendigo" },
@@ -117,7 +123,7 @@ export const localBusinessSchema = {
         "itemOffered": {
           "@type": "Service",
           "name": "Residential Solar Panel Installation",
-          "description": "High-efficiency Tier-1 residential solar power systems for Melbourne & Victorian homes."
+          "description": "Tailored 10kW, 13.2kW, and 20kW Tier-1 residential solar power systems for Melbourne & Victorian homes."
         }
       },
       {
@@ -125,7 +131,7 @@ export const localBusinessSchema = {
         "itemOffered": {
           "@type": "Service",
           "name": "Residential Solar Battery Storage",
-          "description": "Home battery storage systems including Tesla Powerwall, Enphase, and Sungrow for blackout protection."
+          "description": "Home battery storage systems including Sig Energy, GoodWe, Alpha ESS, and ESY Sunhome for blackout protection."
         }
       },
       {
@@ -133,7 +139,7 @@ export const localBusinessSchema = {
         "itemOffered": {
           "@type": "Service",
           "name": "Commercial Solar Power Systems",
-          "description": "Turnkey commercial solar installations from 30kW to 500kW+ for businesses across Victoria."
+          "description": "Turnkey commercial solar installations from 30kW to 1,000kW (1MW) for businesses across Victoria."
         }
       },
       {

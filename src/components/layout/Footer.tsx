@@ -14,11 +14,11 @@ const quickLinks = [
 ];
 
 const serviceLinks = [
-  { label: '6.6kW - 13.2kW Home Solar', href: '/residential' },
-  { label: 'Commercial Solar (30kW-100kW+)', href: '/commercial' },
-  { label: 'Tesla & Sungrow Battery Storage', href: '/battery-storage' },
+  { label: '10kW - 20kW Residential Solar', href: '/residential' },
+  { label: 'Commercial Solar (30kW - 1,000kW)', href: '/commercial' },
+  { label: 'Battery Storage (Sigenergy, GoodWe)', href: '/battery-storage' },
   { label: '$2,800 Solar Victoria Rebate & Loan', href: '/solar-rebates-victoria' },
-  { label: 'Get a Free Quote', href: '/get-a-free-quote' },
+  { label: 'Complaints Procedure', href: '/complaints-procedure' },
 ];
 
 export default function Footer() {
@@ -102,14 +102,24 @@ export default function Footer() {
           <h3 className="text-xl font-bold mb-6 text-white border-b-2 border-[#FF660D] pb-2 inline-block">
             Contact Us
           </h3>
-          <ul className="space-y-4 text-gray-300">
+          <ul className="space-y-4 text-gray-300 text-sm">
             <li className="flex items-start">
-              <svg className="w-5 h-5 mr-3 mt-1 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              <span>Victoria, Australia</span>
+              <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+              <div>
+                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Head Office</strong>
+                <span>Suite 029 Waterman Caribbean Park, 44 Lakeview Drive, Scoresby VIC 3179</span>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <div>
+                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Gippsland Office</strong>
+                <span>34-38 MacFarlane Street, Heyfield, Victoria 3858</span>
+              </div>
             </li>
             <li className="flex items-center">
               <svg className="w-5 h-5 mr-3 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-              <a href="tel:1300897221" className="hover:text-[#FF660D] transition-colors">1300 897 221</a>
+              <a href="tel:1300897221" className="hover:text-[#FF660D] transition-colors font-bold text-white">1300 897 221</a>
             </li>
             <li className="flex items-center">
               <svg className="w-5 h-5 mr-3 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
@@ -142,6 +152,7 @@ export default function Footer() {
           <div className="flex flex-wrap gap-4 sm:gap-6 mt-4 md:mt-0">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/complaints-procedure" className="hover:text-white transition-colors">Complaints Procedure</Link>
             <a
               href="/docs/code-of-conduct-certificate.pdf"
               target="_blank"

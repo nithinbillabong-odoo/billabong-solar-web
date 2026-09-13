@@ -150,18 +150,23 @@ export default function AboutUsPage() {
                 ))}
               </div>
 
-              {/* Clean Energy Council Certificate Card */}
-              <div className="mt-8 p-5 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#FF5E00] text-white flex items-center justify-center font-black flex-shrink-0">
+              {/* Clean Energy Council & NETCC Certificate Card */}
+              <div className="mt-8 p-6 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-[#FF5E00] text-white flex items-center justify-center font-black text-xl flex-shrink-0 shadow-sm">
                     ★
                   </div>
                   <div>
-                    <h4 className="font-extrabold text-[#171D4D] text-sm sm:text-base">
-                      Clean Energy Council Approved Solar Retailer
-                    </h4>
-                    <p className="text-xs text-gray-600">
-                      Committed to consumer protection and ethical solar installation standards.
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <h4 className="font-extrabold text-[#171D4D] text-base sm:text-lg">
+                        Clean Energy Council Approved Solar Retailer & NETCC Seller
+                      </h4>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 text-orange-800 uppercase tracking-wider">
+                        Official Signatory
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed max-w-2xl">
+                      A NETCC approved solar seller is a business that follows the New Energy Tech Consumer Code, which sets high standards for honest sales, clear contracts, and consumer protection in Australia.
                     </p>
                   </div>
                 </div>
@@ -169,7 +174,7 @@ export default function AboutUsPage() {
                   href="/docs/code-of-conduct-certificate.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="whitespace-nowrap px-4 py-2 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-1.5"
+                  className="whitespace-nowrap px-5 py-2.5 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-2 shadow-sm self-stretch sm:self-auto justify-center"
                 >
                   <span>View Certificate (PDF)</span>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

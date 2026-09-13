@@ -11,8 +11,8 @@ interface AuthorAvatarProps {
 }
 
 export default function AuthorAvatar({
-  name = 'Nithin',
-  avatarUrl = '/images/authors/nithin.svg',
+  name = 'Billabong Solar Admin',
+  avatarUrl = '/images/authors/billabong-admin.svg',
   size = 32,
   className = '',
 }: AuthorAvatarProps) {

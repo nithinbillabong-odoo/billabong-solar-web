@@ -7,7 +7,7 @@ export default function RebateEligibilityChecker() {
   const [step, setStep] = useState<number>(1);
   const [answers, setAnswers] = useState({
     isOwnerOccupier: true,
-    incomeUnder210k: true,
+    incomeUnder150k: true,
     propertyUnder3M: true,
     receivedBefore: false,
   });
@@ -24,7 +24,7 @@ export default function RebateEligibilityChecker() {
 
   const isEligible =
     answers.isOwnerOccupier &&
-    answers.incomeUnder210k &&
+    answers.incomeUnder150k &&
     answers.propertyUnder3M &&
     !answers.receivedBefore;
 
@@ -45,10 +45,10 @@ export default function RebateEligibilityChecker() {
           suburb: leadForm.suburb,
           message: `[SOLAR REBATE CHECKER LEAD]
 Eligible: ${isEligible ? 'YES' : 'NO'}
-Owner Occupier: ${answers.isOwnerOccupier ? 'Yes' : 'No'}
-Income <$210k: ${answers.incomeUnder210k ? 'Yes' : 'No'}
+Owner Occupier / Construction: ${answers.isOwnerOccupier ? 'Yes' : 'No'}
+Income <$150k: ${answers.incomeUnder150k ? 'Yes' : 'No'}
 Property <$3M: ${answers.propertyUnder3M ? 'Yes' : 'No'}
-Previous Rebate: ${answers.receivedBefore ? 'Yes' : 'No'}
+Previous Rebate / System <10 yrs: ${answers.receivedBefore ? 'Yes' : 'No'}
 Est. Monthly Bill: ${leadForm.monthlyBill}`,
         }),
       });
@@ -106,10 +106,10 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
               <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-200/80">
                 <div className="pr-4">
                   <h4 className="font-bold text-gray-900 text-sm sm:text-base">
-                    1. Are you the owner-occupier of the Victorian property?
+                    1. Are you the owner-occupier of an existing property or a home under construction?
                   </h4>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Rental providers can also apply under the rental stream.
+                    Applies to existing homes or homes under construction where the system is to be installed.
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -141,18 +141,18 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
               <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-200/80">
                 <div className="pr-4">
                   <h4 className="font-bold text-gray-900 text-sm sm:text-base">
-                    2. Combined household taxable income is under $210,000/yr?
+                    2. Combined household taxable income of all owners is less than $150,000/yr?
                   </h4>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Based on your latest ATO Notice of Assessment.
+                    Based on your latest ATO Notice of Assessment for all owners.
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => setAnswers({ ...answers, incomeUnder210k: true })}
+                    onClick={() => setAnswers({ ...answers, incomeUnder150k: true })}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      answers.incomeUnder210k
+                      answers.incomeUnder150k
                         ? 'bg-[#FF5E00] text-white shadow-md'
                         : 'bg-white text-gray-700 border border-gray-200'
                     }`}
@@ -161,9 +161,9 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                   </button>
                   <button
                     type="button"
-                    onClick={() => setAnswers({ ...answers, incomeUnder210k: false })}
+                    onClick={() => setAnswers({ ...answers, incomeUnder150k: false })}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      !answers.incomeUnder210k
+                      !answers.incomeUnder150k
                         ? 'bg-[#FF5E00] text-white shadow-md'
                         : 'bg-white text-gray-700 border border-gray-200'
                     }`}
@@ -179,7 +179,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                     3. Is the property value under $3,000,000?
                   </h4>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Council Capital Improved Value (CIV).
+                    For an existing home or when construction is complete (Council CIV).
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -211,10 +211,10 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
               <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-200/80">
                 <div className="pr-4">
                   <h4 className="font-bold text-gray-900 text-sm sm:text-base">
-                    4. Have you claimed a Solar Victoria panel rebate before?
+                    4. Property has NOT had solar installed in the last 10 years or received this rebate?
                   </h4>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Homes that have not received a Solar Victoria rebate qualify.
+                    No PV system in last 10 yrs, and no previous solar/battery rebate under this program. (Moved house? You can re-apply!)
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -227,7 +227,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                         : 'bg-white text-gray-700 border border-gray-200'
                     }`}
                   >
-                    No
+                    Yes (Eligible)
                   </button>
                   <button
                     type="button"
@@ -238,7 +238,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                         : 'bg-white text-gray-700 border border-gray-200'
                     }`}
                   >
-                    Yes
+                    No
                   </button>
                 </div>
               </div>
@@ -364,7 +364,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                 {status === 'submitting' ? 'Processing Eligibility...' : 'Claim My Victorian Solar Rebate Quote →'}
               </button>
               <p className="text-center text-[11px] text-gray-400">
-                🔒 Your details are 100% secure. We never share your data. Billabong Solar is a certified New Energy Tech Approved Seller.
+                🔒 Your details are 100% secure. Billabong Solar is a certified NETCC Approved Solar Seller adhering to the New Energy Tech Consumer Code.
               </p>
             </form>
           </div>

@@ -30,9 +30,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '6 min read',
     image: '/images/blog/post-1-best-installers.jpg',
@@ -88,9 +88,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '5 min read',
     image: '/images/blog/post-2-insurance.jpg',
@@ -153,9 +153,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '4 min read',
     image: '/images/blog/post-3-rain-cloudy.jpg',
@@ -195,9 +195,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '6 min read',
     image: '/images/blog/post-4-residential-vs-commercial.jpg',
@@ -233,9 +233,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '7 min read',
     image: '/images/blog/post-5-is-it-worth-it.jpg',
@@ -268,9 +268,9 @@ export const blogPosts: BlogPost[] = [
     date: 'October 14, 2025',
     dateISO: '2025-10-14T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '4 min read',
     image: '/images/blog/post-6-feed-in-tariffs.jpg',
@@ -303,13 +303,13 @@ export const blogPosts: BlogPost[] = [
     date: 'January 18, 2026',
     dateISO: '2026-01-18T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '8 min read',
     image: '/images/blog/post-7-commercial-solar.webp',
-    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 500kW commercial solar systems combined with instant asset write-offs and STC/LGC rebates deliver ROI in under 3 years.',
+    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 1,000kW commercial solar systems combined with instant asset write-offs and STC/LGC rebates deliver ROI in under 3 years.',
     metaTitle: 'Commercial Solar Victoria: Tax Write-Offs & Rebate Guide 2025/2026 | Billabong Solar',
     metaDescription: 'Essential commercial solar guide for Melbourne & Victorian businesses. Learn how STCs, LGCs, tax depreciation, and battery storage accelerate commercial payback.',
     keywords: [
@@ -393,9 +393,9 @@ export const blogPosts: BlogPost[] = [
     date: 'February 04, 2026',
     dateISO: '2026-02-04T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '7 min read',
     image: '/images/blog/post-8-melbourne-batteries.webp',
@@ -455,9 +455,9 @@ export const blogPosts: BlogPost[] = [
     date: 'February 12, 2026',
     dateISO: '2026-02-12T08:00:00.000Z',
     author: {
-      name: 'Nithin',
+      name: 'Billabong Solar Admin',
       role: 'Senior Solar Energy Engineer',
-      avatar: '/images/authors/nithin.svg'
+      avatar: '/images/authors/billabong-admin.svg'
     },
     readTime: '6 min read',
     image: '/images/blog/post-9-solar-homes-rebate.webp',
@@ -479,10 +479,12 @@ export const blogPosts: BlogPost[] = [
       <p>To qualify for the $1,400 panel rebate and interest-free loan, you must satisfy the following criteria:</p>
       
       <ul class="list-disc pl-6 space-y-3 my-4 text-gray-700">
-        <li><strong>Income Criterion:</strong> Combined household taxable income of less than <strong>$210,000 per annum</strong> (based on your Notice of Assessment).</li>
-        <li><strong>Property Ownership:</strong> You must be the owner-occupier of the Victorian residential property.</li>
-        <li><strong>Property Valuation:</strong> The property valuation must be <strong>under $3 million</strong>.</li>
-        <li><strong>Prior Rebate Status:</strong> The property address has not previously received a solar panel rebate under the Solar Homes Program.</li>
+        <li><strong>Owner-Occupier:</strong> You are the owner-occupier of an existing property or the owner of a home under construction where the system is to be installed.</li>
+        <li><strong>Household Income Criterion:</strong> Combined household taxable income of all owners is <strong>less than $150,000 per year</strong> (based on your ATO Notice of Assessment).</li>
+        <li><strong>Property Valuation:</strong> The value of the property is <strong>under $3 million</strong> (for an existing home or when construction is complete).</li>
+        <li><strong>Prior Rebate Status:</strong> The property address has not previously received a solar panel (PV) or solar battery rebate under this program.</li>
+        <li><strong>System Age:</strong> The property address has not had a solar panel (PV) system installed in the last 10 years.</li>
+        <li><strong>Relocation Provision:</strong> If you received a Solar Homes rebate and/or loan but have moved house, you can apply for another incentive at your new address as an owner-occupier if the property has not received these rebates before.</li>
       </ul>
 
       <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">How Does the Interest-Free Loan Work?</h2>

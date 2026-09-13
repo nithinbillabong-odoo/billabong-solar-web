@@ -199,7 +199,7 @@ export default function BlogPostPage({ params }: PageProps) {
                     {post.author.role} • Billabong Solar Victoria
                   </p>
                   <p className="text-sm text-gray-600 leading-relaxed">
-                    Nithin is a Clean Energy Council accredited solar engineer with over a decade of hands-on experience designing residential and commercial solar arrays and battery storage solutions across Melbourne and regional Victoria.
+                    The Billabong Solar engineering and technical team brings over a decade of hands-on experience designing and commissioning Clean Energy Council accredited residential and commercial solar arrays and battery storage solutions across Melbourne and regional Victoria.
                   </p>
                   <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs font-bold text-[#171D4D]">
                     <Link href="/residential" className="hover:text-[#FF5E00] transition-colors underline">Residential Solar</Link>
