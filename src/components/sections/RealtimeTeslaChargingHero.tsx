@@ -44,7 +44,7 @@ export default function RealtimeTeslaChargingHero() {
       name: 'V2H Home Backup Mode',
       speed: '8.0 kW to Home',
       rate: 'Up to 3 Days Power',
-      source: 'Tesla Battery Powers House',
+      source: 'EV Battery Powers House',
       cost: 'Zero Blackouts',
       primaryColor: '#3B82F6', // blue
       glowColor: 'rgba(59, 130, 246, 0.8)',
@@ -64,7 +64,7 @@ export default function RealtimeTeslaChargingHero() {
             className="w-2.5 h-2.5 rounded-full animate-ping"
           />
           <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
-            Tesla Charging Telemetry
+            Smart EV DC Charging Telemetry
           </span>
         </div>
         <button
@@ -83,7 +83,7 @@ export default function RealtimeTeslaChargingHero() {
       {/* Battery Level Progress Bar */}
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs font-bold">
-          <span className="text-slate-300">Battery Level (Tesla Model 3)</span>
+          <span className="text-slate-300">EV Battery Level (Tesla • BYD • All EVs)</span>
           <span style={{ color: current.primaryColor }} className="font-black text-sm">
             {batteryLevel}%
           </span>
@@ -103,7 +103,7 @@ export default function RealtimeTeslaChargingHero() {
       {/* Quick Metrics */}
       <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-slate-800/80 text-[11px]">
         <div>
-          <span className="text-slate-400 block text-[10px]">DC Power</span>
+          <span className="text-slate-400 block text-[10px]">DC Fast Power</span>
           <span className="font-extrabold text-white">
             {isCharging ? current.speed : '0.0 kW'}
           </span>
@@ -115,7 +115,7 @@ export default function RealtimeTeslaChargingHero() {
           </span>
         </div>
         <div>
-          <span className="text-slate-400 block text-[10px]">Cost / km</span>
+          <span className="text-slate-400 block text-[10px]">Fuel Cost</span>
           <span className="font-extrabold text-emerald-400">{current.cost}</span>
         </div>
       </div>
@@ -129,17 +129,17 @@ export default function RealtimeTeslaChargingHero() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>Interactive Live Simulation • Sigenergy & Tesla</span>
+            <span>Direct DC Fast Charging • Universal EV & Tesla Compatible</span>
           </div>
           <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#171D4D] tracking-tight">
-            Charge Your <span className="text-[#FF5E00]">Tesla</span> Straight from SigenStor Solar
+            Charge Your <span className="text-[#FF5E00]">EV & Tesla</span> Straight from SigenStor Solar
           </h2>
           <p className="text-gray-600 text-xs sm:text-sm lg:text-base mt-1.5 sm:mt-2 max-w-2xl leading-relaxed">
-            See how the Sigenergy SigenStor 5-in-1 battery system feeds pure DC solar energy directly into a Tesla Model 3 without inefficient AC inverter conversions.
+            Experience the Sigenergy SigenStor 5-in-1 breakthrough: direct DC EV fast charging connected straight to the battery. Eliminate AC conversion losses and power your Tesla, BYD, Kia, Hyundai, MG, or European EV on 100% free Australian sunshine.
           </p>
         </div>
 
-        {/* Mode Selector Tabs (Fully responsive grid on mobile) */}
+        {/* Mode Selector Tabs (Responsive Grid on Mobile) */}
         <div className="grid grid-cols-3 gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 flex-shrink-0 shadow-inner w-full lg:w-auto">
           <button
             type="button"
@@ -177,13 +177,12 @@ export default function RealtimeTeslaChargingHero() {
         </div>
       </div>
 
-      {/* Main Visual Stage: Photorealistic Garage with Real-time Energy Overlays */}
-      {/* On mobile: aspect-[16/10] giving generous vertical view so Tesla & SigenStor are 100% visible */}
+      {/* Main Visual Stage: Garage with Direct Battery Cable Connection & Energy Overlays */}
       <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200 aspect-[16/10] sm:aspect-[16/9] w-full bg-slate-950 group select-none">
-        {/* Photorealistic SigenStor + Tesla Garage Image */}
+        {/* Photorealistic SigenStor + EV Garage Image */}
         <Image
           src="/images/sigenstor-tesla-garage.jpg"
-          alt="Sigenergy SigenStor 5-in-1 Battery and DC Fast EV Charger charging a Tesla Model 3 in a Victorian garage with rooftop solar"
+          alt="Sigenergy SigenStor 5-in-1 Battery with direct DC EV Fast Charger powering an electric car in a Victorian garage with rooftop solar"
           fill
           priority
           sizes="(max-width: 1200px) 100vw, 1200px"
@@ -233,12 +232,32 @@ export default function RealtimeTeslaChargingHero() {
             />
           )}
 
-          {/* 2. Electric Cable Energy Conduit Flow */}
+          {/* 2. Direct Battery Output Port Glow (At SigenStor right side holster: 570, 400) */}
+          {isCharging && (
+            <g transform="translate(570, 400)">
+              <circle
+                r="12"
+                fill="none"
+                stroke={current.primaryColor}
+                strokeWidth="2.5"
+                opacity="0.8"
+                className="animate-ping"
+              />
+              <circle
+                r="6"
+                fill={current.primaryColor}
+                filter="url(#chargerGlow)"
+                className="animate-pulse"
+              />
+            </g>
+          )}
+
+          {/* 3. Electric Cable Energy Conduit Flow (DIRECT from SigenStor 570,400 to Car Port 770,455) */}
           {isCharging && (
             <>
               {/* Outer Energy Aura along Cable */}
               <path
-                d="M 586 410 C 586 520, 610 595, 680 590 C 730 585, 760 520, 775 460"
+                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
                 fill="none"
                 stroke={current.primaryColor}
                 strokeWidth="8"
@@ -249,7 +268,7 @@ export default function RealtimeTeslaChargingHero() {
 
               {/* High-voltage Animated Electric Pulses (Dash flow) */}
               <path
-                d="M 586 410 C 586 520, 610 595, 680 590 C 730 585, 760 520, 775 460"
+                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
                 fill="none"
                 stroke={current.primaryColor}
                 strokeWidth="4"
@@ -268,7 +287,7 @@ export default function RealtimeTeslaChargingHero() {
 
               {/* Bright Core Beam */}
               <path
-                d="M 586 410 C 586 520, 610 595, 680 590 C 730 585, 760 520, 775 460"
+                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
                 fill="none"
                 stroke="#FFFFFF"
                 strokeWidth="2.5"
@@ -286,9 +305,9 @@ export default function RealtimeTeslaChargingHero() {
             </>
           )}
 
-          {/* 3. Tesla Vehicle Charging Port Dynamic Ring */}
+          {/* 4. Electric Vehicle Charging Port Dynamic Ring (770, 455) */}
           {isCharging && (
-            <g transform="translate(775, 460)">
+            <g transform="translate(770, 455)">
               <circle
                 r="18"
                 fill="none"
@@ -308,7 +327,7 @@ export default function RealtimeTeslaChargingHero() {
             </g>
           )}
 
-          {/* 4. Rooftop Solar Photovoltaic Stream Particles down to SigenStor */}
+          {/* 5. Rooftop Solar Photovoltaic Stream Particles down to SigenStor */}
           {isCharging && chargingMode !== 'v2h' && (
             <g opacity="0.75">
               <line
@@ -359,11 +378,11 @@ export default function RealtimeTeslaChargingHero() {
             className="flex items-center gap-1.5 bg-slate-950/80 hover:bg-slate-900 backdrop-blur-md px-3 py-1 rounded-full border border-cyan-400/40 text-cyan-300 text-[10px] sm:text-xs font-bold shadow-lg cursor-pointer transition-transform hover:scale-105"
           >
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span>🔋 Sigenergy SigenStor 5-in-1</span>
+            <span>🔋 Sigenergy SigenStor 5-in-1 • Direct DC Port</span>
           </div>
         </div>
 
-        {/* Tesla Car Hotspot */}
+        {/* EV Car Hotspot */}
         <div
           style={{ top: '53%', left: '67%' }}
           className="hidden sm:block absolute z-20 transform -translate-x-1/2"
@@ -374,7 +393,7 @@ export default function RealtimeTeslaChargingHero() {
             className="flex items-center gap-1.5 bg-slate-950/80 hover:bg-slate-900 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-bold shadow-lg cursor-pointer transition-transform hover:scale-105"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>🚗 Tesla Model 3 • CCS2 Port</span>
+            <span>🚗 Direct CCS2 Port • All EVs & Tesla</span>
           </div>
         </div>
 
@@ -384,10 +403,10 @@ export default function RealtimeTeslaChargingHero() {
             style={{ backgroundColor: current.primaryColor }}
             className="w-2 h-2 rounded-full animate-ping"
           />
-          <span>{current.speed} DC Active</span>
+          <span>{current.speed} Direct DC Active</span>
         </div>
 
-        {/* Desktop-only Inside HUD Overlay (Hidden on mobile to preserve unblocked view) */}
+        {/* Desktop-only Inside HUD Overlay */}
         <div className="hidden sm:flex absolute bottom-4 left-4 right-4 lg:bottom-6 lg:left-6 lg:right-6 z-20 items-end justify-between gap-4 pointer-events-none">
           <div className="max-w-sm w-full pointer-events-auto">
             <TelemetryCard />
@@ -397,19 +416,19 @@ export default function RealtimeTeslaChargingHero() {
           <div className="flex flex-col items-end gap-2 pointer-events-auto">
             <div className="flex flex-col text-right text-xs text-white/90 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/15">
               <span className="font-bold text-amber-300">0ms Blackout UPS Switch</span>
-              <span className="text-[10px] text-slate-300">Continuous power for your home & car</span>
+              <span className="text-[10px] text-slate-300">Direct DC power for your home & EV 24/7</span>
             </div>
             <Link
               href="/get-a-free-quote"
               className="bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-black px-6 py-3 rounded-2xl text-xs uppercase tracking-wider text-center transition-all shadow-xl hover:scale-105 whitespace-nowrap"
             >
-              Get SigenStor Battery Quote →
+              Get SigenStor EV Battery Quote →
             </Link>
           </div>
         </div>
       </div>
 
-      {/* MOBILE-ONLY Dedicated Telemetry HUD & CTA (Sits cleanly UNDER the image so the visual is 100% visible!) */}
+      {/* MOBILE-ONLY Dedicated Telemetry HUD & CTA */}
       <div className="sm:hidden mt-4 space-y-3">
         <TelemetryCard />
 
@@ -417,7 +436,7 @@ export default function RealtimeTeslaChargingHero() {
           href="/get-a-free-quote"
           className="block w-full bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-black py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider text-center transition-all shadow-lg shadow-orange-500/20 active:scale-98"
         >
-          Get SigenStor Battery Quote →
+          Get SigenStor EV Battery Quote →
         </Link>
       </div>
 
@@ -431,7 +450,7 @@ export default function RealtimeTeslaChargingHero() {
             Pure DC Fast Charging (Up to 25 kW)
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Standard AC wallbox chargers lose 10–15% efficiency in AC-to-DC rectification and are limited to 7kW or 11kW. Sigenergy feeds DC solar directly into your Tesla battery at over double the speed.
+            Standard AC wallboxes lose 10–15% efficiency in conversion and are capped at 7kW or 11kW. Sigenergy feeds DC solar directly from the battery into your EV at over double the speed.
           </p>
         </div>
 
@@ -440,10 +459,10 @@ export default function RealtimeTeslaChargingHero() {
             ☀️
           </div>
           <h4 className="font-black text-[#171D4D] text-sm sm:text-base mb-1.5">
-            100% Free Solar Motoring
+            100% Free Solar Motoring for All EVs
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Charge your vehicle during the day using surplus Victorian sunshine that would otherwise be exported to the grid for pennies. Drive over 20,000 km every year with zero fuel cost.
+            Universal compatibility with Tesla, BYD, Kia, Hyundai, MG, and European electric cars. Drive on free surplus sunshine that would otherwise be exported for minimal credits.
           </p>
         </div>
 
@@ -455,7 +474,7 @@ export default function RealtimeTeslaChargingHero() {
             Bi-Directional V2H / V2G Ready
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Turn your Tesla and SigenStor system into a whole-home emergency power station. Keep your lights, refrigeration, and appliances running continuously throughout Victorian storm outages.
+            Turn your electric vehicle and SigenStor battery into a whole-home emergency power backup. Keep refrigeration, lighting, and appliances running during Victorian storm blackouts.
           </p>
         </div>
       </div>

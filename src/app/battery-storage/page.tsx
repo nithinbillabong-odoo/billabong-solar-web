@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         url: '/images/sigenstor-tesla-garage.jpg',
         width: 1376,
         height: 768,
-        alt: 'Sigenergy SigenStor Solar Battery and Tesla EV Charging in Victorian Garage',
+        alt: 'Sigenergy SigenStor Solar Battery and Direct DC EV Fast Charging in Victorian Garage',
       },
     ],
   },
