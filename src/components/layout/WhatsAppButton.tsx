@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 export default function WhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP || '61450941413';
-  const message = encodeURIComponent("Hi, I'm interested in solar panels and battery storage");
+  const message = encodeURIComponent("Hi Billabong Solar, I would like to get a quote & check rebates");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
   return (
@@ -16,7 +16,10 @@ export default function WhatsAppButton() {
           isHovered ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
         }`}
       >
-        Chat on WhatsApp
+        <span className="flex items-center gap-1.5 whitespace-nowrap">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          Chat with Solar Assistant on WhatsApp (+61 450 941 413)
+        </span>
         {/* Tooltip triangle */}
         <div className="absolute -bottom-1.5 right-5 w-3 h-3 bg-white transform rotate-45 border-r border-b border-gray-100" />
       </div>
@@ -29,7 +32,7 @@ export default function WhatsAppButton() {
         className="bg-[#25D366] hover:bg-[#20ba59] text-white p-3.5 rounded-full shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        aria-label="Chat on WhatsApp"
+        aria-label="Chat with Billabong Solar Chatbot on WhatsApp (+61 450 941 413)"
       >
         <svg
           className="w-6 h-6"
