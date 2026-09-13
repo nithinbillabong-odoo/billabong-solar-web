@@ -131,8 +131,8 @@ export default function CommercialSolarPage() {
                 icon: "🏛️"
               },
               {
-                title: "CEC Accredited",
-                desc: "Tailored engineering plans created and commissioned exclusively by Clean Energy Council accredited master electricians.",
+                title: "NETCC Approved Seller",
+                desc: "Tailored engineering plans created and commissioned exclusively to NETCC Approved Seller standards by licensed master electricians.",
                 icon: "⚡"
               },
               {

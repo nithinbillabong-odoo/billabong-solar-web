@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Terms of Service | Billabong Solar Victoria',
   description:
-    'Terms and Conditions for solar panel, inverter, and battery storage design, supply, and installation by Billabong Solar across Victoria. Compliant with Australian Consumer Law and CEC standards.',
+    'Terms and Conditions for solar panel, inverter, and battery storage design, supply, and installation by Billabong Solar across Victoria. Compliant with Australian Consumer Law and NETCC standards.',
   alternates: {
     canonical: '/terms-of-service',
   },

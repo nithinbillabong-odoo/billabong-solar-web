@@ -76,7 +76,7 @@ export default function SolarRebatesVictoriaPage() {
       areaServed: 'Victoria, Australia',
     },
     description:
-      'Full assistance with Solar Victoria $1,400 panel rebate and $1,400 interest-free loan application, combined with CEC-accredited solar installation.',
+      'Full assistance with Solar Victoria $1,400 panel rebate and $1,400 interest-free loan application, combined with NETCC-approved solar installation.',
   };
 
   return (
@@ -278,7 +278,7 @@ export default function SolarRebatesVictoriaPage() {
               </div>
               <h3 className="font-extrabold text-[#171D4D] text-lg mb-2">Install & Save</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Our CEC accredited A-Grade electricians install your Tier-1 system. The $1,400 rebate is deducted straight from your invoice!
+                Our NETCC approved A-Grade electricians install your Tier-1 system. The $1,400 rebate is deducted straight from your invoice!
               </p>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const siteConfig = {
   name: 'Billabong Solar',
   description:
-    'Accredited residential and commercial solar panels and battery storage installer in Melbourne & Victoria. Save up to $20,000/yr with Tier-1 panels, CEC accredited electricians, and Victorian Government rebates.',
+    'Accredited residential and commercial solar panels and battery storage installer in Melbourne & Victoria. Save up to $20,000/yr with Tier-1 panels, NETCC approved solar seller standards, and Victorian Government rebates.',
   url: 'https://billabongsolar.com.au',
   ogImage: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider-Residential-Solar-Save-Electricity-Bill.webp?w=1200&ssl=1',
   telephone: '1300 897 221',
@@ -38,7 +38,7 @@ export function generateMetadata(overrides: Partial<Metadata> = {}): Metadata {
       'esy sunhome battery victoria',
       'solar rebate victoria 2026',
       'solar homes program rebate $1400',
-      'CEC accredited solar installer victoria',
+      'NETCC approved solar installer victoria',
       'NETCC approved solar seller victoria',
       'tier 1 solar panels melbourne'
     ],

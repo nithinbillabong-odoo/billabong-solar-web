@@ -222,7 +222,7 @@ export default function BatteryStoragePage() {
                   </div>
                   <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-[11px] font-bold text-gray-500">
                     <span>🛡️ {brand.warranty}</span>
-                    <span className="text-emerald-600 font-semibold">CEC Approved</span>
+                    <span className="text-emerald-600 font-semibold">NETCC Approved</span>
                   </div>
                 </div>
               </div>

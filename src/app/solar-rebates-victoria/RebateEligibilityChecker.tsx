@@ -88,7 +88,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
               Eligibility Application Received!
             </h4>
             <p className="text-gray-600 max-w-md mx-auto text-sm leading-relaxed">
-              Thank you, <strong>{leadForm.name}</strong>! One of our Clean Energy Council accredited rebate specialists will review your property and contact you at <strong>{leadForm.phone}</strong> to confirm your pre-approval token.
+              Thank you, <strong>{leadForm.name}</strong>! One of our NETCC approved solar specialists will review your property and contact you at <strong>{leadForm.phone}</strong> to confirm your pre-approval token.
             </p>
             <div className="pt-4">
               <Link

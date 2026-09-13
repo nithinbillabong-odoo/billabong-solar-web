@@ -246,9 +246,9 @@ export default function Header() {
                 </Link>
 
                 <div className="pt-2 text-center text-[11px] text-gray-400 font-semibold flex items-center justify-center gap-2">
-                  <span>✓ CEC Accredited</span>
+                  <span>✓ NETCC Approved Seller</span>
                   <span>•</span>
-                  <span>New Energy Tech Approved</span>
+                  <span>Licensed A-Grade Electricians</span>
                 </div>
               </div>
             </div>

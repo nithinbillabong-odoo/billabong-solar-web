@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
                 <li>Designing customized residential and commercial solar PV and battery storage systems tailored to your property.</li>
                 <li>Facilitating official STC (Small-scale Technology Certificates) and Solar Victoria rebate/loan applications on your behalf.</li>
                 <li>Submitting grid connection approvals and meter reconfiguration requests to Victorian electricity distribution networks (Powercor, Jemena, AusNet Services, CitiPower, United Energy).</li>
-                <li>Coordinating Clean Energy Council accredited electrical installations and scheduling annual maintenance inspections.</li>
+                <li>Coordinating NETCC-approved electrical installations and scheduling annual maintenance inspections.</li>
                 <li>Communicating warranty registration details and responding promptly to customer inquiries.</li>
               </ul>
             </section>
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-[#171D4D]">3. Information Security & Storage</h2>
               <p>
-                All personal information is held securely in encrypted digital databases and restricted administrative environments. Access is granted solely to certified Billabong Solar personnel and Clean Energy Council accredited engineering supervisors who require the data to execute your system installation and rebate approvals.
+                All personal information is held securely in encrypted digital databases and restricted administrative environments. Access is granted solely to certified Billabong Solar personnel and NETCC-approved engineering supervisors who require the data to execute your system installation and rebate approvals.
               </p>
               <p className="text-sm text-gray-600">
                 When personal data is no longer required for regulatory compliance under Australian Consumer Law or Electrical Safety Victoria mandates, it is securely de-identified or permanently deleted.

@@ -126,8 +126,8 @@ export default function AboutUsPage() {
                     desc: "Bloomberg New Energy Finance (BNEF) verified Tier-1 panels for peak performance and durability."
                   },
                   {
-                    title: "Installations are carried out by CEC Accredited Installers Only",
-                    desc: "Strict adherence to Clean Energy Council guidelines by licensed A-Grade electricians."
+                    title: "Installations Managed to NETCC Approved Seller Standards",
+                    desc: "Strict adherence to the New Energy Tech Consumer Code (NETCC) by licensed A-Grade electricians."
                   },
                   {
                     title: "We only use top of the range products and solutions",
@@ -150,7 +150,7 @@ export default function AboutUsPage() {
                 ))}
               </div>
 
-              {/* Clean Energy Council & NETCC Certificate Card */}
+              {/* NETCC Approved Seller Certificate Card */}
               <div className="mt-8 p-6 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-[#FF5E00] text-white flex items-center justify-center font-black text-xl flex-shrink-0 shadow-sm">
@@ -159,7 +159,7 @@ export default function AboutUsPage() {
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <h4 className="font-extrabold text-[#171D4D] text-base sm:text-lg">
-                        Clean Energy Council Approved Solar Retailer & NETCC Seller
+                        NETCC Approved Solar Seller (New Energy Tech Consumer Code)
                       </h4>
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 text-orange-800 uppercase tracking-wider">
                         Official Signatory

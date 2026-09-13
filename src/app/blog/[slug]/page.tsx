@@ -192,14 +192,14 @@ export default function BlogPostPage({ params }: PageProps) {
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
                     <h4 className="font-extrabold text-slate-900 text-lg">{post.author.name}</h4>
                     <span className="text-xs bg-orange-100 text-[#FF5E00] font-bold px-2.5 py-0.5 rounded-full border border-orange-200">
-                      CEC Accredited Specialist
+                      NETCC Approved Specialist
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 font-semibold mb-3">
                     {post.author.role} • Billabong Solar Victoria
                   </p>
                   <p className="text-sm text-gray-600 leading-relaxed">
-                    The Billabong Solar engineering and technical team brings over a decade of hands-on experience designing and commissioning Clean Energy Council accredited residential and commercial solar arrays and battery storage solutions across Melbourne and regional Victoria.
+                    The Billabong Solar engineering and technical team brings over a decade of hands-on experience designing and commissioning NETCC approved residential and commercial solar arrays and battery storage solutions across Melbourne and regional Victoria.
                   </p>
                   <div className="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs font-bold text-[#171D4D]">
                     <Link href="/residential" className="hover:text-[#FF5E00] transition-colors underline">Residential Solar</Link>
@@ -300,7 +300,7 @@ export default function BlogPostPage({ params }: PageProps) {
                     <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center flex-shrink-0">
                       ✓
                     </div>
-                    <span>Clean Energy Council Accredited</span>
+                    <span>NETCC Approved Solar Seller</span>
                   </div>
                 </div>
 

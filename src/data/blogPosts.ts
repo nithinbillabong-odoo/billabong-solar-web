@@ -36,13 +36,13 @@ export const blogPosts: BlogPost[] = [
     },
     readTime: '6 min read',
     image: '/images/blog/post-1-best-installers.jpg',
-    excerpt: 'Choosing the right solar installer can make or break your investment. Learn what to look for, pricing traps to avoid, warranty essentials, and why CEC accreditation is non-negotiable in Victoria.',
+    excerpt: 'Choosing the right solar installer can make or break your investment. Learn what to look for, pricing traps to avoid, warranty essentials, and why NETCC accreditation is non-negotiable in Victoria.',
     metaTitle: 'How to Find the Best Solar Panel Installers in Victoria | Billabong Solar',
-    metaDescription: 'Expert guide on choosing accredited solar installers in Victoria. Avoid cheap cowboy installs, understand 25-year performance warranties, and ensure CEC compliance.',
+    metaDescription: 'Expert guide on choosing accredited solar installers in Victoria. Avoid cheap cowboy installs, understand 25-year performance warranties, and ensure NETCC compliance.',
     keywords: [
       'best solar panel installers victoria',
       'solar installers melbourne',
-      'CEC accredited solar installer',
+      'NETCC approved solar installer',
       'solar panel cost victoria',
       'solar warranties explained',
       'residential solar installer melbourne'
@@ -73,9 +73,9 @@ export const blogPosts: BlogPost[] = [
         <li><strong>Solar Inverter Warranty:</strong> The inverter is the hardest-working brain of your system. Always select reputable inverters (Fronius, Sungrow, Enphase, SolarEdge) that have a physical support presence in Australia.</li>
       </ul>
 
-      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Do I Need to Find an Installer with CEC Accreditation?</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Do I Need to Choose a NETCC Approved Solar Seller?</h2>
       <p>In one word — <strong>Yes!</strong></p>
-      <p>The solar panel installer you choose must be accredited by the <strong>Clean Energy Council (CEC)</strong> and an approved signatory of the <a href="/docs/new-energy-tech-consumer-code.pdf" target="_blank" rel="noopener noreferrer" class="text-[#FF5E00] underline font-semibold">New Energy Tech Consumer Code (NETCC Approved Seller)</a>. This ensures adherence to strict safety standards, consumer protections, and eligibility for Victorian Government Solar Rebates (Solar Victoria).</p>
+      <p>The solar panel installer you choose must be an approved signatory of the <a href="/docs/new-energy-tech-consumer-code.pdf" target="_blank" rel="noopener noreferrer" class="text-[#FF5E00] underline font-semibold">New Energy Tech Consumer Code (NETCC Approved Seller)</a>. This ensures adherence to strict safety standards, consumer protections, clear contracts, and eligibility for Victorian Government Solar Rebates (Solar Victoria).</p>
       <p>Always check customer reviews, request real customer references, and check if the installer has successfully delivered substantial commercial installations in Victoria like we do at Billabong Solar.</p>
     `
   },
@@ -141,7 +141,7 @@ export const blogPosts: BlogPost[] = [
       </div>
 
       <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Installer Public Liability Insurance</h2>
-      <p>Before any technician steps onto your roof, ensure they hold comprehensive Public Liability Insurance (at Billabong Solar, all our CEC Accredited Electricians are fully insured). This protects your premises against accidental property damage during the installation phase.</p>
+      <p>Before any technician steps onto your roof, ensure they hold comprehensive Public Liability Insurance (at Billabong Solar, all our NETCC Approved licensed A-Grade electricians are fully insured). This protects your premises against accidental property damage during the installation phase.</p>
     `
   },
   {
@@ -461,7 +461,7 @@ export const blogPosts: BlogPost[] = [
 
       <div class="mt-8 p-6 bg-gradient-to-r from-[#171D4D] to-[#252E6D] rounded-2xl text-white">
         <h3 class="text-xl font-bold mb-2">Request a Complimentary Commercial Solar & VEEC Audit</h3>
-        <p class="text-sm text-gray-300 mb-4 leading-relaxed">Our CEC Accredited commercial engineering team handles full interval smart meter data analysis, DNSP grid connection pre-approvals (CitiPower, Powercor, AusNet, Jemena, United Energy), and certificate modeling to maximize your STC, LGC, and VEEC returns.</p>
+        <p class="text-sm text-gray-300 mb-4 leading-relaxed">Our NETCC Approved commercial engineering team handles full interval smart meter data analysis, DNSP grid connection pre-approvals (CitiPower, Powercor, AusNet, Jemena, United Energy), and certificate modeling to maximize your STC, LGC, and VEEC returns.</p>
         <div class="flex flex-col sm:flex-row gap-3">
           <a href="/get-a-free-quote" class="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-6 py-3 rounded-full text-xs uppercase tracking-wider text-center transition-all shadow-lg">Get Free Commercial Feasibility Audit →</a>
           <a href="tel:1300897221" class="border border-white/40 hover:bg-white/10 text-white font-bold px-6 py-3 rounded-full text-xs text-center transition-all">Call 1300 897 221</a>
@@ -578,10 +578,10 @@ export const blogPosts: BlogPost[] = [
 
       <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">4 Steps to Claim Your Rebate with Billabong Solar</h2>
       <ol class="list-decimal pl-6 space-y-3 my-4 text-gray-700">
-        <li><strong>Request a Quote:</strong> Contact Billabong Solar. We assess your roof, electricity usage, and prepare an eligible CEC-compliant proposal.</li>
+        <li><strong>Request a Quote:</strong> Contact Billabong Solar. We assess your roof, electricity usage, and prepare an eligible NETCC-compliant proposal.</li>
         <li><strong>We Upload Your Quote:</strong> We upload the engineering proposal directly to the Solar Victoria portal.</li>
         <li><strong>Complete Your Application:</strong> You receive an email from Solar Victoria with a unique QR code link to verify identity and income.</li>
-        <li><strong>Installation & Instant Deduction:</strong> Once approved, we schedule your CEC-accredited installation and deduct both the federal STC and Victorian rebate directly from your invoice.</li>
+        <li><strong>Installation & Instant Deduction:</strong> Once approved, we schedule your NETCC-approved installation and deduct both the federal STC and Victorian rebate directly from your invoice.</li>
       </ol>
     `
   }

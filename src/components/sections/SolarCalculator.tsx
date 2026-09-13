@@ -145,7 +145,7 @@ export default function SolarCalculator() {
           {/* Trust bar */}
           <div className="bg-gray-50 px-8 py-4 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
             <span>✅ Free No-Obligation Quote</span>
-            <span>✅ CEC Approved Installer</span>
+            <span>✅ NETCC Approved Seller</span>
             <span>✅ 1000+ Installations</span>
             <span>✅ Industry-Leading Warranties</span>
           </div>

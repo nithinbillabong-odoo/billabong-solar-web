@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Complaints Procedure | Billabong Solar Victoria',
   description:
-    'Billabong Solar Complaints Handling Procedure. Learn how we record, investigate, and resolve customer feedback within 24 to 48 hours, in strict compliance with the NETCC and Clean Energy Council guidelines.',
+    'Billabong Solar Complaints Handling Procedure. Learn how we record, investigate, and resolve customer feedback within 24 to 48 hours, in strict compliance with the New Energy Tech Consumer Code (NETCC) guidelines.',
   alternates: {
     canonical: '/complaints-procedure',
   },

@@ -5,7 +5,7 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: 'Residential Solar Panels Melbourne & Victoria | Tier-1 Solar Installation | Billabong Solar',
   description:
-    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 10kW to 20kW custom systems, CEC accredited electricians, 25-year warranties, and $1,400 Solar Victoria rebates.',
+    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 10kW to 20kW custom systems, NETCC approved solar seller, licensed A-Grade electricians, 25-year warranties, and $1,400 Solar Victoria rebates.',
   keywords: [
     'residential solar panels melbourne',
     'residential solar victoria',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     '13.2kw solar system victoria',
     '20kw solar system melbourne',
     'best home solar installer melbourne',
-    'cec accredited residential solar',
+    'netcc approved residential solar',
   ],
   alternates: {
     canonical: '/residential',
@@ -104,7 +104,7 @@ export default function ResidentialSolarPage() {
             </h1>
 
             <p className="text-blue-100/90 text-base sm:text-lg leading-relaxed mb-8">
-              Protect your family against escalating Victorian electricity tariffs. Billabong Solar engineers customized rooftop solar systems using Tier-1 photovoltaic panels and CEC accredited installers.
+              Protect your family against escalating Victorian electricity tariffs. Billabong Solar engineers customized rooftop solar systems using Tier-1 photovoltaic panels and NETCC approved seller installation standards.
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -200,7 +200,7 @@ export default function ResidentialSolarPage() {
                 Why Victorian Families Choose Billabong Solar
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                We believe in transparent engineering without high-pressure sales tactics. All installations are managed by in-house Clean Energy Council accredited electricians.
+                We believe in transparent engineering without high-pressure sales tactics. All installations are managed under strict NETCC Approved Seller standards by licensed A-Grade electricians.
               </p>
 
               <div className="space-y-4">
