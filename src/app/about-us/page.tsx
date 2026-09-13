@@ -171,12 +171,12 @@ export default function AboutUsPage() {
                   </div>
                 </div>
                 <a
-                  href="/docs/code-of-conduct-certificate.pdf"
+                  href="/docs/new-energy-tech-consumer-code.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="whitespace-nowrap px-5 py-2.5 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-2 shadow-sm self-stretch sm:self-auto justify-center"
                 >
-                  <span>View Certificate (PDF)</span>
+                  <span>View Code of Conduct (PDF)</span>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>

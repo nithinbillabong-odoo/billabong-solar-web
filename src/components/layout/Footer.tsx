@@ -53,12 +53,12 @@ export default function Footer() {
             Billabong Solar is a proud New Energy Tech Approved Seller, providing top-quality solar panels and battery storage solutions across Victoria. Empowering homes and businesses with clean, renewable energy.
           </p>
           <a
-            href="/docs/code-of-conduct-certificate.pdf"
+            href="/docs/new-energy-tech-consumer-code.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-white hover:bg-orange-50 text-[#002244] hover:text-[#FF5E00] px-4 py-2 rounded-md font-bold text-sm transition-colors shadow-sm"
           >
-            <span>Clean Energy Council Approved Retailer</span>
+            <span>NETCC Approved Solar Seller</span>
             <svg className="w-3.5 h-3.5 text-[#FF5E00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -154,7 +154,7 @@ export default function Footer() {
             <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
             <Link href="/complaints-procedure" className="hover:text-white transition-colors">Complaints Procedure</Link>
             <a
-              href="/docs/code-of-conduct-certificate.pdf"
+              href="/docs/new-energy-tech-consumer-code.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#FF660D] transition-colors inline-flex items-center gap-1"

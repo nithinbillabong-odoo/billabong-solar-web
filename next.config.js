@@ -46,13 +46,18 @@ const nextConfig = {
     return [
       {
         source: '/code-of-conduct',
-        destination: '/docs/code-of-conduct-certificate.pdf',
-        permanent: true,
+        destination: '/docs/new-energy-tech-consumer-code.pdf',
+        permanent: false,
+      },
+      {
+        source: '/docs/New-Energy-Tech-Consumer-Code.pdf',
+        destination: '/docs/new-energy-tech-consumer-code.pdf',
+        permanent: false,
       },
       {
         source: '/wp-content/uploads/:path*/codeofconductCertificatePDF-3.pdf',
-        destination: '/docs/code-of-conduct-certificate.pdf',
-        permanent: true,
+        destination: '/docs/new-energy-tech-consumer-code.pdf',
+        permanent: false,
       },
     ];
   },

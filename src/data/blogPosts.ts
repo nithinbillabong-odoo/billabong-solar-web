@@ -75,7 +75,7 @@ export const blogPosts: BlogPost[] = [
 
       <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Do I Need to Find an Installer with CEC Accreditation?</h2>
       <p>In one word — <strong>Yes!</strong></p>
-      <p>The solar panel installer you choose must be accredited by the <strong>Clean Energy Council (CEC)</strong> and an approved signatory of the CEC Retailer program (now New Energy Tech Approved Seller). This ensures adherence to strict safety standards, consumer protections, and eligibility for Victorian Government Solar Rebates (Solar Victoria).</p>
+      <p>The solar panel installer you choose must be accredited by the <strong>Clean Energy Council (CEC)</strong> and an approved signatory of the <a href="/docs/new-energy-tech-consumer-code.pdf" target="_blank" rel="noopener noreferrer" class="text-[#FF5E00] underline font-semibold">New Energy Tech Consumer Code (NETCC Approved Seller)</a>. This ensures adherence to strict safety standards, consumer protections, and eligibility for Victorian Government Solar Rebates (Solar Victoria).</p>
       <p>Always check customer reviews, request real customer references, and check if the installer has successfully delivered substantial commercial installations in Victoria like we do at Billabong Solar.</p>
     `
   },

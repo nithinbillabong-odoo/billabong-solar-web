@@ -71,7 +71,7 @@ export default function TermsOfServicePage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-[#171D4D]">4. Cooling-Off Period & Cancellations</h2>
               <p className="text-sm text-gray-600">
-                In strict compliance with the Clean Energy Council Approved Retailer Code of Conduct and Australian Consumer Law, residential clients are entitled to a mandatory <strong>ten (10) business day cooling-off period</strong>. During this window, you may cancel your contract and receive a complete, unconditional refund of any deposit paid.
+                In strict compliance with the <a href="/docs/new-energy-tech-consumer-code.pdf" target="_blank" rel="noopener noreferrer" className="text-[#FF5E00] underline font-semibold">New Energy Tech Consumer Code (NETCC)</a> and Australian Consumer Law, residential clients are entitled to a mandatory <strong>ten (10) business day cooling-off period</strong>. During this window, you may cancel your contract and receive a complete, unconditional refund of any deposit paid.
               </p>
               <p className="text-sm text-gray-600">
                 You are also entitled to a full deposit refund if grid connection approval is refused by the distributor or if an unforeseen site condition significantly alters the quote beyond what was agreed.

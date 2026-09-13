@@ -266,12 +266,12 @@ export default function ComplaintsProcedurePage() {
                 <span>← Back to Contact Us</span>
               </Link>
               <a
-                href="/docs/code-of-conduct-certificate.pdf"
+                href="/docs/new-energy-tech-consumer-code.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#171D4D] hover:text-[#FF5E00] font-semibold text-xs inline-flex items-center gap-1"
               >
-                <span>View Approved Seller Certificate (PDF) ↗</span>
+                <span>View Code of Conduct (PDF) ↗</span>
               </a>
             </div>
 
