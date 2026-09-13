@@ -232,19 +232,19 @@ export default function RealtimeTeslaChargingHero() {
             />
           )}
 
-          {/* 2. Direct Battery Output Port Glow (At SigenStor right side holster: 570, 400) */}
+          {/* 2. Direct Battery Output Port Glow (Attached directly to SigenStor casing: 552, 398) */}
           {isCharging && (
-            <g transform="translate(570, 400)">
+            <g transform="translate(552, 398)">
               <circle
-                r="12"
+                r="10"
                 fill="none"
                 stroke={current.primaryColor}
                 strokeWidth="2.5"
-                opacity="0.8"
+                opacity="0.85"
                 className="animate-ping"
               />
               <circle
-                r="6"
+                r="5"
                 fill={current.primaryColor}
                 filter="url(#chargerGlow)"
                 className="animate-pulse"
@@ -252,12 +252,12 @@ export default function RealtimeTeslaChargingHero() {
             </g>
           )}
 
-          {/* 3. Electric Cable Energy Conduit Flow (DIRECT from SigenStor 570,400 to Car Port 770,455) */}
+          {/* 3. Electric Cable Energy Conduit Flow (DIRECT from SigenStor Casing 552,398 to Car Port 770,455) */}
           {isCharging && (
             <>
               {/* Outer Energy Aura along Cable */}
               <path
-                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
+                d="M 552 398 C 554 480, 560 565, 620 570 C 685 575, 745 520, 770 455"
                 fill="none"
                 stroke={current.primaryColor}
                 strokeWidth="8"
@@ -268,7 +268,7 @@ export default function RealtimeTeslaChargingHero() {
 
               {/* High-voltage Animated Electric Pulses (Dash flow) */}
               <path
-                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
+                d="M 552 398 C 554 480, 560 565, 620 570 C 685 575, 745 520, 770 455"
                 fill="none"
                 stroke={current.primaryColor}
                 strokeWidth="4"
@@ -287,7 +287,7 @@ export default function RealtimeTeslaChargingHero() {
 
               {/* Bright Core Beam */}
               <path
-                d="M 570 400 C 570 500, 610 570, 660 570 C 720 570, 755 510, 770 455"
+                d="M 552 398 C 554 480, 560 565, 620 570 C 685 575, 745 520, 770 455"
                 fill="none"
                 stroke="#FFFFFF"
                 strokeWidth="2.5"
