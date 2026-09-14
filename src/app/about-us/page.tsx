@@ -92,11 +92,12 @@ export default function AboutUsPage() {
       </section>
 
       {/* Gold Standard Section: Image + Guarantee List */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white via-slate-50 to-white">
+      {/* Gold Standard Section: Image + Guarantee List */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
             {/* Real Authentic Image */}
-            <div className="relative group">
+            <div className="relative group w-full min-w-0">
               <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-[#FF5E00] rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition duration-500" />
               <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-white/60 bg-white aspect-[4/3] w-full">
                 <Image
@@ -111,15 +112,15 @@ export default function AboutUsPage() {
             </div>
 
             {/* Checklist Content */}
-            <div className="bg-white/80 backdrop-blur-md rounded-3xl p-8 md:p-10 border border-slate-100 shadow-xl">
-              <div className="inline-block px-3.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold tracking-wide uppercase mb-4">
+            <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-100 shadow-xl w-full min-w-0">
+              <div className="inline-block px-3.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold tracking-wide uppercase mb-3">
                 ★ Setting The Industry Benchmark
               </div>
-              <h3 className="text-3xl md:text-4xl font-extrabold text-[#171D4D] mb-8 tracking-tight leading-tight">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#171D4D] mb-6 tracking-tight leading-tight">
                 To set a Gold Standard, we ensure
               </h3>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {[
                   {
                     title: "We use only Tier-1 products",
@@ -138,12 +139,12 @@ export default function AboutUsPage() {
                     desc: "Comprehensive on-site verification and 5-year performance monitoring guarantee."
                   }
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50/70 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-200 transition-colors">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg mt-0.5 border border-emerald-500/20">
+                  <div key={idx} className="flex items-start gap-3.5 p-4 rounded-xl bg-slate-50/70 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-200 transition-colors">
+                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-sm mt-0.5 border border-emerald-500/20">
                       ✓
                     </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-gray-900 leading-snug">{item.title}</h4>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{item.title}</h4>
                       <p className="text-gray-600 text-sm mt-1 leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
@@ -151,36 +152,39 @@ export default function AboutUsPage() {
               </div>
 
               {/* NETCC Approved Seller Certificate Card */}
-              <div className="mt-8 p-6 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FF5E00] text-white flex items-center justify-center font-black text-xl flex-shrink-0 shadow-sm">
+              <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-orange-50/80 border border-orange-200/80 flex flex-col gap-4">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-[#FF5E00] text-white flex items-center justify-center font-black text-lg flex-shrink-0 shadow-sm mt-0.5">
                     ★
                   </div>
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h4 className="font-extrabold text-[#171D4D] text-base sm:text-lg">
-                        NETCC Approved Solar Seller (New Energy Tech Consumer Code)
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <h4 className="font-extrabold text-[#171D4D] text-base leading-snug">
+                        NETCC Approved Solar Seller
                       </h4>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 text-orange-800 uppercase tracking-wider">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-200 text-orange-800 uppercase tracking-wider whitespace-nowrap">
                         Official Signatory
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed max-w-2xl">
-                      A NETCC approved solar seller is a business that follows the New Energy Tech Consumer Code, which sets high standards for honest sales, clear contracts, and consumer protection in Australia.
+                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                      Adhering strictly to the New Energy Tech Consumer Code (NETCC), ensuring high standards for honest sales, clear contracts, and consumer protection in Australia.
                     </p>
                   </div>
                 </div>
-                <a
-                  href="/docs/new-energy-tech-consumer-code.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whitespace-nowrap px-5 py-2.5 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-2 shadow-sm self-stretch sm:self-auto justify-center"
-                >
-                  <span>View Code of Conduct (PDF)</span>
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
+                <div className="pt-3 border-t border-orange-200/70 flex items-center justify-between gap-3 flex-wrap">
+                  <span className="text-xs font-semibold text-gray-600">New Energy Tech Consumer Code</span>
+                  <a
+                    href="/docs/new-energy-tech-consumer-code.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-[#171D4D] hover:bg-[#1E2560] text-white font-bold text-xs transition-colors inline-flex items-center gap-2 shadow-sm"
+                  >
+                    <span>View Code of Conduct (PDF)</span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
