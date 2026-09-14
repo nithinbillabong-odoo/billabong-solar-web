@@ -3,33 +3,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
-interface ChatState {
-  service: string;
-  quarterlyBill: string;
-  suburb: string;
-  name: string;
-  phone: string;
-  email: string;
-}
+type ScreenType =
+  | 'SCREEN_1'
+  | 'SCREEN_2'
+  | 'ROUTE_B_STEP_1'
+  | 'ROUTE_B_STEP_2'
+  | 'ROUTE_B_STEP_3'
+  | 'ROUTE_B_STEP_4';
 
 export default function ChatAssistPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasPoppedAutomatically, setHasPoppedAutomatically] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>('SCREEN_1');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  
+  // Route B Form State
+  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [billFile, setBillFile] = useState<File | null>(null);
+  const [switchboardFile, setSwitchboardFile] = useState<File | null>(null);
 
-  const [formData, setFormData] = useState<ChatState>({
-    service: '',
-    quarterlyBill: '',
-    suburb: '',
-    name: '',
-    phone: '',
-    email: '',
-  });
+  // Tracking
+  const [leadId, setLeadId] = useState<string>('');
+  const [odooLeadId, setOdooLeadId] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [waOpened, setWaOpened] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const billInputRef = useRef<HTMLInputElement>(null);
+  const switchboardInputRef = useRef<HTMLInputElement>(null);
+
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP || '61450941413';
 
   // Auto-open after 3.5 seconds on initial site visit (once per session)
   useEffect(() => {
@@ -38,364 +44,646 @@ export default function ChatAssistPopup() {
       if (!alreadyShown) {
         const timer = setTimeout(() => {
           setIsOpen(true);
-          setHasPoppedAutomatically(true);
           sessionStorage.setItem('billabong_chat_assist_shown', 'true');
         }, 3500);
         return () => clearTimeout(timer);
       }
     } catch {
-      // Fallback if sessionStorage is disabled
+      // Ignore if sessionStorage is unavailable
     }
   }, []);
 
-  // Auto scroll to bottom of chat when step changes
+  // Auto scroll to bottom whenever screen changes or message appears
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentStep, isSuccess]);
+  }, [currentScreen, errorMessage, waOpened]);
 
-  const handleServiceSelect = (service: string) => {
-    setFormData((prev) => ({ ...prev, service }));
-    setCurrentStep(2);
-  };
-
-  const handleBillSelect = (quarterlyBill: string) => {
-    setFormData((prev) => ({ ...prev, quarterlyBill }));
-    setCurrentStep(3);
-  };
-
-  const handleSuburbSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.suburb.trim()) {
-      setErrorMessage('Please enter your suburb or postcode');
-      return;
-    }
+  // SCREEN 1: Category selection
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
     setErrorMessage('');
-    setCurrentStep(4);
+    setCurrentScreen('SCREEN_2');
   };
 
-  const handleFinalSubmit = async (e: React.FormEvent) => {
+  // ROUTE A: WhatsApp launch
+  const handleRouteAWhatsApp = () => {
+    let prefilledText = "Hi Billabong Solar, I'd like a quote for residential solar.";
+    if (selectedCategory === 'Battery Storage') {
+      prefilledText = "Hi Billabong Solar, I'd like a quote for battery storage.";
+    } else if (selectedCategory === 'Commercial Solar') {
+      prefilledText = "Hi Billabong Solar, I'd like a quote for commercial solar.";
+    } else if (selectedCategory === 'General Question or Rebates') {
+      prefilledText = "Hi Billabong Solar, I have a question about solar and rebates.";
+    }
+
+    const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(prefilledText)}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    setWaOpened(true);
+  };
+
+  // ROUTE B - STEP 1: Phone (Required) + Name (Optional) -> Save lead IMMEDIATELY
+  const handleStep1Submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!formData.name.trim()) {
-      setErrorMessage('Please provide your name');
-      return;
-    }
-    if (!formData.phone.trim() || formData.phone.length < 8) {
-      setErrorMessage('Please enter a valid phone number');
-      return;
-    }
-    if (!formData.email.trim() || !formData.email.includes('@')) {
-      setErrorMessage('Please enter a valid email address');
+    const cleanPhone = phone.trim();
+    if (!cleanPhone || cleanPhone.replace(/\D/g, '').length < 8) {
+      setErrorMessage('Please enter a valid phone number so we can reach you.');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const payload = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
-        address: `${formData.suburb.trim()}, Victoria`,
-        message: `[Chat Assistant Lead]\n- Service Requested: ${formData.service}\n- Average Quarterly Bill: ${formData.quarterlyBill}\n- Property Location: ${formData.suburb}, Victoria`,
-        source: 'Website Chat Assistant',
-      };
-
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/chat-lead', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          category: selectedCategory || 'Residential Solar',
+          phone: cleanPhone,
+          name: name.trim(),
+        }),
       });
 
       const data = await res.json();
-
-      if (res.ok && data.success) {
-        setIsSuccess(true);
+      if (data.success) {
+        setLeadId(data.leadId);
+        if (data.odooLeadId) {
+          setOdooLeadId(data.odooLeadId);
+        }
+        setCurrentScreen('ROUTE_B_STEP_2');
       } else {
-        setErrorMessage(data.message || 'Unable to submit. Please try again.');
+        setErrorMessage(data.message || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      console.error('Chat lead submission error:', err);
-      setErrorMessage('Network error. Please call 1300 897 221 directly.');
+      console.error('Error saving Step 1 lead:', err);
+      // Even if network glitches, advance to step 2 so user is not blocked
+      setCurrentScreen('ROUTE_B_STEP_2');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // ROUTE B - STEP 2: Email & Property Address (Optional Nudge)
+  const handleStep2Submit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    try {
+      if (email.trim() || address.trim()) {
+        await fetch('/api/chat-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update_step2',
+            leadId,
+            odooLeadId,
+            name: name.trim(),
+            phone: phone.trim(),
+            category: selectedCategory,
+            email: email.trim(),
+            address: address.trim(),
+          }),
+        });
+      }
+    } catch (err) {
+      console.error('Error updating Step 2 lead:', err);
+    } finally {
+      setIsSubmitting(false);
+      setCurrentScreen('ROUTE_B_STEP_3');
+    }
+  };
+
+  const handleStep2Skip = () => {
+    setErrorMessage('');
+    setCurrentScreen('ROUTE_B_STEP_3');
+  };
+
+  // ROUTE B - STEP 3: Upload recent bill & switchboard photo (Optional)
+  const handleStep3Submit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('leadId', leadId);
+      if (odooLeadId) formData.append('odooLeadId', odooLeadId.toString());
+      formData.append('name', name.trim());
+      formData.append('phone', phone.trim());
+      formData.append('email', email.trim());
+      formData.append('address', address.trim());
+      formData.append('category', selectedCategory);
+
+      if (billFile) formData.append('billFile', billFile);
+      if (switchboardFile) formData.append('switchboardFile', switchboardFile);
+
+      await fetch('/api/chat-lead', {
+        method: 'POST',
+        body: formData,
+      });
+    } catch (err) {
+      console.error('Error uploading Step 3 files:', err);
+    } finally {
+      setIsSubmitting(false);
+      setCurrentScreen('ROUTE_B_STEP_4');
+    }
+  };
+
+  const handleStep3Skip = () => {
+    setErrorMessage('');
+    setCurrentScreen('ROUTE_B_STEP_4');
+  };
+
+  const handleReset = () => {
+    setCurrentScreen('SCREEN_1');
+    setSelectedCategory('');
+    setPhone('');
+    setName('');
+    setEmail('');
+    setAddress('');
+    setBillFile(null);
+    setSwitchboardFile(null);
+    setLeadId('');
+    setOdooLeadId(null);
+    setErrorMessage('');
+    setWaOpened(false);
+  };
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      
-      {/* 1. Chat Window Modal */}
+    <aside aria-label="Billabong Solar Chat Assistant" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      {/* Floating Trigger Pill / Bubble */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="group flex items-center gap-3 bg-gradient-to-r from-[#171D4D] to-[#252E6D] hover:to-[#FF5E00] text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 border border-white/20"
+          aria-label="Open Billabong Solar Chat Assistant"
+        >
+          <div className="relative">
+            <span className="flex h-3.5 w-3.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+            </span>
+          </div>
+          <div className="text-left">
+            <p className="text-xs font-black uppercase tracking-wider text-orange-400">Solar Assistant</p>
+            <p className="text-xs sm:text-sm font-bold text-white">Ask a Question or Quote</p>
+          </div>
+          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
+            💬
+          </div>
+        </button>
+      )}
+
+      {/* Main Chat Assistant Modal */}
       {isOpen && (
         <div
           role="dialog"
-          aria-label="Solar Quote Assistant"
-          className="mb-3 w-[92vw] sm:w-[380px] max-h-[580px] bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden animate-fade-in transition-all duration-300"
+          aria-modal="true"
+          aria-labelledby="chat-assist-title"
+          className="w-[calc(100vw-2rem)] sm:w-[420px] max-h-[85vh] sm:max-h-[620px] bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#171D4D] to-[#252E6D] p-4 text-white flex items-center justify-between shadow-md">
+          <div className="bg-gradient-to-r from-[#171D4D] via-[#1F265D] to-[#252E6D] p-4 text-white flex items-center justify-between shadow-md relative">
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full bg-white/15 p-0.5 flex items-center justify-center border border-white/20">
-                <span className="text-xl">☀️</span>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-[#171D4D] rounded-full" />
+              <div className="relative w-10 h-10 rounded-full bg-white p-1 flex items-center justify-center shadow-inner overflow-hidden">
+                <Image
+                  src="/images/authors/billabong-admin.svg"
+                  alt="Billabong Solar Consultant"
+                  width={36}
+                  height={36}
+                  className="rounded-full"
+                />
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
               <div>
-                <div className="font-bold text-sm leading-tight flex items-center gap-1.5">
-                  <span>Billabong Solar Assistant</span>
-                </div>
-                <div className="text-[11px] text-emerald-300 font-medium flex items-center gap-1">
-                  <span>● Online</span>
-                  <span className="text-gray-300">• NETCC Approved</span>
-                </div>
+                <h3 id="chat-assist-title" className="font-extrabold text-sm sm:text-base leading-tight text-white flex items-center gap-1.5">
+                  Billabong Solar Assistant
+                </h3>
+                <p className="text-[11px] text-gray-300 font-medium">
+                  CEC Accredited • NETCC Approved
+                </p>
               </div>
             </div>
 
-            {/* Header controls: WhatsApp quick link & Close */}
-            <div className="flex items-center gap-2">
-              <a
-                href="https://wa.me/61450941413?text=Hi%20Billabong%20Solar%2C%20I%20would%20like%20a%20solar%20quote"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Chat on WhatsApp"
-                className="p-1.5 rounded-full bg-white/10 hover:bg-emerald-500 text-white transition-colors"
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
-                </svg>
-              </a>
+            <div className="flex items-center gap-1">
+              {currentScreen !== 'SCREEN_1' && currentScreen !== 'ROUTE_B_STEP_4' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentScreen === 'SCREEN_2') setCurrentScreen('SCREEN_1');
+                    else if (currentScreen === 'ROUTE_B_STEP_1') setCurrentScreen('SCREEN_2');
+                    else if (currentScreen === 'ROUTE_B_STEP_2') setCurrentScreen('ROUTE_B_STEP_1');
+                    else if (currentScreen === 'ROUTE_B_STEP_3') setCurrentScreen('ROUTE_B_STEP_2');
+                  }}
+                  className="p-1.5 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-white/10 text-xs"
+                  title="Go Back"
+                >
+                  ← Back
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-lg transition-colors"
-                aria-label="Close Assistant"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                aria-label="Close chat assistant"
               >
                 ✕
               </button>
             </div>
           </div>
 
-          {/* Chat Messages Body */}
-          <div className="p-4 overflow-y-auto flex-1 bg-slate-50/70 space-y-4 text-sm max-h-[440px]">
+          {/* Chat Body (Scrollable) */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 text-slate-800 text-sm">
             
-            {/* Bot Message 1 */}
-            <div className="flex items-start gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                ⚡
-              </div>
-              <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-slate-800 leading-relaxed max-w-[85%]">
-                Hi there! 👋 Welcome to <strong>Billabong Solar</strong>. Looking to slash your electricity bills or claim Victorian rebates?
-                <div className="text-[11px] text-gray-500 mt-1 font-semibold">
-                  What would you like to explore?
+            {/* SCREEN 1: What can we help you with? */}
+            <div className="space-y-3">
+              {/* Bot greeting */}
+              <div className="flex items-start gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
+                  ☀️
+                </div>
+                <div className="bg-white p-3.5 rounded-2xl rounded-tl-none border border-gray-200 shadow-xs max-w-[85%] text-slate-800">
+                  <p className="font-semibold text-xs sm:text-sm">
+                    Hi there, welcome to Billabong Solar. What can we help you with?
+                  </p>
                 </div>
               </div>
+
+              {/* Screen 1 Options */}
+              {currentScreen === 'SCREEN_1' && (
+                <div className="pl-9 space-y-2">
+                  {[
+                    { label: 'Residential Solar', desc: 'Slash electricity bills with high-efficiency panels' },
+                    { label: 'Battery Storage', desc: 'Store solar, backup blackouts & VPP earnings' },
+                    { label: 'Commercial Solar', desc: 'Commercial scale 30kW – 1MW systems' },
+                    { label: 'General Question or Rebates', desc: 'Solar Victoria rebates, loans & advice' },
+                  ].map((opt) => (
+                    <button
+                      key={opt.label}
+                      type="button"
+                      onClick={() => handleCategorySelect(opt.label)}
+                      className="w-full text-left p-3 rounded-2xl bg-white hover:bg-orange-50 border border-gray-200 hover:border-[#FF5E00] text-slate-900 transition-all shadow-xs group"
+                    >
+                      <div className="font-bold text-xs sm:text-sm text-[#171D4D] group-hover:text-[#FF5E00]">
+                        {opt.label}
+                      </div>
+                      <div className="text-[11px] text-gray-500 font-medium mt-0.5">
+                        {opt.desc}
+                      </div>
+                    </button>
+                  ))}
+                  <p className="text-[11px] text-gray-400 italic pl-1">
+                    No technical knowledge needed — we're here to guide you.
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* Step 1 Options */}
-            {currentStep === 1 && (
-              <div className="space-y-2 pl-9">
-                {[
-                  { label: '☀️ Residential Solar (Save on Power Bills)', val: 'Residential Solar' },
-                  { label: '🔋 Battery Storage (Blackout Backup & VPP)', val: 'Battery Storage' },
-                  { label: '🏢 Commercial Solar (30kW – 1MW)', val: 'Commercial Solar' },
-                  { label: '❓ General Inquiry & Rebates', val: 'General Inquiry' },
-                ].map((item) => (
-                  <button
-                    key={item.val}
-                    type="button"
-                    onClick={() => handleServiceSelect(item.val)}
-                    className="w-full text-left p-2.5 px-3.5 rounded-xl bg-white hover:bg-orange-50 border border-gray-200 hover:border-[#FF5E00] text-slate-800 font-semibold text-xs transition-all shadow-xs"
-                  >
-                    {item.label}
-                  </button>
-                ))}
+            {/* SCREEN 2: Equal Weight WhatsApp vs Enquiry */}
+            {currentScreen !== 'SCREEN_1' && (
+              <>
+                {/* User selection echo */}
+                <div className="flex justify-end">
+                  <div className="bg-[#171D4D] text-white p-2.5 px-4 rounded-2xl rounded-tr-none text-xs sm:text-sm font-semibold shadow-xs">
+                    {selectedCategory}
+                  </div>
+                </div>
+
+                {/* Assistant response offering both routes */}
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
+                    ☀️
+                  </div>
+                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none border border-gray-200 shadow-xs max-w-[88%] text-slate-800 space-y-1">
+                    <p className="font-semibold text-xs sm:text-sm leading-relaxed">
+                      Happy to help. Message us now, or leave your details and we'll come back to you.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Both routes rendered with EQUAL weight */}
+                {currentScreen === 'SCREEN_2' && (
+                  <div className="pl-9 space-y-3 pt-1">
+                    <div className="grid grid-cols-1 gap-2.5">
+                      {/* Route A: WhatsApp */}
+                      <button
+                        type="button"
+                        onClick={handleRouteAWhatsApp}
+                        className="w-full text-left p-3.5 rounded-2xl bg-white hover:bg-emerald-50 border-2 border-emerald-500 hover:border-emerald-600 text-slate-900 transition-all shadow-sm group flex items-start justify-between gap-3"
+                      >
+                        <div>
+                          <div className="font-extrabold text-xs sm:text-sm text-emerald-800 flex items-center gap-1.5">
+                            <span>💬</span> Message us on WhatsApp
+                          </div>
+                          <p className="text-[11px] text-gray-500 mt-1">
+                            One tap, pre-filled message — no typing required
+                          </p>
+                        </div>
+                        <span className="text-emerald-600 font-black text-sm shrink-0">→</span>
+                      </button>
+
+                      {/* Route B: Send Enquiry */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setErrorMessage('');
+                          setCurrentScreen('ROUTE_B_STEP_1');
+                        }}
+                        className="w-full text-left p-3.5 rounded-2xl bg-white hover:bg-orange-50 border-2 border-[#FF5E00] hover:border-orange-600 text-slate-900 transition-all shadow-sm group flex items-start justify-between gap-3"
+                      >
+                        <div>
+                          <div className="font-extrabold text-xs sm:text-sm text-[#FF5E00] flex items-center gap-1.5">
+                            <span>✉️</span> Send an enquiry instead
+                          </div>
+                          <p className="text-[11px] text-gray-500 mt-1">
+                            Leave your number and we'll get straight back to you
+                          </p>
+                        </div>
+                        <span className="text-[#FF5E00] font-black text-sm shrink-0">→</span>
+                      </button>
+                    </div>
+
+                    {waOpened && (
+                      <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-xs">
+                        <p className="font-bold">Opening WhatsApp in a new tab...</p>
+                        <p className="text-[11px] mt-0.5 text-emerald-700">
+                          If it didn't open automatically,{' '}
+                          <button
+                            type="button"
+                            onClick={handleRouteAWhatsApp}
+                            className="underline font-bold hover:text-emerald-950"
+                          >
+                            click here to launch WhatsApp
+                          </button>.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* ROUTE B - STEP 1: Phone & Name */}
+            {currentScreen === 'ROUTE_B_STEP_1' && (
+              <div className="space-y-3 pl-9">
+                <div className="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-xs">
+                  <p className="font-bold text-xs sm:text-sm text-slate-900 mb-3">
+                    No problem. What's the best number to reach you on?
+                  </p>
+
+                  <form onSubmit={handleStep1Submit} className="space-y-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                        Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="e.g. 0412 345 678"
+                        required
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-hidden font-medium"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                        Your Name <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        autoComplete="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="e.g. Sarah"
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-hidden font-medium"
+                      />
+                    </div>
+
+                    {errorMessage && (
+                      <p className="text-xs text-red-600 font-semibold">{errorMessage}</p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full py-3 bg-[#FF5E00] hover:bg-orange-600 disabled:opacity-50 text-white font-extrabold rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                    >
+                      {isSubmitting ? 'Saving Lead...' : 'Continue →'}
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
 
-            {/* Step 2: Bill Selection */}
-            {currentStep >= 2 && (
-              <>
-                {/* User Answer 1 */}
-                <div className="flex justify-end">
-                  <div className="bg-[#171D4D] text-white p-2.5 px-4 rounded-2xl rounded-tr-none text-xs font-medium max-w-[80%]">
-                    {formData.service}
-                  </div>
-                </div>
-
-                {/* Bot Message 2 */}
-                <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    ⚡
-                  </div>
-                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-slate-800 leading-relaxed max-w-[85%]">
-                    Great! What is your average <strong>quarterly electricity bill</strong>? This helps us calculate your optimal system size and payback.
-                  </div>
-                </div>
-
-                {currentStep === 2 && (
-                  <div className="grid grid-cols-2 gap-2 pl-9">
-                    {[
-                      { label: 'Under $500', val: 'Under $500 / quarter' },
-                      { label: '$500 – $1,000', val: '$500 – $1,000 / quarter' },
-                      { label: '$1,000 – $2,000', val: '$1,000 – $2,000 / quarter' },
-                      { label: '$2,000+', val: '$2,000+ / quarter' },
-                    ].map((bill) => (
-                      <button
-                        key={bill.val}
-                        type="button"
-                        onClick={() => handleBillSelect(bill.val)}
-                        className="text-center p-2.5 rounded-xl bg-white hover:bg-orange-50 border border-gray-200 hover:border-[#FF5E00] text-slate-800 font-bold text-xs transition-all shadow-xs"
-                      >
-                        {bill.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* Step 3: Suburb / Postcode */}
-            {currentStep >= 3 && (
-              <>
-                {/* User Answer 2 */}
-                <div className="flex justify-end">
-                  <div className="bg-[#171D4D] text-white p-2.5 px-4 rounded-2xl rounded-tr-none text-xs font-medium max-w-[80%]">
-                    {formData.quarterlyBill}
-                  </div>
-                </div>
-
-                {/* Bot Message 3 */}
-                <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    ⚡
-                  </div>
-                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-slate-800 leading-relaxed max-w-[85%]">
-                    Got it! Which Victorian <strong>suburb or postcode</strong> is the property in?
-                  </div>
-                </div>
-
-                {currentStep === 3 && (
-                  <form onSubmit={handleSuburbSubmit} className="pl-9 space-y-2">
-                    <input
-                      type="text"
-                      value={formData.suburb}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, suburb: e.target.value }))}
-                      placeholder="e.g. Scoresby 3179, Berwick, Heyfield..."
-                      className="w-full p-2.5 px-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#FF5E00] focus:outline-none"
-                      autoFocus
-                    />
-                    <button
-                      type="submit"
-                      className="w-full py-2.5 rounded-xl bg-[#FF5E00] hover:bg-orange-600 text-white font-bold text-xs transition-colors shadow-sm"
-                    >
-                      Continue →
-                    </button>
-                  </form>
-                )}
-              </>
-            )}
-
-            {/* Step 4: Contact Details Form */}
-            {currentStep >= 4 && !isSuccess && (
-              <>
-                {/* User Answer 3 */}
-                <div className="flex justify-end">
-                  <div className="bg-[#171D4D] text-white p-2.5 px-4 rounded-2xl rounded-tr-none text-xs font-medium max-w-[80%]">
-                    {formData.suburb}
-                  </div>
-                </div>
-
-                {/* Bot Message 4 */}
-                <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-[#FF5E00] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    ⚡
-                  </div>
-                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-slate-800 leading-relaxed max-w-[85%]">
-                    Almost done! Where should our clean energy engineers send your <strong>custom solar quote & rebate assessment</strong>?
-                  </div>
-                </div>
-
-                <form onSubmit={handleFinalSubmit} className="pl-9 space-y-2.5">
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-                    placeholder="Full Name"
-                    className="w-full p-2.5 px-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#FF5E00] focus:outline-none bg-white"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
-                    placeholder="Mobile Number (e.g. 0412 345 678)"
-                    className="w-full p-2.5 px-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#FF5E00] focus:outline-none bg-white"
-                  />
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
-                    placeholder="Email Address"
-                    className="w-full p-2.5 px-3 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#FF5E00] focus:outline-none bg-white"
-                  />
-
-                  {errorMessage && (
-                    <div className="text-[11px] text-rose-600 font-semibold">{errorMessage}</div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-xs transition-all shadow-md flex items-center justify-center gap-1.5"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Submitting to CRM...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Get My Free Solar Quote →</span>
-                      </>
-                    )}
-                  </button>
-                  <p className="text-[10px] text-gray-400 text-center">
-                    🔒 Zero spam guarantee. Licensed A-Grade Electricians.
+            {/* ROUTE B - STEP 2: Email & Property Address (The Nudge) */}
+            {currentScreen === 'ROUTE_B_STEP_2' && (
+              <div className="space-y-3 pl-9">
+                <div className="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-xs">
+                  <p className="font-bold text-xs sm:text-sm text-slate-900 mb-3 leading-relaxed">
+                    Almost done. These two aren't essential, but they let us do the homework before we call you.
                   </p>
-                </form>
-              </>
+
+                  <form onSubmit={handleStep2Submit} className="space-y-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-0.5">
+                        Email address <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="e.g. name@example.com"
+                        className="w-full px-3.5 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-hidden font-medium"
+                      />
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 mt-1 italic">
+                        So we can send your written quote through.
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-0.5">
+                        Property address <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        autoComplete="street-address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="e.g. 12 Smith St, Scoresby VIC"
+                        className="w-full px-3.5 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-hidden font-medium"
+                      />
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 mt-1 italic">
+                        Lets us check your roof and confirm which rebates apply to your place.
+                      </p>
+                    </div>
+
+                    <div className="pt-1 space-y-2 text-center">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-2.5 bg-[#FF5E00] hover:bg-orange-600 disabled:opacity-50 text-white font-extrabold rounded-xl text-xs sm:text-sm transition-all shadow-md"
+                      >
+                        {isSubmitting ? 'Saving...' : 'Continue →'}
+                      </button>
+
+                      {/* Plain text skip link, genuinely visible */}
+                      <button
+                        type="button"
+                        onClick={handleStep2Skip}
+                        className="text-xs text-gray-500 hover:text-slate-800 font-semibold underline py-1 inline-block"
+                      >
+                        Skip this step
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             )}
 
-            {/* Success Screen */}
-            {isSuccess && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center space-y-3">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
-                  ✓
+            {/* ROUTE B - STEP 3: Upload bill & switchboard photo */}
+            {currentScreen === 'ROUTE_B_STEP_3' && (
+              <div className="space-y-3 pl-9">
+                <div className="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-xs">
+                  <p className="font-bold text-xs sm:text-sm text-slate-900 mb-3 leading-relaxed">
+                    Last one, and it's the big time-saver. If you have these handy, it means we can often quote without needing to visit first.
+                  </p>
+
+                  <form onSubmit={handleStep3Submit} className="space-y-3.5">
+                    {/* Bill Upload */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                        Recent electricity bill <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        ref={billInputRef}
+                        type="file"
+                        accept=".pdf,image/*"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setBillFile(e.target.files[0]);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => billInputRef.current?.click()}
+                          className="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-gray-300 rounded-xl text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5"
+                        >
+                          <span>📄</span> {billFile ? 'Change Bill' : 'Upload electricity bill'}
+                        </button>
+                        {billFile && (
+                          <span className="text-[11px] text-emerald-700 font-medium truncate max-w-[170px]">
+                            ✓ {billFile.name}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Switchboard Photo Upload */}
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                        Photo of your switchboard <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        ref={switchboardInputRef}
+                        type="file"
+                        accept=".pdf,image/*"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setSwitchboardFile(e.target.files[0]);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => switchboardInputRef.current?.click()}
+                          className="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-gray-300 rounded-xl text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5"
+                        >
+                          <span>📸</span> {switchboardFile ? 'Change Photo' : 'Upload switchboard photo'}
+                        </button>
+                        {switchboardFile && (
+                          <span className="text-[11px] text-emerald-700 font-medium truncate max-w-[170px]">
+                            ✓ {switchboardFile.name}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 mt-1 italic leading-tight">
+                        The box with all the circuit breakers - usually in the hallway, garage, or on an outside wall.
+                      </p>
+                    </div>
+
+                    <div className="pt-2 space-y-2 text-center">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-2.5 bg-[#FF5E00] hover:bg-orange-600 disabled:opacity-50 text-white font-extrabold rounded-xl text-xs sm:text-sm transition-all shadow-md"
+                      >
+                        {isSubmitting ? 'Uploading...' : 'Continue →'}
+                      </button>
+
+                      {/* Plain text skip link */}
+                      <button
+                        type="button"
+                        onClick={handleStep3Skip}
+                        className="text-xs text-gray-500 hover:text-slate-800 font-semibold underline py-1 inline-block"
+                      >
+                        Skip this step
+                      </button>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="text-base font-bold text-slate-900">
-                  Quote Request Received!
-                </h4>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Thank you, <strong>{formData.name}</strong>. Your details have been sent to our Victorian engineering team. We will review your suburb (<strong>{formData.suburb}</strong>) and contact you shortly.
-                </p>
-                <div className="pt-2 border-t border-emerald-200/60 flex flex-col gap-2">
-                  <a
-                    href="tel:1300897221"
-                    className="w-full py-2 rounded-xl bg-[#171D4D] text-white text-xs font-bold hover:bg-[#101438] transition-colors"
-                  >
-                    Need Quick Answers? Call 1300 897 221
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    className="text-xs text-gray-500 hover:text-gray-700 underline"
-                  >
-                    Close Assistant
-                  </button>
+              </div>
+            )}
+
+            {/* ROUTE B - STEP 4: Plain confirmation */}
+            {currentScreen === 'ROUTE_B_STEP_4' && (
+              <div className="space-y-3 pl-9">
+                <div className="bg-white p-4 rounded-2xl border border-emerald-200 shadow-sm text-center">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-2xl mb-2 font-bold">
+                    ✓
+                  </div>
+                  <h4 className="font-extrabold text-sm sm:text-base text-[#171D4D] mb-1.5">
+                    Enquiry Received
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                    Thanks {name.trim() ? name.trim() : 'for reaching out'}. One of our team will be in touch within one business day to talk through what would suit your place.
+                  </p>
+
+                  <div className="my-3 py-2.5 px-3 bg-slate-50 rounded-xl border border-slate-200 text-left text-[11px] text-slate-600 space-y-1">
+                    <p><strong>Contact number:</strong> {phone}</p>
+                    {email && <p><strong>Email:</strong> {email}</p>}
+                    {address && <p><strong>Property:</strong> {address}</p>}
+                    <p><strong>Service requested:</strong> {selectedCategory}</p>
+                  </div>
+
+                  <div className="pt-2 flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsOpen(false)}
+                      className="w-full py-2.5 bg-[#171D4D] hover:bg-[#252E6D] text-white font-bold rounded-xl text-xs transition-all shadow-xs"
+                    >
+                      Done
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="text-xs text-gray-500 hover:text-gray-800 underline py-0.5"
+                    >
+                      Start another enquiry
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -403,64 +691,12 @@ export default function ChatAssistPopup() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Footer badge */}
-          <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500">
-            <span>Billabong Solar Victoria</span>
-            <span className="text-amber-600 font-semibold">10-Yr Australian Warranty</span>
+          {/* Footer reassurance banner */}
+          <div className="px-4 py-2 bg-slate-100 border-t border-gray-200 text-center text-[10px] text-gray-500 font-medium">
+            🔒 NetCC Approved Seller • Your information is strictly protected.
           </div>
-
         </div>
       )}
-
-      {/* 2. Floating Launcher Button & Prompt Bubble */}
-      <div className="flex items-center gap-2.5">
-        
-        {/* Floating Greeting Bubble (when closed) */}
-        {!isOpen && (
-          <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md text-slate-800 px-4 py-2.5 rounded-2xl shadow-xl border border-gray-200 text-xs font-semibold hover:bg-orange-50 transition-all hover:scale-105 group"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Need a quick solar quote? <strong>Chat with us</strong></span>
-            <span className="text-[#FF5E00] group-hover:translate-x-0.5 transition-transform">→</span>
-          </button>
-        )}
-
-        {/* Circular Toggle Button */}
-        <button
-          type="button"
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="relative w-14 h-14 rounded-full bg-gradient-to-r from-[#FF5E00] to-[#E04800] hover:from-[#E04800] hover:to-[#C73C00] text-white shadow-2xl flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-orange-300"
-          aria-label={isOpen ? 'Close Solar Assistant' : 'Open Solar Assistant'}
-        >
-          {isOpen ? (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <>
-              {/* Pulsing notification ring */}
-              <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white" />
-              </span>
-
-              {/* Chat Speech Bubble Icon with Lightning Bolt */}
-              <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-            </>
-          )}
-        </button>
-      </div>
-
-    </div>
+    </aside>
   );
 }
