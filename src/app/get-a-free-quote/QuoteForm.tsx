@@ -94,52 +94,37 @@ export default function QuoteForm() {
   };
 
   if (step === 4) {
-    let estimatedSavings = '$1,200+';
-    if (isCommercial) {
-      const commSavingsMap: Record<string, string> = {
-        'Under $3,000': '$6,000 - $12,000',
-        '$3,000 - $6,000': '$12,000 - $24,000',
-        '$6,000 - $9,000': '$24,000 - $40,000',
-        'Over $9,000': '$40,000+'
-      };
-      estimatedSavings = commSavingsMap[formData.billAmount] || '$15,000+';
-    } else {
-      const homeSavingsMap: Record<string, string> = {
-        'Under $150': '$500 - $800',
-        '$150-$300': '$800 - $1,500',
-        '$300-$500': '$1,500 - $2,500',
-        'Over $500': '$2,500+'
-      };
-      estimatedSavings = homeSavingsMap[formData.billAmount] || '$1,200+';
-    }
+    const firstName = formData.name ? formData.name.trim().split(' ')[0] : '';
 
     return (
-      <div className="bg-white rounded-2xl shadow-xl p-10 text-center animate-fadeIn">
-        <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="bg-white rounded-2xl shadow-xl p-10 md:p-14 text-center animate-fadeIn">
+        <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
           <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
-        <h2 className="text-3xl font-bold mb-3 text-gray-900">
-          {isCommercial ? 'Commercial Solar Assessment Received!' : 'Quote Request Received!'}
+
+        <h2 className="text-3xl md:text-4xl font-black mb-3 text-gray-900 tracking-tight">
+          {isCommercial ? 'Commercial Solar Request Received!' : 'Solar Quote Request Received!'}
         </h2>
-        <p className="text-xl text-gray-600 mb-6">
-          Thanks {formData.name || 'there'}! Based on your {isCommercial ? 'commercial electricity bill' : 'power usage'}, your estimated annual energy savings:
+
+        <p className="text-xl md:text-2xl font-bold text-[#FF5E00] mb-4">
+          Thanks {firstName || formData.name}!
         </p>
-        <div className="text-4xl font-extrabold text-[#FF5E00] mb-6">
-          {estimatedSavings} <span className="text-lg text-gray-500 font-normal">per year</span>
-        </div>
-        <p className="text-gray-600 mb-8 max-w-lg mx-auto leading-relaxed">
+
+        <p className="text-gray-600 text-base md:text-lg mb-8 max-w-lg mx-auto leading-relaxed">
           {isCommercial
-            ? 'One of our commercial solar engineering specialists will analyze your tariff structure and contact you shortly with a custom ROI feasibility model.'
-            : 'One of our accredited solar experts will be in touch shortly to walk you through your custom solar and battery options.'}
+            ? 'One of our commercial solar engineering specialists will contact you shortly.'
+            : 'One of our solar specialists will contact you shortly.'}
         </p>
+
         <button
+          type="button"
           onClick={() => {
             setStep(1);
             setFormData({ propertyType: '', billAmount: '', name: '', email: '', phone: '', address: '' });
           }}
-          className="text-[#FF5E00] font-bold hover:underline"
+          className="inline-block text-[#FF5E00] font-bold hover:text-orange-600 hover:underline transition-colors text-sm"
         >
           Start another quote
         </button>
