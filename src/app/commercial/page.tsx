@@ -68,7 +68,7 @@ export default function CommercialSolarPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/get-a-free-quote"
+              href="/get-a-free-quote?type=commercial"
               className="w-full sm:w-auto inline-block bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold py-4 px-10 rounded-full text-lg transition duration-300 shadow-xl transform hover:-translate-y-0.5"
             >
               Get a Free Commercial Quote →
@@ -227,7 +227,7 @@ export default function CommercialSolarPage() {
                 Eligible Australian businesses can claim substantial asset deductions and capital write-offs on commercial solar equipment, dramatically shortening your system payback period to as little as 2.5 to 4 years.
               </p>
               <Link
-                href="/get-a-free-quote"
+                href="/get-a-free-quote?type=commercial"
                 className="inline-block bg-[#FF5E00] hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-full transition duration-300"
               >
                 Request Financial Assessment
@@ -254,7 +254,7 @@ export default function CommercialSolarPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/get-a-free-quote"
+              href="/get-a-free-quote?type=commercial"
               className="w-full sm:w-auto inline-block bg-[#171D4D] hover:bg-[#101438] text-white font-extrabold py-4 px-10 rounded-full text-lg shadow-2xl transition duration-300"
             >
               Start Commercial Assessment →

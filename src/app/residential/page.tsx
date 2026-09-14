@@ -109,7 +109,7 @@ export default function ResidentialSolarPage() {
 
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/get-a-free-quote"
+                href="/get-a-free-quote?type=home"
                 className="bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] hover:from-[#e55400] hover:to-[#ff6d00] text-white font-extrabold px-8 py-4 rounded-full text-base transition-all shadow-lg shadow-orange-500/30 hover:scale-105"
               >
                 Get a Free Home Solar Quote
@@ -177,7 +177,7 @@ export default function ResidentialSolarPage() {
                 </div>
 
                 <Link
-                  href="/get-a-free-quote"
+                  href="/get-a-free-quote?type=home"
                   className="block text-center w-full py-3.5 rounded-xl font-extrabold text-white bg-gradient-to-r from-[#FF5E00] to-[#FF7A00] shadow-md hover:shadow-lg transition-all"
                 >
                   Quote This System
@@ -259,7 +259,7 @@ export default function ResidentialSolarPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/get-a-free-quote"
+              href="/get-a-free-quote?type=home"
               className="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-8 py-4 rounded-full text-base transition-all shadow-lg hover:scale-105"
             >
               Get a Free Solar Quote

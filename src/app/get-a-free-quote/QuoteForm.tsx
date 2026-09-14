@@ -1,8 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+const HOME_BILLS = [
+  'Under $150',
+  '$150-$300',
+  '$300-$500',
+  'Over $500'
+];
+
+const COMMERCIAL_BILLS = [
+  'Under $3,000',
+  '$3,000 - $6,000',
+  '$6,000 - $9,000',
+  'Over $9,000'
+];
 
 export default function QuoteForm() {
+  const searchParams = useSearchParams();
+  const paramType = searchParams.get('type')?.toLowerCase();
+
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -14,6 +32,25 @@ export default function QuoteForm() {
     phone: '',
     address: ''
   });
+
+  // Direct routing based on incoming URL query param
+  useEffect(() => {
+    if (paramType === 'commercial' || paramType === 'business') {
+      setFormData(prev => ({ ...prev, propertyType: 'Commercial / Business' }));
+      setStep(2);
+    } else if (paramType === 'home' || paramType === 'residential' || paramType === 'house') {
+      setFormData(prev => ({ ...prev, propertyType: 'Home / Residential' }));
+      setStep(2);
+    }
+  }, [paramType]);
+
+  const isCommercial = formData.propertyType
+    ? (formData.propertyType.includes('Commercial') || 
+       formData.propertyType.includes('Business') || 
+       formData.propertyType.includes('Farm'))
+    : (paramType === 'commercial' || paramType === 'business');
+
+  const billOptions = isCommercial ? COMMERCIAL_BILLS : HOME_BILLS;
 
   const handleNext = () => setStep(s => s + 1);
   const handleBack = () => setStep(s => s - 1);
@@ -34,7 +71,7 @@ export default function QuoteForm() {
           email: formData.email,
           phone: formData.phone,
           address: formData.address || 'Victoria, Australia',
-          message: `Quote Request Details:\n- Property Type: ${formData.propertyType}\n- Estimated Monthly Bill: ${formData.billAmount}`,
+          message: `Quote Request Details:\n- Category: ${isCommercial ? 'Commercial Solar' : 'Residential Solar'}\n- Property Type: ${formData.propertyType}\n- Estimated Bill: ${formData.billAmount}`,
         }),
       });
 
@@ -57,27 +94,55 @@ export default function QuoteForm() {
   };
 
   if (step === 4) {
-    const savingsMap: Record<string, string> = {
-      'Under $150': '$500 - $800',
-      '$150-$300': '$800 - $1,500',
-      '$300-$500': '$1,500 - $2,500',
-      'Over $500': '$2,500+'
-    };
-    const estimatedSavings = formData.billAmount ? savingsMap[formData.billAmount] : '$1,000+';
+    let estimatedSavings = '$1,200+';
+    if (isCommercial) {
+      const commSavingsMap: Record<string, string> = {
+        'Under $3,000': '$6,000 - $12,000',
+        '$3,000 - $6,000': '$12,000 - $24,000',
+        '$6,000 - $9,000': '$24,000 - $40,000',
+        'Over $9,000': '$40,000+'
+      };
+      estimatedSavings = commSavingsMap[formData.billAmount] || '$15,000+';
+    } else {
+      const homeSavingsMap: Record<string, string> = {
+        'Under $150': '$500 - $800',
+        '$150-$300': '$800 - $1,500',
+        '$300-$500': '$1,500 - $2,500',
+        'Over $500': '$2,500+'
+      };
+      estimatedSavings = homeSavingsMap[formData.billAmount] || '$1,200+';
+    }
 
     return (
       <div className="bg-white rounded-2xl shadow-xl p-10 text-center animate-fadeIn">
         <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+          </svg>
         </div>
-        <h2 className="text-3xl font-bold mb-4 text-gray-900">Quote Request Received!</h2>
-        <p className="text-xl text-gray-600 mb-8">Thanks {formData.name || 'there'}! Based on your current bill, you could save approximately:</p>
-        <div className="text-4xl font-bold text-orange-500 mb-8">{estimatedSavings} <span className="text-lg text-gray-500 font-normal">per year</span></div>
-        <p className="text-gray-600 mb-8">One of our solar experts will be in touch shortly to discuss your custom solar design.</p>
-        <button onClick={() => {
-          setStep(1);
-          setFormData({ propertyType: '', billAmount: '', name: '', email: '', phone: '', address: '' });
-        }} className="text-orange-500 font-semibold hover:underline">Start another quote</button>
+        <h2 className="text-3xl font-bold mb-3 text-gray-900">
+          {isCommercial ? 'Commercial Solar Assessment Received!' : 'Quote Request Received!'}
+        </h2>
+        <p className="text-xl text-gray-600 mb-6">
+          Thanks {formData.name || 'there'}! Based on your {isCommercial ? 'commercial electricity bill' : 'power usage'}, your estimated annual energy savings:
+        </p>
+        <div className="text-4xl font-extrabold text-[#FF5E00] mb-6">
+          {estimatedSavings} <span className="text-lg text-gray-500 font-normal">per year</span>
+        </div>
+        <p className="text-gray-600 mb-8 max-w-lg mx-auto leading-relaxed">
+          {isCommercial
+            ? 'One of our commercial solar engineering specialists will analyze your tariff structure and contact you shortly with a custom ROI feasibility model.'
+            : 'One of our accredited solar experts will be in touch shortly to walk you through your custom solar and battery options.'}
+        </p>
+        <button
+          onClick={() => {
+            setStep(1);
+            setFormData({ propertyType: '', billAmount: '', name: '', email: '', phone: '', address: '' });
+          }}
+          className="text-[#FF5E00] font-bold hover:underline"
+        >
+          Start another quote
+        </button>
       </div>
     );
   }
@@ -87,15 +152,23 @@ export default function QuoteForm() {
       {/* Progress Bar */}
       <div className="bg-gray-100 h-2 w-full">
         <div 
-          className="bg-orange-500 h-full transition-all duration-500 ease-out" 
+          className="bg-[#FF5E00] h-full transition-all duration-500 ease-out" 
           style={{ width: `${(step / 3) * 100}%` }}
         ></div>
       </div>
 
       <div className="p-8 md:p-12">
         <div className="mb-8 flex justify-between items-center text-sm font-medium text-gray-500">
-          <span>Step {step} of 3</span>
-          {step > 1 && <button type="button" onClick={handleBack} className="hover:text-orange-500 transition-colors">← Back</button>}
+          <span className="font-semibold text-gray-600">Step {step} of 3</span>
+          {step > 1 && (
+            <button
+              type="button"
+              onClick={handleBack}
+              className="text-[#FF5E00] font-bold hover:underline transition-colors flex items-center gap-1"
+            >
+              ← Back
+            </button>
+          )}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -105,75 +178,200 @@ export default function QuoteForm() {
             </div>
           )}
 
+          {/* STEP 1: Property Type Selection */}
           {step === 1 && (
             <div className="animate-fadeIn">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900">What type of property is this for?</h2>
+              <h2 className="text-2xl font-extrabold mb-2 text-gray-900">What type of property is this for?</h2>
+              <p className="text-gray-500 text-sm mb-6">Select your property to tailor your solar system specifications.</p>
+              
               <div className="space-y-4">
-                {['House', 'Business', 'Farm'].map(type => (
-                  <label key={type} className={`block p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.propertyType === type ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}>
-                    <input type="radio" name="propertyType" value={type} checked={formData.propertyType === type} onChange={(e) => updateData('propertyType', e.target.value)} className="sr-only" />
+                {[
+                  {
+                    id: 'Home / Residential',
+                    label: 'Home / Residential',
+                    sub: 'Single family home, townhouse, or residential property'
+                  },
+                  {
+                    id: 'Commercial / Business',
+                    label: 'Commercial / Business',
+                    sub: 'Commercial rooftop, warehouse, office, or industrial site'
+                  },
+                  {
+                    id: 'Farm / Rural Enterprise',
+                    label: 'Farm / Rural Enterprise',
+                    sub: 'Agribusiness, winery, dairy, or rural acreage'
+                  }
+                ].map(item => (
+                  <label
+                    key={item.id}
+                    className={`block p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                      formData.propertyType === item.id 
+                        ? 'border-[#FF5E00] bg-orange-50/70 shadow-sm' 
+                        : 'border-gray-200 hover:border-orange-300 bg-white'
+                    }`}
+                  >
+                    <input 
+                      type="radio" 
+                      name="propertyType" 
+                      value={item.id} 
+                      checked={formData.propertyType === item.id} 
+                      onChange={(e) => {
+                        updateData('propertyType', e.target.value);
+                        updateData('billAmount', '');
+                      }} 
+                      className="sr-only" 
+                    />
                     <div className="flex items-center">
-                      <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center ${formData.propertyType === type ? 'border-orange-500' : 'border-gray-300'}`}>
-                        {formData.propertyType === type && <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>}
+                      <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center flex-shrink-0 ${
+                        formData.propertyType === item.id ? 'border-[#FF5E00]' : 'border-gray-300'
+                      }`}>
+                        {formData.propertyType === item.id && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5E00]"></div>
+                        )}
                       </div>
-                      <span className="text-lg font-medium text-gray-800">{type}</span>
+                      <div>
+                        <span className="text-lg font-bold text-gray-800 block">{item.label}</span>
+                        <span className="text-xs text-gray-500 block mt-0.5">{item.sub}</span>
+                      </div>
                     </div>
                   </label>
                 ))}
               </div>
-              <button type="button" disabled={!formData.propertyType} onClick={handleNext} className="w-full mt-8 bg-orange-500 disabled:bg-gray-300 text-white font-bold py-4 rounded-xl transition duration-300">
-                Next
+              <button 
+                type="button" 
+                disabled={!formData.propertyType} 
+                onClick={handleNext} 
+                className="w-full mt-8 bg-[#FF5E00] hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold py-4 rounded-xl transition duration-300 shadow-md"
+              >
+                Continue to Bill Options →
               </button>
             </div>
           )}
 
+          {/* STEP 2: Bill Amount Selection */}
           {step === 2 && (
             <div className="animate-fadeIn">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900">What is your estimated monthly electricity bill?</h2>
+              <div className="mb-2">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-[#FF5E00] mb-2">
+                  {isCommercial ? 'Commercial Solar Options' : 'Home Solar Options'}
+                </span>
+                <h2 className="text-2xl font-extrabold text-gray-900">
+                  {isCommercial 
+                    ? 'What is your estimated electricity bill?' 
+                    : 'What is your estimated monthly electricity bill?'}
+                </h2>
+                <p className="text-gray-500 text-sm mt-1 mb-6">
+                  {isCommercial
+                    ? 'Select your commercial electricity spending to determine inverter and panel sizing (30 kW to 1MW):'
+                    : 'Select your average monthly power spend:'}
+                </p>
+              </div>
+
               <div className="space-y-4">
-                {['Under $150', '$150-$300', '$300-$500', 'Over $500'].map(amount => (
-                  <label key={amount} className={`block p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.billAmount === amount ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}>
-                    <input type="radio" name="billAmount" value={amount} checked={formData.billAmount === amount} onChange={(e) => updateData('billAmount', e.target.value)} className="sr-only" />
+                {billOptions.map(amount => (
+                  <label 
+                    key={amount} 
+                    className={`block p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                      formData.billAmount === amount 
+                        ? 'border-[#FF5E00] bg-orange-50/70 shadow-sm' 
+                        : 'border-gray-200 hover:border-orange-300 bg-white'
+                    }`}
+                  >
+                    <input 
+                      type="radio" 
+                      name="billAmount" 
+                      value={amount} 
+                      checked={formData.billAmount === amount} 
+                      onChange={(e) => updateData('billAmount', e.target.value)} 
+                      className="sr-only" 
+                    />
                     <div className="flex items-center">
-                      <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center ${formData.billAmount === amount ? 'border-orange-500' : 'border-gray-300'}`}>
-                        {formData.billAmount === amount && <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>}
+                      <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center flex-shrink-0 ${
+                        formData.billAmount === amount ? 'border-[#FF5E00]' : 'border-gray-300'
+                      }`}>
+                        {formData.billAmount === amount && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5E00]"></div>
+                        )}
                       </div>
-                      <span className="text-lg font-medium text-gray-800">{amount}</span>
+                      <span className="text-lg font-bold text-gray-800">{amount}</span>
                     </div>
                   </label>
                 ))}
               </div>
-              <button type="button" disabled={!formData.billAmount} onClick={handleNext} className="w-full mt-8 bg-orange-500 disabled:bg-gray-300 text-white font-bold py-4 rounded-xl transition duration-300">
-                Next
+
+              <button 
+                type="button" 
+                disabled={!formData.billAmount} 
+                onClick={handleNext} 
+                className="w-full mt-8 bg-[#FF5E00] hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold py-4 rounded-xl transition duration-300 shadow-md"
+              >
+                Next →
               </button>
             </div>
           )}
 
+          {/* STEP 3: Contact & Property Details */}
           {step === 3 && (
             <div className="animate-fadeIn">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900">Where should we send your quote?</h2>
+              <h2 className="text-2xl font-extrabold mb-2 text-gray-900">Where should we send your quote?</h2>
+              <p className="text-gray-500 text-sm mb-6">Enter your details and our team will prepare your tailored solar assessment.</p>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                  <input required type="text" value={formData.name} onChange={(e) => updateData('name', e.target.value)} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow" placeholder="Your full name" />
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    {isCommercial ? 'Contact Name / Business Representative *' : 'Full Name *'}
+                  </label>
+                  <input 
+                    required 
+                    type="text" 
+                    value={formData.name} 
+                    onChange={(e) => updateData('name', e.target.value)} 
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-none transition-shadow" 
+                    placeholder={isCommercial ? 'e.g. John Smith (Operations Director)' : 'Your full name'} 
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                  <input required type="email" value={formData.email} onChange={(e) => updateData('email', e.target.value)} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow" placeholder="your@email.com" />
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                  <input 
+                    required 
+                    type="email" 
+                    value={formData.email} 
+                    onChange={(e) => updateData('email', e.target.value)} 
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-none transition-shadow" 
+                    placeholder="your@email.com" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
-                  <input required type="tel" value={formData.phone} onChange={(e) => updateData('phone', e.target.value)} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow" placeholder="Your phone number" />
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number (Australian Mobile or Direct Line) *</label>
+                  <input 
+                    required 
+                    type="tel" 
+                    inputMode="tel"
+                    value={formData.phone} 
+                    onChange={(e) => updateData('phone', e.target.value)} 
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-none transition-shadow" 
+                    placeholder="0400 000 000" 
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Installation Address *</label>
-                  <input required type="text" value={formData.address} onChange={(e) => updateData('address', e.target.value)} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow" placeholder="Your property address" />
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    {isCommercial ? 'Installation Site / Facility Address *' : 'Installation Address *'}
+                  </label>
+                  <input 
+                    required 
+                    type="text" 
+                    value={formData.address} 
+                    onChange={(e) => updateData('address', e.target.value)} 
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF5E00] focus:border-[#FF5E00] outline-none transition-shadow" 
+                    placeholder="e.g. 123 Commercial Rd, Melbourne VIC" 
+                  />
                 </div>
               </div>
+
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-300 disabled:opacity-70 flex justify-center items-center"
+                className="w-full mt-8 bg-[#171D4D] hover:bg-[#12163d] text-white font-extrabold py-4 rounded-xl transition duration-300 disabled:opacity-70 flex justify-center items-center shadow-lg"
               >
                 {isSubmitting ? (
                   <span className="flex items-center">
@@ -184,7 +382,7 @@ export default function QuoteForm() {
                     Submitting Quote Request...
                   </span>
                 ) : (
-                  'Get My Free Quote'
+                  isCommercial ? 'Get My Free Commercial Feasibility Quote' : 'Get My Free Home Solar Quote'
                 )}
               </button>
             </div>

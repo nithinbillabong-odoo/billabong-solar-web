@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import QuoteForm from './QuoteForm';
 
@@ -14,7 +15,9 @@ export default function GetAQuotePage() {
           <h1 className="text-4xl font-bold mb-4 text-gray-900">Get Your Free Solar Quote</h1>
           <p className="text-lg text-gray-600">Takes less than 2 minutes. No obligation.</p>
         </div>
-        <QuoteForm />
+        <Suspense fallback={<div className="bg-white rounded-2xl shadow-xl p-12 text-center text-gray-400">Loading quote wizard...</div>}>
+          <QuoteForm />
+        </Suspense>
       </div>
     </section>
   );

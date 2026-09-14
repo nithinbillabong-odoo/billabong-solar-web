@@ -463,7 +463,7 @@ export const blogPosts: BlogPost[] = [
         <h3 class="text-xl font-bold mb-2">Request a Complimentary Commercial Solar & VEEC Audit</h3>
         <p class="text-sm text-gray-300 mb-4 leading-relaxed">Our NETCC Approved commercial engineering team handles full interval smart meter data analysis, DNSP grid connection pre-approvals (CitiPower, Powercor, AusNet, Jemena, United Energy), and certificate modeling to maximize your STC, LGC, and VEEC returns.</p>
         <div class="flex flex-col sm:flex-row gap-3">
-          <a href="/get-a-free-quote" class="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-6 py-3 rounded-full text-xs uppercase tracking-wider text-center transition-all shadow-lg">Get Free Commercial Feasibility Audit →</a>
+          <a href="/get-a-free-quote?type=commercial" class="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-6 py-3 rounded-full text-xs uppercase tracking-wider text-center transition-all shadow-lg">Get Free Commercial Feasibility Audit →</a>
           <a href="tel:1300897221" class="border border-white/40 hover:bg-white/10 text-white font-bold px-6 py-3 rounded-full text-xs text-center transition-all">Call 1300 897 221</a>
         </div>
       </div>
