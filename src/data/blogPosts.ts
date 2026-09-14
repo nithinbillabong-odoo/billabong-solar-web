@@ -477,7 +477,7 @@ export const blogPosts: BlogPost[] = [
       'victoria-battery-storage-buying-guide',
       'solar-battery-vpp-guide-victoria'
     ],
-    title: 'Best Solar Battery Storage Victoria (2026 Guide): Sigenergy vs GoodWe vs Alpha ESS vs Tesla, VPPs & The $8,800 Loan',
+    title: 'Best Solar Battery Storage Victoria (2026 Guide): Sigenergy vs GoodWe vs Alpha ESS vs Tesla, VPPs & Incentive Status',
     category: 'Battery Storage',
     date: 'February 04, 2026',
     dateISO: '2026-02-04T08:00:00.000Z',
@@ -488,13 +488,14 @@ export const blogPosts: BlogPost[] = [
     },
     readTime: '10 min read',
     image: '/images/blog/post-8-melbourne-batteries.webp',
-    excerpt: 'Comprehensive 2026 guide to home battery storage in Victoria. Compare Sigenergy SigenStor, GoodWe, Alpha ESS, and Tesla. Discover how the $8,800 interest-free battery loan and VPPs deliver $0 upfront energy independence.',
-    metaTitle: 'Best Solar Battery Storage Victoria (2026 Guide): Compare Brands, VPP & $8,800 Loan | Billabong Solar',
-    metaDescription: 'Authoritative 2026 Victorian battery storage guide. Compare Sigenergy SigenStor, GoodWe, Alpha ESS & Tesla. Learn about the $8,800 interest-free loan, VPP earnings up to $15/kWh & 3.3¢ feed-in arbitrage.',
+    excerpt: 'Comprehensive 2026 guide to home battery storage in Victoria. Compare Sigenergy SigenStor, GoodWe, Alpha ESS, and Tesla. Understand the Solar Victoria battery loan closure, Commonwealth Cheaper Home Batteries Program, and VPP earnings.',
+    metaTitle: 'Best Solar Battery Storage Victoria (2026 Guide): Compare Brands & Incentives | Billabong Solar',
+    metaDescription: 'Authoritative 2026 Victorian battery storage guide. Compare Sigenergy SigenStor, GoodWe, Alpha ESS & Tesla. Learn about active battery incentives, VPP earnings up to $15/kWh & 3.3¢ feed-in arbitrage.',
     keywords: [
       'best solar battery melbourne',
       'solar battery storage victoria',
-      'solar victoria battery loan 8800',
+      'solar victoria battery loan closed',
+      'cheaper home batteries program victoria',
       'sigenergy sigenstor victoria',
       'alpha ess battery melbourne',
       'goodwe lynx battery victoria',
@@ -506,24 +507,34 @@ export const blogPosts: BlogPost[] = [
       'blackout backup power victoria'
     ],
     contentHtml: `
-      <p class="lead text-xl text-gray-700 font-medium mb-6">With minimum solar feed-in tariffs in Victoria hovering around <strong>3.3¢ to 5¢/kWh</strong> while peak evening electricity costs <strong>38¢ to 45¢+/kWh</strong>, feeding your excess solar power into the grid for pennies no longer makes financial sense. In 2026, home battery storage has transformed from a luxury into the single most powerful tool for Victorian homeowners to slash power bills, achieve blackout immunity, and capitalize on government interest-free loans.</p>
+      <p class="lead text-xl text-gray-700 font-medium mb-6">With minimum solar feed-in tariffs in Victoria hovering around <strong>3.3¢ to 5¢/kWh</strong> while peak evening electricity costs <strong>38¢ to 45¢+/kWh</strong>, feeding your excess solar power into the grid for pennies no longer makes financial sense. In 2026, home battery storage has transformed from a luxury into the single most powerful tool for Victorian homeowners to slash power bills, achieve blackout immunity, and capture Virtual Power Plant (VPP) rewards.</p>
+
+      <div class="my-8 p-6 bg-amber-50 rounded-2xl border-l-4 border-amber-500 text-slate-800">
+        <h3 class="text-lg font-bold text-amber-900 mb-2">📢 Important Notice: Solar Victoria $8,800 Battery Loan Closed</h3>
+        <p class="text-sm leading-relaxed mb-3"><strong>Solar Victoria is no longer taking new applications for the $8,800 interest-free battery loan</strong> (the program is closed to new applicants). Victorian homeowners looking to invest in battery storage in 2026 should focus on the following active alternatives:</p>
+        <ul class="list-disc pl-5 space-y-1.5 text-sm text-slate-700">
+          <li><strong>Commonwealth Cheaper Home Batteries Program:</strong> Managed by the Clean Energy Regulator to lower upfront equipment costs across Australia.</li>
+          <li><strong>Virtual Power Plant (VPP) Networks:</strong> Programs such as Amber Electric and retail VPPs that pay wholesale peak rates (up to $15/kWh) and lucrative sign-up credits.</li>
+          <li><strong>Solar Victoria Solar Panel Rebate ($1,400) + Interest-Free Loan ($1,400):</strong> The Victorian Government continues to offer up to $2,800 in combined upfront support for rooftop solar systems.</li>
+        </ul>
+      </div>
 
       <div class="my-8 p-6 bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl border-l-4 border-[#FF5E00]">
         <h3 class="text-lg font-bold text-slate-900 mb-2">⚡ The 3.3¢ vs. 40¢ Victorian Power Arbitrage</h3>
         <p class="text-sm text-gray-700 leading-relaxed">Consider a standard 6.6kW or 10kW solar system exporting 15 kWh of surplus energy per day. Under standard retail plans, you receive just <strong>$0.50 per day</strong> (~$180/year) in feed-in credits. If you store that same 15 kWh in a battery and discharge it between 3 PM and 9 PM to avoid 40¢/kWh peak grid rates, you save <strong>$6.00 per day — over $2,190 per year</strong> in direct bill reductions!</p>
       </div>
 
-      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Solar Victoria $8,800 Interest-Free Battery Loan: How to Get $0 Upfront</h2>
-      <p>Under the Victorian Government’s <strong>Solar Homes Program</strong>, eligible homeowners can access an interest-free battery loan of up to <strong>$8,800</strong>, repayable over 48 months (4 years) at approximately <strong>~$183 per month</strong> with zero interest and zero account-keeping fees.</p>
+      <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Battery Incentives & Financing in Victoria (2026 Guide)</h2>
+      <p>While the historical Solar Victoria $8,800 battery loan has closed to new applicants, Victorian homeowners can still achieve rapid payback and $0-upfront green financing through approved clean energy lenders and modern grid incentives:</p>
       
-      <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Key Eligibility Criteria:</h3>
+      <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Active Incentives & Value Drivers:</h3>
       <ul class="list-disc pl-6 space-y-2 text-gray-700">
-        <li>Combined household taxable income is under $210,000 per year.</li>
-        <li>The property is valued under $3,000,000.</li>
-        <li>The property has an existing solar PV system with a capacity of at least 5kW, or is installing a combined solar and battery system.</li>
-        <li>The battery must be installed by a <strong>NETCC Approved Solar Seller</strong> (such as Billabong Solar) using approved A-Grade electricians.</li>
+        <li><strong>Commonwealth Cheaper Home Batteries Program:</strong> Federal incentives designed to lower the barrier for home storage.</li>
+        <li><strong>Victorian Solar PV Rebates ($1,400 + $1,400 Loan):</strong> If you are installing a combined solar PV and battery system, you can still claim the Victorian Government's $1,400 solar panel rebate and $1,400 interest-free panel loan.</li>
+        <li><strong>Low-Rate Clean Energy Green Loans:</strong> Repay your battery through monthly power bill savings with tailored low-interest green financing through Billabong Solar.</li>
+        <li><strong>VPP Export Arbitrage:</strong> Earn high feed-in credits during critical peak events to offset your equipment costs.</li>
       </ul>
-      <p class="mt-4"><strong>The Positive Cashflow Equation:</strong> Because a 10kWh to 13.2kWh battery saves typical Victorian homes between $170 and $240+ per month on electricity bills, the monthly power savings effectively cover the loan repayment from month one!</p>
+      <p class="mt-4"><strong>The Return on Investment Equation:</strong> Because a 10kWh to 13.2kWh battery saves typical Victorian homes between $150 and $220+ per month on electricity bills by eliminating 40¢+ peak grid rates, monthly energy savings consistently offset low-rate green financing instalments!</p>
 
       <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Top 4 Solar Battery Storage Systems in Victoria (2026 Review)</h2>
 
@@ -554,7 +565,7 @@ export const blogPosts: BlogPost[] = [
         <li><strong>Retrofit Versatility:</strong> 100% brand-agnostic AC coupling; no roof work required.</li>
         <li><strong>Cycle Life:</strong> Over 10,000 cycles with smart cloud app control.</li>
         <li><strong>Warranty:</strong> 10-Year local warranty.</li>
-        <li><strong>Best For:</strong> The 600,000+ Victorian households with existing solar who want to add a battery with $0 upfront on the $8,800 loan.</li>
+        <li><strong>Best For:</strong> The 600,000+ Victorian households with existing solar who want to add plug-and-play battery storage without changing inverters.</li>
       </ul>
 
       <h3 class="text-xl font-bold text-slate-900 mt-6 mb-3">4. Tesla Powerwall 3</h3>
@@ -577,7 +588,7 @@ export const blogPosts: BlogPost[] = [
               <th class="p-3">Blackout Speed</th>
               <th class="p-3">EV DC Charger</th>
               <th class="p-3">Retrofit Friendly</th>
-              <th class="p-3">$8,800 Loan Eligible</th>
+              <th class="p-3">VPP &amp; Grid Ready</th>
               <th class="p-3">Warranty</th>
             </tr>
           </thead>
@@ -589,7 +600,7 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3 font-bold text-emerald-600">0 ms (Instant UPS)</td>
               <td class="p-3 font-bold text-emerald-600">Yes (25kW DC Fast)</td>
               <td class="p-3">Yes (DC or AC)</td>
-              <td class="p-3 font-bold text-emerald-600">✓ Yes</td>
+              <td class="p-3 font-bold text-emerald-600">✓ VPP &amp; Certegy/Brighte</td>
               <td class="p-3">10 Years</td>
             </tr>
             <tr class="hover:bg-slate-50">
@@ -599,7 +610,7 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3">&lt; 10 ms (EPS)</td>
               <td class="p-3 text-gray-400">Separate AC Charger</td>
               <td class="p-3">Yes (Hybrid/AC)</td>
-              <td class="p-3 font-bold text-emerald-600">✓ Yes</td>
+              <td class="p-3 font-bold text-emerald-600">✓ VPP &amp; Green Loan</td>
               <td class="p-3">10 Years</td>
             </tr>
             <tr class="hover:bg-slate-50">
@@ -609,7 +620,7 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3">&lt; 20 ms (UPS)</td>
               <td class="p-3 text-gray-400">Separate AC Charger</td>
               <td class="p-3 font-bold text-emerald-600">Best Retrofit</td>
-              <td class="p-3 font-bold text-emerald-600">✓ Yes</td>
+              <td class="p-3 font-bold text-emerald-600">✓ VPP &amp; Green Loan</td>
               <td class="p-3">10 Years</td>
             </tr>
             <tr class="hover:bg-slate-50">
@@ -619,7 +630,7 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3">&lt; 10 ms (Backup)</td>
               <td class="p-3 text-gray-400">Separate AC Charger</td>
               <td class="p-3">Hybrid / AC</td>
-              <td class="p-3 font-bold text-emerald-600">✓ Yes</td>
+              <td class="p-3 font-bold text-emerald-600">✓ Tesla / Amber VPP</td>
               <td class="p-3">10 Years</td>
             </tr>
           </tbody>
@@ -639,8 +650,8 @@ export const blogPosts: BlogPost[] = [
       </ul>
 
       <div class="mt-8 p-6 bg-gradient-to-r from-[#171D4D] to-[#252E6D] rounded-2xl text-white">
-        <h3 class="text-xl font-bold mb-2">Claim Victoria's $8,800 Battery Loan with Billabong Solar</h3>
-        <p class="text-sm text-gray-300 mb-4 leading-relaxed">As a NETCC Approved Solar Seller with licensed A-Grade electricians, Billabong Solar handles your entire Solar Victoria loan application, DNSP grid approval, and smart battery installation with $0 upfront.</p>
+        <h3 class="text-xl font-bold mb-2">Get an Expert Battery Assessment with Billabong Solar</h3>
+        <p class="text-sm text-gray-300 mb-4 leading-relaxed">As a NETCC Approved Solar Seller with licensed A-Grade electricians, Billabong Solar designs tailored battery systems, connects you with the latest Commonwealth and VPP incentives, and handles your complete DNSP grid connection with $0 upfront green financing options.</p>
         <div class="flex flex-col sm:flex-row gap-3">
           <a href="/get-a-free-quote" class="bg-[#FF5E00] hover:bg-orange-600 text-white font-extrabold px-6 py-3 rounded-full text-xs uppercase tracking-wider text-center transition-all shadow-lg">Get Free Battery Feasibility Assessment →</a>
           <a href="tel:1300897221" class="border border-white/40 hover:bg-white/10 text-white font-bold px-6 py-3 rounded-full text-xs text-center transition-all">Call 1300 897 221</a>

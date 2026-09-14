@@ -198,7 +198,7 @@ export default function ChatAssistPopup() {
               <div className="space-y-2 pl-9">
                 {[
                   { label: '☀️ Residential Solar (Save on Power Bills)', val: 'Residential Solar' },
-                  { label: '🔋 Battery Storage ($8,800 Govt Loan)', val: 'Battery Storage ($8,800 Loan)' },
+                  { label: '🔋 Battery Storage (Blackout Backup & VPP)', val: 'Battery Storage' },
                   { label: '🏢 Commercial Solar (30kW – 1MW)', val: 'Commercial Solar' },
                   { label: '❓ General Inquiry & Rebates', val: 'General Inquiry' },
                 ].map((item) => (

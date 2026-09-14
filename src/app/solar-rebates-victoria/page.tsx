@@ -42,7 +42,7 @@ const rebateFaqs = [
   },
   {
     q: 'Can I get a rebate for both Solar Panels and Battery Storage?',
-    a: 'Yes. While direct battery subsidies are currently focused on interest-free battery loans and VEU programs, homeowners can combine solar panel rebates with battery finance to maximize bill savings.',
+    a: "Yes. For solar panels, Solar Victoria offers a $1,400 rebate and $1,400 interest-free loan. While Solar Victoria's standalone $8,800 battery loan is closed to new applicants, homeowners can access the Commonwealth Cheaper Home Batteries scheme, Virtual Power Plant (VPP) export bonuses, and low-rate clean energy financing alongside their solar panel rebate.",
   },
   {
     q: 'Are STC federal discounts included as well?',

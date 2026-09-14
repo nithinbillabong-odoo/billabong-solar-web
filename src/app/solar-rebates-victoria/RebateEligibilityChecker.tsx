@@ -266,7 +266,7 @@ Est. Monthly Bill: ${leadForm.monthlyBill}`,
                   </h4>
                 </div>
                 <p className="text-sm text-amber-800 leading-relaxed">
-                  Even if you do not meet all Solar Homes Program criteria, you are still 100% eligible for federal <strong>STC discounts (saving up to $2,500+)</strong> and Victorian battery loan schemes. Submit your details below for our team to calculate your maximum savings!
+                  Even if you do not meet all Solar Homes Program criteria, you are still 100% eligible for federal <strong>STC discounts (saving up to $2,500+)</strong>, the Commonwealth Cheaper Home Batteries scheme, and VPP bonuses. Submit your details below for our team to calculate your maximum savings!
                 </p>
               </div>
             )}
