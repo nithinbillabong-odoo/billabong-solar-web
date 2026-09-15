@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const siteConfig = {
   name: 'Billabong Solar',
   description:
-    'Accredited residential and commercial solar panels and battery storage installer in Melbourne & Victoria. Save up to $20,000/yr with Tier-1 panels, NETCC approved solar seller standards, and Victorian Government rebates.',
+    'Accredited residential and commercial solar panels and battery storage installer in Melbourne & Victoria. Save up to $100,000/yr with Tier-1 panels, NETCC approved solar seller standards, and Victorian Government rebates.',
   url: 'https://billabongsolar.com.au',
   ogImage: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider-Residential-Solar-Save-Electricity-Bill.webp?w=1200&ssl=1',
   telephone: '1300 897 221',

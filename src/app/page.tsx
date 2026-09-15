@@ -8,9 +8,9 @@ import Testimonials from "@/components/sections/Testimonials";
 import BlogCarousel from "@/components/sections/BlogCarousel";
 
 export const metadata: Metadata = {
-  title: "Residential Solar Victoria | Save Up to $20,000/Year | Billabong Solar",
+  title: "Residential Solar Victoria | Save Up to $100,000/Year | Billabong Solar",
   description:
-    "Billabong Solar – Victoria's trusted residential solar installer. Tier-1 panels, accredited electricians, government rebates up to $5,000. Get your free solar quote today. Save up to $20,000/year.",
+    "Billabong Solar – Victoria's trusted residential solar installer. Tier-1 panels, accredited electricians, government rebates up to $5,000. Get your free solar quote today. Save up to $100,000/year.",
   keywords: [
     "residential solar Victoria",
     "solar panels Melbourne",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Residential Solar Victoria | Save Up to $20,000/Year | Billabong Solar",
+    title: "Residential Solar Victoria | Save Up to $100,000/Year | Billabong Solar",
     description:
       "Victoria's trusted residential solar installer. Tier-1 panels, accredited electricians, government rebates. Get your free quote today.",
     url: "/",

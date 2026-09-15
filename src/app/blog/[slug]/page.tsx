@@ -270,7 +270,7 @@ export default function BlogPostPage({ params }: PageProps) {
                   Solar Homes Program
                 </span>
                 <h3 className="text-2xl font-extrabold mb-3 leading-snug">
-                  Save Up to $20,000/year With Solar
+                  Save Up to $100,000/year With Solar
                 </h3>
                 <p className="text-blue-100/80 text-sm mb-6 leading-relaxed">
                   Join thousands of Victoria families saving big on electricity with Tier-1 panels and battery storage.

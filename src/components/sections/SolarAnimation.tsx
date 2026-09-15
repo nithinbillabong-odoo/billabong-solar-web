@@ -330,7 +330,7 @@ export default function SolarAnimation() {
       <div className="absolute bottom-0 left-0 right-0 px-8 py-5 flex items-center justify-between"
         style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
         <div>
-          <p className="text-white font-bold text-lg leading-tight">Save up to <span style={{ color: "#FF660D" }}>$20,000/year</span> with solar ⚡</p>
+          <p className="text-white font-bold text-lg leading-tight">Save up to <span style={{ color: "#FF660D" }}>$100,000/year</span> with solar ⚡</p>
           <p className="text-white/40 text-xs">Victoria's New Energy Tech Approved Installer</p>
         </div>
         <a href="/get-a-free-quote/"
