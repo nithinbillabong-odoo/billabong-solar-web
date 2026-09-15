@@ -50,6 +50,11 @@ const nextConfig = {
         permanent: false,
       },
       {
+        source: '/solar-rebates-victoria',
+        destination: '/residential',
+        permanent: false,
+      },
+      {
         source: '/wp-content/uploads/:path*/codeofconductCertificatePDF-3.pdf',
         destination: '/docs/new-energy-tech-consumer-code.pdf',
         permanent: false,

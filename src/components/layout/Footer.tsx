@@ -6,7 +6,6 @@ const quickLinks = [
   { label: 'Residential Solar', href: '/residential' },
   { label: 'Commercial Solar', href: '/commercial' },
   { label: 'Battery Storage', href: '/battery-storage' },
-  { label: 'Victorian Solar Rebates', href: '/solar-rebates-victoria' },
   { label: 'About Us', href: '/about-us' },
   { label: 'Solar Blog', href: '/blog' },
   { label: 'FAQs', href: '/faq' },
@@ -17,7 +16,6 @@ const serviceLinks = [
   { label: '10kW - 20kW Residential Solar', href: '/residential' },
   { label: 'Commercial Solar (30kW - 1,000kW)', href: '/commercial' },
   { label: 'Battery Storage (Sigenergy, GoodWe)', href: '/battery-storage' },
-  { label: '$2,800 Solar Victoria Rebate & Loan', href: '/solar-rebates-victoria' },
   { label: 'Complaints Procedure', href: '/complaints-procedure' },
 ];
 

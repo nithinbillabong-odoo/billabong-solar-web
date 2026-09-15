@@ -5,7 +5,7 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: 'Residential Solar Panels Melbourne & Victoria | Tier-1 Solar Installation | Billabong Solar',
   description:
-    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 10kW to 20kW custom systems, NETCC approved solar seller, licensed A-Grade electricians, 25-year warranties, and $1,400 Solar Victoria rebates.',
+    'Power your Melbourne home with premium Tier-1 residential solar panels and inverters. 10kW to 20kW custom systems, NETCC approved solar seller, licensed A-Grade electricians, and 25-year warranties.',
   keywords: [
     'residential solar panels melbourne',
     'residential solar victoria',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Residential Solar Installation Melbourne & Victoria | Billabong Solar',
-    description: 'Slash your electricity bills with Tier-1 residential solar packages. Claim up to $2,800 in Victorian rebates & loans.',
+    description: 'Power your Melbourne home with Tier-1 residential solar packages installed by accredited master electricians.',
     url: 'https://billabongsolar.com.au/residential',
     type: 'website',
   },
@@ -34,7 +34,6 @@ const packages = [
     panels: '22-24 x Tier-1 Monocrystalline Panels (440W-450W)',
     inverter: '8.0 kW – 8.5 kW Smart Hybrid Inverter (GoodWe / Sigenergy)',
     generation: 'Approx. 38 - 45 kWh / day average',
-    savings: 'Save $2,000 – $2,800 / year on power bills',
     badge: 'Most Popular',
   },
   {
@@ -43,7 +42,6 @@ const packages = [
     panels: '30 x Tier-1 High-Output Panels (440W-450W)',
     inverter: '10.0 kW 3-Phase Smart Hybrid Inverter',
     generation: 'Approx. 50 - 60 kWh / day average',
-    savings: 'Save $2,800 – $4,000 / year on power bills',
     badge: 'Best Value',
   },
   {
@@ -52,7 +50,6 @@ const packages = [
     panels: '44-46 x Tier-1 Commercial-Grade Monocrystalline Panels',
     inverter: '15.0 kW – 20.0 kW 3-Phase Smart Inverter',
     generation: 'Approx. 76 - 90 kWh / day average',
-    savings: 'Save $4,500 – $6,500+ / year on power bills',
     badge: 'Maximum',
   },
 ];
@@ -114,12 +111,12 @@ export default function ResidentialSolarPage() {
               >
                 Get a Free Home Solar Quote
               </Link>
-              <Link
-                href="/solar-rebates-victoria"
+              <a
+                href="tel:1300897221"
                 className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold px-6 py-4 rounded-full text-base transition-colors flex items-center gap-2"
               >
-                <span>Check $2,800 Rebate</span>
-              </Link>
+                <span>Call 1300 897 221</span>
+              </a>
             </div>
           </div>
         </div>
@@ -169,10 +166,6 @@ export default function ResidentialSolarPage() {
                   <div className="p-3 bg-gray-50 rounded-xl">
                     <span className="text-xs font-bold text-gray-500 block">Estimated Output</span>
                     <span className="font-semibold text-slate-800">{pkg.generation}</span>
-                  </div>
-                  <div className="p-3 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-xl">
-                    <span className="text-xs font-bold text-emerald-700 block">Annual Savings</span>
-                    <span className="font-extrabold text-emerald-800">{pkg.savings}</span>
                   </div>
                 </div>
 

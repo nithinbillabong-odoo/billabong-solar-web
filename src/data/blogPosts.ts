@@ -545,7 +545,7 @@ export const blogPosts: BlogPost[] = [
         <li><strong>EV Fast Charging:</strong> Built-in 25kW DC bidirectional fast charger (charges EVs directly from solar up to 4x faster than standard wallboxes).</li>
         <li><strong>Blackout Protection:</strong> True 0-millisecond UPS backup switchover (computers, medical devices, and Wi-Fi do not even reboot during grid failure).</li>
         <li><strong>Warranty:</strong> 10-Year comprehensive Australian manufacturer warranty.</li>
-        <li><strong>Best For:</strong> EV drivers (Tesla, BYD, Hyundai, Kia), high-end homes, and homeowners wanting an all-in-one future-proof hub.</li>
+        <li><strong>Best For:</strong> Electric vehicle (EV) owners, high-end homes, and homeowners wanting an all-in-one future-proof hub.</li>
       </ul>
 
       <h3 class="text-xl font-bold text-slate-900 mt-6 mb-3">2. GoodWe Lynx Home U & F Series</h3>

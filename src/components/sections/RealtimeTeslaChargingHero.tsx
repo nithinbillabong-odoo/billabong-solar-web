@@ -83,7 +83,7 @@ export default function RealtimeTeslaChargingHero() {
       {/* Battery Level Progress Bar */}
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs font-bold">
-          <span className="text-slate-300">EV Battery Level (Tesla • BYD • All EVs)</span>
+          <span className="text-slate-300">EV Battery Level</span>
           <span style={{ color: current.primaryColor }} className="font-black text-sm">
             {batteryLevel}%
           </span>
@@ -129,13 +129,13 @@ export default function RealtimeTeslaChargingHero() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>Direct DC Fast Charging • Universal EV & Tesla Compatible</span>
+            <span>Direct DC Fast Charging • Universal EV Compatible</span>
           </div>
           <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#171D4D] tracking-tight">
-            Charge Your <span className="text-[#FF5E00]">EV & Tesla</span> Straight from SigenStor Solar
+            Charge Your <span className="text-[#FF5E00]">EV</span> Straight from SigenStor Solar
           </h2>
           <p className="text-gray-600 text-xs sm:text-sm lg:text-base mt-1.5 sm:mt-2 max-w-2xl leading-relaxed">
-            Experience the Sigenergy SigenStor 5-in-1 breakthrough: direct DC EV fast charging connected straight to the battery. Eliminate AC conversion losses and power your Tesla, BYD, Kia, Hyundai, MG, or European EV on 100% free Australian sunshine.
+            Experience the SigenStor 5-in-1 breakthrough: direct DC EV fast charging connected straight to the battery. Eliminate AC conversion losses and power your electric vehicle on 100% free Australian sunshine.
           </p>
         </div>
 
@@ -182,7 +182,7 @@ export default function RealtimeTeslaChargingHero() {
         {/* Photorealistic SigenStor + EV Garage Image */}
         <Image
           src="/images/sigenstor-tesla-garage.jpg"
-          alt="Sigenergy SigenStor 5-in-1 Battery with direct DC EV Fast Charger powering an electric car in a Victorian garage with rooftop solar"
+          alt="SigenStor 5-in-1 Battery with direct DC EV Fast Charger powering an electric vehicle in a Victorian garage with rooftop solar"
           fill
           priority
           sizes="(max-width: 1200px) 100vw, 1200px"
@@ -378,7 +378,7 @@ export default function RealtimeTeslaChargingHero() {
             className="flex items-center gap-1.5 bg-slate-950/80 hover:bg-slate-900 backdrop-blur-md px-3 py-1 rounded-full border border-cyan-400/40 text-cyan-300 text-[10px] sm:text-xs font-bold shadow-lg cursor-pointer transition-transform hover:scale-105"
           >
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span>🔋 Sigenergy SigenStor 5-in-1 • Direct DC Port</span>
+            <span>🔋 SigenStor 5-in-1 • Direct DC Port</span>
           </div>
         </div>
 
@@ -393,7 +393,7 @@ export default function RealtimeTeslaChargingHero() {
             className="flex items-center gap-1.5 bg-slate-950/80 hover:bg-slate-900 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-bold shadow-lg cursor-pointer transition-transform hover:scale-105"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>🚗 Direct CCS2 Port • All EVs & Tesla</span>
+            <span>🚗 Direct CCS2 Port • All EVs</span>
           </div>
         </div>
 
@@ -450,7 +450,7 @@ export default function RealtimeTeslaChargingHero() {
             Pure DC Fast Charging (Up to 25 kW)
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Standard AC wallboxes lose 10–15% efficiency in conversion and are capped at 7kW or 11kW. Sigenergy feeds DC solar directly from the battery into your EV at over double the speed.
+            Standard AC wallboxes lose 10–15% efficiency in conversion and are capped at 7kW or 11kW. SigenStor feeds DC solar directly from the battery into your EV at over double the speed.
           </p>
         </div>
 
@@ -462,7 +462,7 @@ export default function RealtimeTeslaChargingHero() {
             100% Free Solar Motoring for All EVs
           </h4>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Universal compatibility with Tesla, BYD, Kia, Hyundai, MG, and European electric cars. Drive on free surplus sunshine that would otherwise be exported for minimal credits.
+            Universal compatibility with all electric vehicles equipped with standard CCS2 charging ports. Drive on free surplus sunshine that would otherwise be exported for minimal credits.
           </p>
         </div>
 
