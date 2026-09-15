@@ -216,32 +216,6 @@ export default function RealtimeTeslaChargingHero() {
             </filter>
           </defs>
 
-          {/* High-Definition SigenStor Front-Fascia Brand Badge (Vector Sharpness on Retina/4K) */}
-          <g transform="translate(476, 313)" className="select-none pointer-events-none">
-            <text
-              x="0"
-              y="8"
-              fill="#008CA8"
-              fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-              fontSize="9.5"
-              fontWeight="700"
-              letterSpacing="0.2"
-            >
-              Sigenergy
-            </text>
-            <text
-              x="0"
-              y="20"
-              fill="#18202F"
-              fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-              fontSize="10.5"
-              fontWeight="800"
-              letterSpacing="-0.2"
-            >
-              SigenStor
-            </text>
-          </g>
-
           {/* 1. SigenStor Vertical Cyan Light Bar Glow */}
           {isCharging && (
             <line
