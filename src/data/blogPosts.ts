@@ -309,9 +309,9 @@ export const blogPosts: BlogPost[] = [
     },
     readTime: '9 min read',
     image: '/images/blog/post-7-commercial-solar.webp',
-    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 1,000kW commercial solar systems combined with instant asset write-offs, federal STC/LGC rebates, and Victorian VEEC incentives deliver ROI in under 3 years.',
-    metaTitle: 'Commercial Solar Victoria: Tax Write-Offs, STC, LGC & VEEC Guide | Billabong Solar',
-    metaDescription: 'Essential commercial solar guide for Victorian businesses. Learn how STCs, LGCs, Victorian VEECs (VEU), tax depreciation, and battery storage accelerate commercial payback.',
+    excerpt: 'A comprehensive guide for Victorian businesses looking to cut operating costs. Learn how 30kW to 1,000kW commercial solar systems combined with instant asset write-offs, federal STC rebates, and Victorian VEEC incentives deliver ROI in under 3 years.',
+    metaTitle: 'Commercial Solar Victoria: Tax Write-Offs, STC & VEEC Guide | Billabong Solar',
+    metaDescription: 'Essential commercial solar guide for Victorian businesses. Learn how STCs, Victorian VEECs (VEU), tax depreciation, and battery storage accelerate commercial payback.',
     keywords: [
       'commercial solar victoria',
       'commercial solar melbourne',
@@ -343,18 +343,10 @@ export const blogPosts: BlogPost[] = [
           <p class="text-gray-700 text-sm leading-relaxed">Commercial solar arrays up to 100 kW in inverter capacity qualify for the federal Small-scale Renewable Energy Scheme (SRES). STCs are calculated based on the total expected clean generation until the scheme’s 2030 phase-out. For a typical 30 kW to 99 kW commercial installation, STCs act as an immediate point-of-sale discount, reducing total installation invoices by <strong>up to 30% to 35%</strong> upfront.</p>
         </div>
 
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 text-xs font-black uppercase tracking-wider">Federal • Large Scale</span>
-            <h3 class="text-lg font-bold text-[#171D4D]">2. Large-scale Generation Certificates (LGCs) — Systems > 100kW</h3>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed">For large industrial factories, distribution centers, and agribusinesses installing commercial systems over 100 kW (up to 1,000 kW / 1MW), the project is accredited under the Large-scale Renewable Energy Target (LRET). The system earns <strong>1 LGC for every 1 MWh</strong> of verified green electricity generated. These certificates can be surrendered for ongoing annuity income, sold to liable corporations on the spot market, or contracted under long-term Power Purchase Agreements (PPAs).</p>
-        </div>
-
         <div class="p-6 bg-emerald-50/70 border border-emerald-200 rounded-2xl shadow-sm">
           <div class="flex items-center gap-2 mb-2">
             <span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-xs font-black uppercase tracking-wider">State Level • Victoria (VEU / ESC)</span>
-            <h3 class="text-lg font-bold text-emerald-900">3. Victorian Energy Efficiency Certificates (VEECs) — The VEU Program</h3>
+            <h3 class="text-lg font-bold text-emerald-900">2. Victorian Energy Efficiency Certificates (VEECs) — The VEU Program</h3>
           </div>
           <p class="text-gray-700 text-sm leading-relaxed mb-3">Administered by the <strong>Essential Services Commission (ESC)</strong> under the <em>Victorian Energy Efficiency Target (VEET) Act 2007</em>, the Victorian Energy Upgrades (VEU) program provides substantial extra cash incentives for commercial energy reductions and electrification projects across Victoria.</p>
           <div class="bg-white p-4 rounded-xl border border-emerald-200/80 space-y-2 text-xs text-gray-700">
@@ -363,7 +355,7 @@ export const blogPosts: BlogPost[] = [
               <li><strong>1 VEEC = 1 Tonne of CO2-e Abated:</strong> Each certificate represents one deemed or measured tonne of greenhouse gas emissions avoided by displacing dirty grid electricity in Victoria.</li>
               <li><strong>High Market Value ($60 – $90+ per VEEC):</strong> Victorian energy retailers are legally mandated to acquire and surrender an annual statutory quota of VEECs, driving strong and consistent certificate cash demand.</li>
               <li><strong>Project-Based Activities (PBA) & Deemed Methods:</strong> Commercial enterprises replacing heavy fossil gas equipment, electrifying operations, or installing qualifying commercial energy management upgrades can create thousands of VEECs, yielding tens of thousands of dollars in project subsidies.</li>
-              <li><strong>Stacking VEECs with Federal Rebates:</strong> Because VEECs operate at the Victorian state level, qualifying commercial energy projects can often access both Federal certificates (STCs/LGCs) and Victorian energy certificates, compounding financial returns.</li>
+              <li><strong>Stacking VEECs with Federal Rebates:</strong> Because VEECs operate at the Victorian state level, qualifying commercial energy projects can often access both Federal certificates (STCs) and Victorian energy certificates, compounding financial returns.</li>
             </ul>
           </div>
         </div>
@@ -371,7 +363,7 @@ export const blogPosts: BlogPost[] = [
         <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
           <div class="flex items-center gap-2 mb-2">
             <span class="px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 text-xs font-black uppercase tracking-wider">Tax Provisions • ATO</span>
-            <h3 class="text-lg font-bold text-[#171D4D]">4. Instant Asset Write-Offs & Accelerated Capital Depreciation</h3>
+            <h3 class="text-lg font-bold text-[#171D4D]">3. Instant Asset Write-Offs & Accelerated Capital Depreciation</h3>
           </div>
           <p class="text-gray-700 text-sm leading-relaxed">Under current Australian Taxation Office (ATO) business asset guidelines, commercial solar systems and battery storage represent depreciable plant and equipment. Eligible businesses can claim upfront deductions, accelerated depreciation, or instant asset write-offs against their taxable income, reducing the net cash impact of the installation in the first financial year.</p>
         </div>
@@ -396,13 +388,6 @@ export const blogPosts: BlogPost[] = [
               <td class="p-3">Up to 100 kW</td>
               <td class="p-3">Upfront point-of-sale invoice deduction</td>
               <td class="p-3 text-emerald-600 font-bold">~30%–35% off system cost</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-bold text-purple-900">LGC (Large-scale)</td>
-              <td class="p-3">Clean Energy Regulator (Federal)</td>
-              <td class="p-3">> 100 kW (up to 1MW+)</td>
-              <td class="p-3">Ongoing annual generation trading (1 LGC / MWh)</td>
-              <td class="p-3 font-semibold">Multi-year annuity cash stream</td>
             </tr>
             <tr>
               <td class="p-3 font-bold text-emerald-900">VEEC (Victorian)</td>
