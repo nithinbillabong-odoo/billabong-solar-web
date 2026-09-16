@@ -192,7 +192,7 @@ export default function BlogPostPage({ params }: PageProps) {
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
                     <h4 className="font-extrabold text-slate-900 text-lg">{post.author.name}</h4>
                     <span className="text-xs bg-orange-100 text-[#FF5E00] font-bold px-2.5 py-0.5 rounded-full border border-orange-200">
-                      NETCC Approved Specialist
+                      NETCC Approved
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 font-semibold mb-3">
