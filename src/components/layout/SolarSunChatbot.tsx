@@ -9,7 +9,8 @@ export default function SolarSunChatbot() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const isPreviewMode = process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE === 'true';
+  // Default preview mode to TRUE unless explicitly set to 'false' (protects live production)
+  const isPreviewMode = process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE !== 'false';
   const expectedPassword = process.env.NEXT_PUBLIC_MAZ_PREVIEW_PASSWORD || '112';
 
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -48,16 +49,24 @@ export default function SolarSunChatbot() {
     const interval = setInterval(() => {
       const panel = document.getElementById('maz-chat-panel');
       if (panel) {
-        setIsChatOpen(panel.classList.contains('maz-open'));
+        if (!isUnlocked && isPreviewMode) {
+          // If locked, immediately prevent chat from popping up
+          if (panel.classList.contains('maz-open')) {
+            panel.classList.remove('maz-open');
+          }
+          setIsChatOpen(false);
+        } else {
+          setIsChatOpen(panel.classList.contains('maz-open'));
+        }
       }
-    }, 300);
+    }, 200);
 
     return () => {
       clearTimeout(landTimer);
       clearTimeout(bubbleTimer);
       clearInterval(interval);
     };
-  }, []);
+  }, [isUnlocked, isPreviewMode]);
 
   const handleToggleChat = () => {
     // If preview mode is enabled and not yet unlocked, require passcode
@@ -107,6 +116,14 @@ export default function SolarSunChatbot() {
         #maz-teaser {
           display: none !important;
         }
+        ${!isUnlocked && isPreviewMode ? `
+        #maz-chat-panel {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+        ` : ''}
         /* Custom brand accent for Maz chat panel to match Billabong Solar */
         #maz-chat-panel {
           border-radius: 24px !important;
@@ -415,11 +432,11 @@ export default function SolarSunChatbot() {
               Solar AI Assistant
             </h3>
             <span className="inline-block mt-1 px-3 py-0.5 bg-orange-100 text-[#FF5E00] text-xs font-extrabold rounded-full">
-              Preview Mode
+              Testing &amp; Training Mode
             </span>
 
             <p className="text-xs text-slate-600 mt-2.5 mb-4 leading-relaxed">
-              This chatbot is currently in private testing mode. Please enter the passcode to access.
+              This chatbot is locked for testing while we teach and train the AI. Please enter the passcode to access.
             </p>
 
             <form onSubmit={handlePasswordSubmit} className="space-y-3.5 text-left">
