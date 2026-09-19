@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
   return (
-    <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-24 sm:bottom-28 right-5 sm:right-7 z-40 flex flex-col items-end">
       {/* Tooltip */}
       <div
         className={`mb-2 bg-white text-gray-800 px-3 py-1.5 rounded-lg shadow-lg text-xs font-semibold transition-all duration-300 origin-bottom-right border border-gray-100 ${

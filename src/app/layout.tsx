@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import ChatAssistPopup from "@/components/layout/ChatAssistPopup";
+import SolarSunChatbot from "@/components/layout/SolarSunChatbot";
 import { localBusinessSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -136,6 +138,16 @@ export default function RootLayout({
         <Footer />
         <WhatsAppButton />
         <ChatAssistPopup />
+        <SolarSunChatbot />
+        <Script
+          src="https://maz-portal.vercel.app/maz.js"
+          data-bot-id={process.env.NEXT_PUBLIC_MAZ_BOT_ID || "maz_2de5f4b6b25b"}
+          data-api-host={process.env.NEXT_PUBLIC_MAZ_API_HOST || "https://maz-backend-t1hy.onrender.com"}
+          data-preview-mode={process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE || "true"}
+          data-preview-password={process.env.NEXT_PUBLIC_MAZ_PREVIEW_PASSWORD || "112"}
+          data-coming-soon-text={process.env.NEXT_PUBLIC_MAZ_COMING_SOON_TEXT || "Solar AI Assistant (Preview)"}
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

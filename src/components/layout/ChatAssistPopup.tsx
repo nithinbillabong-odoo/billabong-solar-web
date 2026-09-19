@@ -37,7 +37,8 @@ export default function ChatAssistPopup() {
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP || '61450941413';
 
-  // Auto-open after 3.5 seconds on initial site visit (once per session)
+  // Disabled auto-open so user is not interrupted while exploring or interacting with the AI bot
+  /*
   useEffect(() => {
     try {
       const alreadyShown = sessionStorage.getItem('billabong_chat_assist_shown');
@@ -52,6 +53,7 @@ export default function ChatAssistPopup() {
       // Ignore if sessionStorage is unavailable
     }
   }, []);
+  */
 
   // Auto scroll to bottom whenever screen changes or message appears
   useEffect(() => {
@@ -213,13 +215,13 @@ export default function ChatAssistPopup() {
   };
 
   return (
-    <aside aria-label="Billabong Solar Chat Assistant" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+    <aside aria-label="Billabong Solar Quote Assistant" className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40">
       {/* Floating Trigger Pill / Bubble */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
           className="group flex items-center gap-3 bg-gradient-to-r from-[#171D4D] to-[#252E6D] hover:to-[#FF5E00] text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 border border-white/20"
-          aria-label="Open Billabong Solar Chat Assistant"
+          aria-label="Open Billabong Solar Quote Assistant"
         >
           <div className="relative">
             <span className="flex h-3.5 w-3.5 relative">
@@ -228,11 +230,11 @@ export default function ChatAssistPopup() {
             </span>
           </div>
           <div className="text-left">
-            <p className="text-xs font-black uppercase tracking-wider text-orange-400">Solar Assistant</p>
-            <p className="text-xs sm:text-sm font-bold text-white">Ask a Question or Quote</p>
+            <p className="text-xs font-black uppercase tracking-wider text-orange-400">Quick Quote Form</p>
+            <p className="text-xs sm:text-sm font-bold text-white">Rebates & Pricing</p>
           </div>
           <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
-            💬
+            📋
           </div>
         </button>
       )}
