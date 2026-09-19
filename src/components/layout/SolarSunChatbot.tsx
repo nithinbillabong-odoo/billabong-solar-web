@@ -9,6 +9,29 @@ export default function SolarSunChatbot() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  const isPreviewMode = process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE === 'true';
+  const expectedPassword = process.env.NEXT_PUBLIC_MAZ_PREVIEW_PASSWORD || '112';
+
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // Check if previously unlocked in this session
+  useEffect(() => {
+    if (!isPreviewMode) {
+      setIsUnlocked(true);
+      return;
+    }
+    try {
+      if (sessionStorage.getItem('maz_preview_unlocked') === 'true') {
+        setIsUnlocked(true);
+      }
+    } catch {
+      // sessionStorage unavailable
+    }
+  }, [isPreviewMode]);
+
   // Trigger drop animation and speech bubble sequence
   useEffect(() => {
     // Drop animation takes ~1.1s
@@ -37,12 +60,41 @@ export default function SolarSunChatbot() {
   }, []);
 
   const handleToggleChat = () => {
+    // If preview mode is enabled and not yet unlocked, require passcode
+    if (isPreviewMode && !isUnlocked) {
+      setShowPasswordModal(true);
+      setPasswordError('');
+      setIsBubbleDismissed(true);
+      return;
+    }
+
     const launcher = document.getElementById('maz-launcher-btn');
     if (launcher) {
       launcher.click();
     }
     // Also dismiss bubble once user has engaged
     setIsBubbleDismissed(true);
+  };
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput.trim() === expectedPassword.trim()) {
+      setIsUnlocked(true);
+      try {
+        sessionStorage.setItem('maz_preview_unlocked', 'true');
+      } catch {
+        // Ignore storage error
+      }
+      setShowPasswordModal(false);
+      setPasswordError('');
+      // Open the chat right away
+      setTimeout(() => {
+        const launcher = document.getElementById('maz-launcher-btn');
+        if (launcher) launcher.click();
+      }, 150);
+    } else {
+      setPasswordError('Incorrect passcode. Please try again.');
+    }
   };
 
   return (
@@ -333,6 +385,78 @@ export default function SolarSunChatbot() {
           </div>
         </button>
       </aside>
+
+      {/* Preview Passcode Lock Modal */}
+      {showPasswordModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setShowPasswordModal(false)}
+        >
+          <div
+            className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-orange-200 text-center relative animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowPasswordModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 mx-auto flex items-center justify-center text-3xl shadow-lg shadow-orange-500/30 mb-3">
+              ☀️
+            </div>
+
+            <h3 className="text-lg font-black text-[#171D4D]">
+              Solar AI Assistant
+            </h3>
+            <span className="inline-block mt-1 px-3 py-0.5 bg-orange-100 text-[#FF5E00] text-xs font-extrabold rounded-full">
+              Preview Mode
+            </span>
+
+            <p className="text-xs text-slate-600 mt-2.5 mb-4 leading-relaxed">
+              This chatbot is currently in private testing mode. Please enter the passcode to access.
+            </p>
+
+            <form onSubmit={handlePasswordSubmit} className="space-y-3.5 text-left">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Preview Passcode
+                </label>
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  autoFocus
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    setPasswordError('');
+                  }}
+                  placeholder="Enter passcode"
+                  className="w-full px-4 py-3 text-sm text-center tracking-widest font-mono font-bold border-2 border-slate-200 rounded-xl focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-hidden transition-all text-slate-900"
+                />
+              </div>
+
+              {passwordError && (
+                <p className="text-xs text-red-600 font-bold text-center">
+                  {passwordError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-orange-500/30 transition-all transform active:scale-98 cursor-pointer"
+              >
+                Unlock Chatbot →
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
