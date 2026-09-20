@@ -91,7 +91,9 @@ export default function SolarSunChatbot() {
     if (e) {
       e.stopPropagation();
     }
-    // If chat is already open, clicking X closes it
+    setIsBubbleDismissed(true);
+
+    // If chat is already open, clicking closes it
     if (isChatOpen) {
       const closeBtn = document.getElementById('maz-close-x');
       if (closeBtn) closeBtn.click();
@@ -100,14 +102,15 @@ export default function SolarSunChatbot() {
       return;
     }
 
-    // Open the widget
-    openMazWidget();
-
-    // If locked in preview mode, present the unlock overlay
+    // If locked in preview mode, present the unlock modal first!
     if (isPreviewMode && !isUnlocked) {
       setShowPasswordModal(true);
       setPasswordError('');
+      return;
     }
+
+    // Otherwise open the widget directly
+    openMazWidget();
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -123,11 +126,10 @@ export default function SolarSunChatbot() {
       }
       setShowPasswordModal(false);
       setPasswordError('');
-      // Focus input if available
+      // Open the chat right away once unlocked
       setTimeout(() => {
-        const input = document.getElementById('maz-input') as HTMLInputElement | null;
-        if (input) input.focus();
-      }, 150);
+        openMazWidget();
+      }, 100);
     } else {
       setPasswordError('Incorrect passcode. Please try again.');
     }
@@ -158,32 +160,41 @@ export default function SolarSunChatbot() {
           transform: translateY(0) scale(1) !important;
         }
 
-        /* Mobile full-screen guarantee for iOS Safari */
+        /* Prevent chat panel from showing prematurely if locked */
+        ${!isUnlocked && isPreviewMode ? `
+        #maz-chat-panel {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+        ` : ''}
+
+        /* Mobile full-screen guarantee for iOS Safari with zero gaps */
         @media (max-width: 640px) {
+          #maz-chat-panel,
           #maz-chat-panel.maz-open {
             position: fixed !important;
+            inset: 0px !important;
             top: 0px !important;
             bottom: 0px !important;
             left: 0px !important;
             right: 0px !important;
             width: 100vw !important;
+            max-width: 100vw !important;
+            min-width: 100vw !important;
             height: 100% !important;
-            max-height: 100% !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
             border-radius: 0px !important;
+            margin: 0px !important;
+            padding: 0px !important;
+            box-sizing: border-box !important;
             z-index: 9999998 !important;
             display: flex !important;
             flex-direction: column !important;
           }
         }
-
-        /* If locked in preview mode, blur messages and disable input */
-        ${!isUnlocked && isPreviewMode ? `
-        #maz-body, .maz-footer {
-          filter: blur(6px) !important;
-          pointer-events: none !important;
-          user-select: none !important;
-        }
-        ` : ''}
 
         #maz-header {
           background: linear-gradient(135deg, #171D4D 0%, #252E6D 60%, #FF5E00 130%) !important;
@@ -333,10 +344,6 @@ export default function SolarSunChatbot() {
         <button
           type="button"
           onClick={handleToggleChat}
-          onTouchEnd={(e) => {
-            e.preventDefault();
-            handleToggleChat();
-          }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           className={`pointer-events-auto relative focus:outline-none touch-manipulation transition-all duration-300 cursor-pointer ${
@@ -474,7 +481,7 @@ export default function SolarSunChatbot() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[9999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[2147483647] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
         >
           <div
             className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border-2 border-orange-400 text-center relative"
