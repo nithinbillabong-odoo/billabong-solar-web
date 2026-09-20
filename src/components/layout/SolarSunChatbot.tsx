@@ -52,15 +52,7 @@ export default function SolarSunChatbot() {
     const interval = setInterval(() => {
       const panel = document.getElementById('maz-chat-panel');
       if (panel) {
-        if (!isUnlocked && isPreviewMode) {
-          // If locked, immediately prevent chat from popping up
-          if (panel.classList.contains('maz-open')) {
-            panel.classList.remove('maz-open');
-          }
-          setIsChatOpen(false);
-        } else {
-          setIsChatOpen(panel.classList.contains('maz-open'));
-        }
+        setIsChatOpen(panel.classList.contains('maz-open'));
       }
     }, 200);
 
@@ -69,9 +61,9 @@ export default function SolarSunChatbot() {
       clearTimeout(bubbleTimer);
       clearInterval(interval);
     };
-  }, [isUnlocked, isPreviewMode]);
+  }, []);
 
-  // Helper to reliably trigger the Maz widget even if script is still initializing
+  // Helper to reliably trigger the Maz widget
   const openMazWidget = () => {
     setIsBubbleDismissed(true);
 
@@ -99,15 +91,23 @@ export default function SolarSunChatbot() {
     if (e) {
       e.stopPropagation();
     }
-    // If preview mode is enabled and not yet unlocked, require passcode
-    if (isPreviewMode && !isUnlocked) {
-      setShowPasswordModal(true);
-      setPasswordError('');
-      setIsBubbleDismissed(true);
+    // If chat is already open, clicking X closes it
+    if (isChatOpen) {
+      const closeBtn = document.getElementById('maz-close-x');
+      if (closeBtn) closeBtn.click();
+      else openMazWidget();
+      setShowPasswordModal(false);
       return;
     }
 
+    // Open the widget
     openMazWidget();
+
+    // If locked in preview mode, present the unlock overlay
+    if (isPreviewMode && !isUnlocked) {
+      setShowPasswordModal(true);
+      setPasswordError('');
+    }
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -123,10 +123,11 @@ export default function SolarSunChatbot() {
       }
       setShowPasswordModal(false);
       setPasswordError('');
-      // Open the chat right away
+      // Focus input if available
       setTimeout(() => {
-        openMazWidget();
-      }, 100);
+        const input = document.getElementById('maz-input') as HTMLInputElement | null;
+        if (input) input.focus();
+      }, 150);
     } else {
       setPasswordError('Incorrect passcode. Please try again.');
     }
@@ -134,7 +135,7 @@ export default function SolarSunChatbot() {
 
   return (
     <>
-      {/* Hide the default plain Maz button & teaser so our Smiling Sun Mascot is the primary launcher */}
+      {/* Brand styling and mobile positioning overrides for Maz widget */}
       <style dangerouslySetInnerHTML={{ __html: `
         #maz-launcher-btn {
           display: none !important;
@@ -142,19 +143,48 @@ export default function SolarSunChatbot() {
         #maz-teaser {
           display: none !important;
         }
-        ${!isUnlocked && isPreviewMode ? `
-        #maz-chat-panel {
-          display: none !important;
-          visibility: hidden !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-        }
-        ` : ''}
-        /* Custom brand accent for Maz chat panel to match Billabong Solar */
+
+        /* Ensure maz-chat-panel is cleanly positioned and visible when open */
         #maz-chat-panel {
           border-radius: 24px !important;
           box-shadow: 0 24px 60px -12px rgba(23, 29, 77, 0.28), 0 0 0 1px rgba(255, 94, 0, 0.15) !important;
+          z-index: 9999998 !important;
         }
+        #maz-chat-panel.maz-open {
+          display: flex !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          transform: translateY(0) scale(1) !important;
+        }
+
+        /* Mobile full-screen guarantee for iOS Safari */
+        @media (max-width: 640px) {
+          #maz-chat-panel.maz-open {
+            position: fixed !important;
+            top: 0px !important;
+            bottom: 0px !important;
+            left: 0px !important;
+            right: 0px !important;
+            width: 100vw !important;
+            height: 100% !important;
+            max-height: 100% !important;
+            border-radius: 0px !important;
+            z-index: 9999998 !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+        }
+
+        /* If locked in preview mode, blur messages and disable input */
+        ${!isUnlocked && isPreviewMode ? `
+        #maz-body, .maz-footer {
+          filter: blur(6px) !important;
+          pointer-events: none !important;
+          user-select: none !important;
+        }
+        ` : ''}
+
         #maz-header {
           background: linear-gradient(135deg, #171D4D 0%, #252E6D 60%, #FF5E00 130%) !important;
         }
@@ -310,6 +340,8 @@ export default function SolarSunChatbot() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           className={`pointer-events-auto relative focus:outline-none touch-manipulation transition-all duration-300 cursor-pointer ${
+            isChatOpen ? 'max-sm:hidden' : ''
+          } ${
             hasLanded ? 'sun-floating-animation hover:scale-110 active:scale-95' : 'sun-falling-animation'
           }`}
           aria-label="Open Solar AI Assistant"
@@ -442,15 +474,19 @@ export default function SolarSunChatbot() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          className="fixed inset-0 z-[9999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
         >
           <div
-            className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-orange-200 text-center relative animate-in zoom-in-95 duration-200"
+            className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border-2 border-orange-400 text-center relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
-              onClick={() => setShowPasswordModal(false)}
+              onClick={() => {
+                setShowPasswordModal(false);
+                const closeBtn = document.getElementById('maz-close-x');
+                if (closeBtn) closeBtn.click();
+              }}
               className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer"
               aria-label="Close"
             >
@@ -508,7 +544,11 @@ export default function SolarSunChatbot() {
               </button>
               <button
                 type="button"
-                onClick={() => setShowPasswordModal(false)}
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  const closeBtn = document.getElementById('maz-close-x');
+                  if (closeBtn) closeBtn.click();
+                }}
                 className="w-full py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors text-center cursor-pointer touch-manipulation block"
               >
                 Cancel
