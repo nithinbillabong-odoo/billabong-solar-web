@@ -131,6 +131,32 @@ export default function RootLayout({
             />
           </>
         )}
+        {/* Safari iOS Private Browsing localStorage shim to prevent maz.js crash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var testKey = '__maz_safari_test__';
+                window.localStorage.setItem(testKey, '1');
+                window.localStorage.removeItem(testKey);
+              } catch (e) {
+                try {
+                  var _store = {};
+                  Object.defineProperty(window, 'localStorage', {
+                    value: {
+                      getItem: function(k) { return _store[k] || null; },
+                      setItem: function(k, v) { _store[k] = String(v); },
+                      removeItem: function(k) { delete _store[k]; },
+                      clear: function() { _store = {}; }
+                    },
+                    writable: true,
+                    configurable: true
+                  });
+                } catch (err) {}
+              }
+            `,
+          }}
+        />
       </head>
       <body className="font-sans text-solar-gray antialiased">
         <Header />
@@ -146,7 +172,7 @@ export default function RootLayout({
           data-preview-mode={process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE || "true"}
           data-preview-password={process.env.NEXT_PUBLIC_MAZ_PREVIEW_PASSWORD || "112"}
           data-coming-soon-text={process.env.NEXT_PUBLIC_MAZ_COMING_SOON_TEXT || "Solar AI Assistant (Preview)"}
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
       </body>
     </html>

@@ -25,11 +25,14 @@ export default function SolarSunChatbot() {
       return;
     }
     try {
-      if (sessionStorage.getItem('maz_preview_unlocked') === 'true') {
+      if (
+        sessionStorage.getItem('maz_preview_unlocked') === 'true' ||
+        localStorage.getItem('maz_preview_unlocked') === 'true'
+      ) {
         setIsUnlocked(true);
       }
     } catch {
-      // sessionStorage unavailable
+      // storage unavailable
     }
   }, [isPreviewMode]);
 
@@ -68,7 +71,34 @@ export default function SolarSunChatbot() {
     };
   }, [isUnlocked, isPreviewMode]);
 
-  const handleToggleChat = () => {
+  // Helper to reliably trigger the Maz widget even if script is still initializing
+  const openMazWidget = () => {
+    setIsBubbleDismissed(true);
+
+    const tryClick = () => {
+      const launcher = document.getElementById('maz-launcher-btn');
+      if (launcher) {
+        launcher.click();
+        return true;
+      }
+      return false;
+    };
+
+    if (!tryClick()) {
+      let attempts = 0;
+      const poll = setInterval(() => {
+        attempts++;
+        if (tryClick() || attempts > 30) {
+          clearInterval(poll);
+        }
+      }, 100);
+    }
+  };
+
+  const handleToggleChat = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     // If preview mode is enabled and not yet unlocked, require passcode
     if (isPreviewMode && !isUnlocked) {
       setShowPasswordModal(true);
@@ -77,20 +107,17 @@ export default function SolarSunChatbot() {
       return;
     }
 
-    const launcher = document.getElementById('maz-launcher-btn');
-    if (launcher) {
-      launcher.click();
-    }
-    // Also dismiss bubble once user has engaged
-    setIsBubbleDismissed(true);
+    openMazWidget();
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (passwordInput.trim() === expectedPassword.trim()) {
       setIsUnlocked(true);
       try {
         sessionStorage.setItem('maz_preview_unlocked', 'true');
+        localStorage.setItem('maz_preview_unlocked', 'true');
       } catch {
         // Ignore storage error
       }
@@ -98,9 +125,8 @@ export default function SolarSunChatbot() {
       setPasswordError('');
       // Open the chat right away
       setTimeout(() => {
-        const launcher = document.getElementById('maz-launcher-btn');
-        if (launcher) launcher.click();
-      }, 150);
+        openMazWidget();
+      }, 100);
     } else {
       setPasswordError('Incorrect passcode. Please try again.');
     }
@@ -228,7 +254,11 @@ export default function SolarSunChatbot() {
         {showSpeechBubble && !isBubbleDismissed && !isChatOpen && (
           <div
             onClick={handleToggleChat}
-            className="pointer-events-auto cursor-pointer mb-3 mr-1 bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-2xl border-2 border-orange-400 max-w-[240px] sm:max-w-[270px] relative bubble-popping-animation transition-transform duration-200 hover:scale-105 group"
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handleToggleChat();
+            }}
+            className="pointer-events-auto cursor-pointer touch-manipulation mb-3 mr-1 bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-2xl border-2 border-orange-400 max-w-[240px] sm:max-w-[270px] relative bubble-popping-animation transition-transform duration-200 hover:scale-105 group"
             style={{ filter: 'drop-shadow(0 10px 25px rgba(255, 94, 0, 0.25))' }}
           >
             {/* Close / Dismiss */}
@@ -238,7 +268,7 @@ export default function SolarSunChatbot() {
                 e.stopPropagation();
                 setIsBubbleDismissed(true);
               }}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-slate-100 hover:bg-red-500 hover:text-white rounded-full text-slate-500 text-xs flex items-center justify-center transition-colors shadow-sm"
+              className="absolute -top-2 -right-2 w-5 h-5 bg-slate-100 hover:bg-red-500 hover:text-white rounded-full text-slate-500 text-xs flex items-center justify-center transition-colors shadow-sm cursor-pointer"
               aria-label="Dismiss message"
             >
               ✕
@@ -273,9 +303,13 @@ export default function SolarSunChatbot() {
         <button
           type="button"
           onClick={handleToggleChat}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            handleToggleChat();
+          }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className={`pointer-events-auto relative focus:outline-none transition-all duration-300 ${
+          className={`pointer-events-auto relative focus:outline-none touch-manipulation transition-all duration-300 cursor-pointer ${
             hasLanded ? 'sun-floating-animation hover:scale-110 active:scale-95' : 'sun-falling-animation'
           }`}
           aria-label="Open Solar AI Assistant"
@@ -311,7 +345,7 @@ export default function SolarSunChatbot() {
             {/* Main Sun Body with Radiant Warm Gradient */}
             <svg
               viewBox="0 0 100 100"
-              className="w-12 h-12 sm:w-14 sm:h-14 relative z-10"
+              className="w-12 h-12 sm:w-14 sm:h-14 relative z-10 pointer-events-none"
             >
               <defs>
                 <radialGradient id="sunFaceGradient" cx="40%" cy="40%" r="60%">
@@ -409,7 +443,6 @@ export default function SolarSunChatbot() {
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
-          onClick={() => setShowPasswordModal(false)}
         >
           <div
             className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-orange-200 text-center relative animate-in zoom-in-95 duration-200"
@@ -418,7 +451,7 @@ export default function SolarSunChatbot() {
             <button
               type="button"
               onClick={() => setShowPasswordModal(false)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition-colors"
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer"
               aria-label="Close"
             >
               ✕
@@ -439,7 +472,11 @@ export default function SolarSunChatbot() {
               This chatbot is locked for testing while we teach and train the AI. Please enter the passcode to access.
             </p>
 
-            <form onSubmit={handlePasswordSubmit} className="space-y-3.5 text-left">
+            <form
+              action="javascript:void(0);"
+              onSubmit={handlePasswordSubmit}
+              className="space-y-3.5 text-left"
+            >
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Preview Passcode
@@ -447,13 +484,12 @@ export default function SolarSunChatbot() {
                 <input
                   type="password"
                   inputMode="numeric"
-                  autoFocus
                   value={passwordInput}
                   onChange={(e) => {
                     setPasswordInput(e.target.value);
                     setPasswordError('');
                   }}
-                  placeholder="Enter passcode"
+                  placeholder="Enter passcode (112)"
                   className="w-full px-4 py-3 text-sm text-center tracking-widest font-mono font-bold border-2 border-slate-200 rounded-xl focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-hidden transition-all text-slate-900"
                 />
               </div>
@@ -466,9 +502,16 @@ export default function SolarSunChatbot() {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-orange-500/30 transition-all transform active:scale-98 cursor-pointer"
+                className="w-full py-3 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-orange-500/30 transition-all transform active:scale-98 cursor-pointer touch-manipulation"
               >
                 Unlock Chatbot →
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPasswordModal(false)}
+                className="w-full py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors text-center cursor-pointer touch-manipulation block"
+              >
+                Cancel
               </button>
             </form>
           </div>
