@@ -171,7 +171,7 @@ export default function SuburbLocationPage({ params }: Props) {
           {/* Lead Angle Heading */}
           <div className="mb-8">
             <div className="inline-block px-3.5 py-1 rounded-full bg-orange-50 text-[#FF5E00] text-xs font-bold uppercase tracking-wider mb-3 border border-orange-200">
-              Local Perspective: {suburb.leadAngle}
+              Tailored Design: {suburb.leadAngle}
             </div>
             <h2 className="text-2xl md:text-4xl font-extrabold text-[#171D4D] tracking-tight">
               Engineering Solar for {suburb.name} Homes

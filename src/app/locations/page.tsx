@@ -73,12 +73,12 @@ export default function LocationsDirectoryPage() {
                           <h3 className="font-bold text-lg text-[#171D4D] group-hover:text-[#FF5E00] transition">
                             {suburb.name} <span className="text-xs font-normal text-gray-500">({suburb.postcode})</span>
                           </h3>
-                          <span className="text-[11px] font-semibold text-gray-600 bg-white px-2 py-0.5 rounded-md border border-gray-200">
-                            Tier {suburb.tier}
+                          <span className="text-[11px] font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md border border-orange-100">
+                            {suburb.servicingOffice} Hub
                           </span>
                         </div>
                         <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-4">
-                          <strong>Angle:</strong> {suburb.leadAngle}. {suburb.heroSubheadline}
+                          {suburb.heroSubheadline}
                         </p>
                       </div>
 
