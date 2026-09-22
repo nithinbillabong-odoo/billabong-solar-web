@@ -17,21 +17,21 @@ const slides = [
     heading: 'Goodbye to Massive Electricity Bills',
     subtext: 'Save up to $100,000/year. Let us tell you how!',
     ctaText: 'Book Your Free Consultation',
-    ctaLink: '/get-a-free-quote/'
+    ctaLink: '/get-a-free-quote'
   },
   {
     bgImage: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider_Accrediated-Electrician-Victoria-Solar.webp?w=1920&ssl=1',
     heading: 'Installed by Accredited Electricians',
     subtext: 'Designed by Engineers with over 10 years of experience in Solar Solutions',
     ctaText: 'Book Your Free Consultation',
-    ctaLink: '/get-a-free-quote/'
+    ctaLink: '/get-a-free-quote'
   },
   {
     bgImage: 'https://i0.wp.com/billabongsolar.com.au/wp-content/uploads/2025/10/Slider_Tier-1-Solar-Panels-Victoria.webp?w=1920&ssl=1',
     heading: 'We use Tier-1 Panels Only',
     subtext: 'Get Generous Rebates and Incentives. Let us explain how!',
     ctaText: 'Book Your Free Consultation',
-    ctaLink: '/get-a-free-quote/'
+    ctaLink: '/get-a-free-quote'
   }
 ];
 
