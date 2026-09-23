@@ -221,7 +221,7 @@ export default function CommercialSolarHubPage() {
                     href={`/commercial/${ind.slug}`}
                     className="inline-flex items-center justify-between w-full font-bold text-sm text-[#171D4D] group-hover:text-[#FF5E00] transition"
                   >
-                    <span>View Industry Solution & Case Study</span>
+                    <span>Explore Industry Solutions</span>
                     <span className="transform group-hover:translate-x-1 transition">→</span>
                   </Link>
                 </div>

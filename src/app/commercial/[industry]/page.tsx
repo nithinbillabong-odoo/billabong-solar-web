@@ -159,23 +159,30 @@ export default function CommercialIndustryPage({ params }: Props) {
             </div>
           ))}
 
-          {/* Real Case Study Banner */}
+          {/* Case Studies Updating Soon Banner */}
           <div className="bg-gradient-to-r from-slate-900 to-[#171D4D] text-white p-8 rounded-2xl my-12 border border-slate-800 shadow-lg">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#FF5E00] mb-2">
-              <span>★</span> Verified Commercial Installation
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-400 mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#FF5E00] animate-pulse" />
+              Verified Case Studies • Updating Soon
             </div>
             <h3 className="text-xl md:text-2xl font-bold mb-2">
-              Case Study: {industry.caseStudyPlaceholder.type}
+              Real Project Case Studies Coming Soon
             </h3>
             <p className="text-sm text-gray-300 mb-4">
-              <strong>System Specification:</strong> {industry.caseStudyPlaceholder.typicalSize}
+              We are currently finalizing verified job data, customer permissions, and site photography for recent <strong>{industry.title}</strong> installations across Victoria.
             </p>
-            <div className="p-4 bg-white/10 rounded-xl border border-white/10 text-sm leading-relaxed text-gray-200">
-              <strong className="text-white">Measurable Operational Impact: </strong>
-              {industry.caseStudyPlaceholder.outcome}
+            <div className="p-4 bg-white/10 rounded-xl border border-white/10 text-sm leading-relaxed text-gray-200 space-y-2">
+              <div>
+                <strong className="text-white">Typical System Sizes: </strong>
+                {industry.caseStudyPlaceholder.typicalSize}
+              </div>
+              <div>
+                <strong className="text-white">Typical Measured Impact: </strong>
+                {industry.caseStudyPlaceholder.outcome}
+              </div>
             </div>
             <p className="text-xs text-gray-400 mt-4 italic">
-              *Case study details published in compliance with Australian Consumer Law and client privacy permissions. Ask our engineers for relevant local references in your sector.
+              *Under Australian Consumer Law and our NETCC Approved Seller charter, we only publish verified job data with explicit client consent. In the meantime, our engineering team can provide direct local business references upon request.
             </p>
           </div>
 
