@@ -1,566 +1,764 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 
-export default function SolarSunChatbot() {
-  const [hasLanded, setHasLanded] = useState(false);
+interface ChatMessage {
+  id: string;
+  sender: 'bot' | 'user';
+  text: string;
+  time: string;
+  options?: Array<{ label: string; value: string; icon?: string }>;
+}
+
+type FlowStep =
+  | 'CATEGORY'
+  | 'CALLBACK_CHOICE'
+  | 'ASK_NAME'
+  | 'ASK_PHONE'
+  | 'ASK_EMAIL'
+  | 'ASK_ADDRESS'
+  | 'CONFIRMED'
+  | 'FREE_CHAT';
+
+export default function SolarAdvisorChatbot() {
+  const [isOpen, setIsOpen] = useState(false);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [isBubbleDismissed, setIsBubbleDismissed] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
-  // Default preview mode to TRUE unless explicitly set to 'false' (protects live production)
-  const isPreviewMode = process.env.NEXT_PUBLIC_MAZ_PREVIEW_MODE !== 'false';
-  const expectedPassword = process.env.NEXT_PUBLIC_MAZ_PREVIEW_PASSWORD || '112';
+  // Conversational flow state
+  const [step, setStep] = useState<FlowStep>('CATEGORY');
+  const [selectedCategory, setSelectedCategory] = useState('Prices & Quotes');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [leadId, setLeadId] = useState('');
+  const [odooLeadId, setOdooLeadId] = useState<number | null>(null);
 
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  // Input state
+  const [inputValue, setInputValue] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check if previously unlocked in this session
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  // Initial welcome messages
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  // Initialize welcome sequence when component mounts
   useEffect(() => {
-    if (!isPreviewMode) {
-      setIsUnlocked(true);
-      return;
-    }
-    try {
-      if (
-        sessionStorage.getItem('maz_preview_unlocked') === 'true' ||
-        localStorage.getItem('maz_preview_unlocked') === 'true'
-      ) {
-        setIsUnlocked(true);
-      }
-    } catch {
-      // storage unavailable
-    }
-  }, [isPreviewMode]);
-
-  // Trigger drop animation and speech bubble sequence
-  useEffect(() => {
-    // Drop animation takes ~1.1s
-    const landTimer = setTimeout(() => {
-      setHasLanded(true);
-    }, 1100);
-
-    // Speech bubble pops up 0.7s after landing
+    // Show speech bubble after 1.4s
     const bubbleTimer = setTimeout(() => {
       setShowSpeechBubble(true);
-    }, 1800);
+    }, 1400);
 
-    // Watch for chat panel open state from maz.js
-    const interval = setInterval(() => {
-      const panel = document.getElementById('maz-chat-panel');
-      if (panel) {
-        setIsChatOpen(panel.classList.contains('maz-open'));
-      }
-    }, 200);
+    // Initial messages
+    setMessages([
+      {
+        id: 'msg-welcome-1',
+        sender: 'bot',
+        text: "Hello, I'm Billabong Solar 👋🙂",
+        time: getCurrentTime(),
+      },
+      {
+        id: 'msg-welcome-2',
+        sender: 'bot',
+        text: 'What are you interested in today?',
+        time: getCurrentTime(),
+        options: [
+          { label: 'Prices & Quotes', value: 'Prices & Quotes', icon: '💰' },
+          { label: 'Service Support', value: 'Service Support', icon: '🔧' },
+          { label: 'General Enquiry', value: 'General Enquiry', icon: '❓' },
+        ],
+      },
+    ]);
 
-    return () => {
-      clearTimeout(landTimer);
-      clearTimeout(bubbleTimer);
-      clearInterval(interval);
-    };
+    return () => clearTimeout(bubbleTimer);
   }, []);
 
-  // Helper to reliably trigger the Maz widget
-  const openMazWidget = () => {
-    setIsBubbleDismissed(true);
-
-    const tryClick = () => {
-      const launcher = document.getElementById('maz-launcher-btn');
-      if (launcher) {
-        launcher.click();
-        return true;
-      }
-      return false;
-    };
-
-    if (!tryClick()) {
-      let attempts = 0;
-      const poll = setInterval(() => {
-        attempts++;
-        if (tryClick() || attempts > 30) {
-          clearInterval(poll);
-        }
-      }, 100);
+  // Auto-scroll to latest message
+  useEffect(() => {
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
+  }, [messages, isTyping, isOpen]);
+
+  // Focus input when step changes to a text entry step
+  useEffect(() => {
+    if (
+      isOpen &&
+      (step === 'ASK_NAME' ||
+        step === 'ASK_PHONE' ||
+        step === 'ASK_EMAIL' ||
+        step === 'ASK_ADDRESS' ||
+        step === 'FREE_CHAT')
+    ) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [step, isOpen]);
+
+  // Helper to add bot message with realistic typing delay
+  const addBotMessageWithDelay = (
+    text: string,
+    delayMs = 450,
+    options?: Array<{ label: string; value: string; icon?: string }>
+  ) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}-${Math.random()}`,
+          sender: 'bot',
+          text,
+          time: getCurrentTime(),
+          options,
+        },
+      ]);
+    }, delayMs);
   };
 
-  const handleToggleChat = (e?: React.MouseEvent | React.TouchEvent) => {
-    if (e) {
-      e.stopPropagation();
-    }
-    setIsBubbleDismissed(true);
-
-    // If chat is already open, clicking closes it
-    if (isChatOpen) {
-      const closeBtn = document.getElementById('maz-close-x');
-      if (closeBtn) closeBtn.click();
-      else openMazWidget();
-      setShowPasswordModal(false);
-      return;
-    }
-
-    // If locked in preview mode, present the unlock modal first!
-    if (isPreviewMode && !isUnlocked) {
-      setShowPasswordModal(true);
-      setPasswordError('');
-      return;
-    }
-
-    // Otherwise open the widget directly
-    openMazWidget();
+  // Helper to add user message
+  const addUserMessage = (text: string) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `user-${Date.now()}-${Math.random()}`,
+        sender: 'user',
+        text,
+        time: getCurrentTime(),
+      },
+    ]);
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (passwordInput.trim() === expectedPassword.trim()) {
-      setIsUnlocked(true);
-      try {
-        sessionStorage.setItem('maz_preview_unlocked', 'true');
-        localStorage.setItem('maz_preview_unlocked', 'true');
-      } catch {
-        // Ignore storage error
-      }
-      setShowPasswordModal(false);
-      setPasswordError('');
-      // Open the chat right away once unlocked
+  // 1. STEP 1: User picks category
+  const handleCategoryChoice = (category: string) => {
+    setSelectedCategory(category);
+    addUserMessage(category);
+    setErrorMessage('');
+
+    // Transition to callback preference prompt
+    setStep('CALLBACK_CHOICE');
+    addBotMessageWithDelay(
+      'Would you like to stay and provide more details about your enquiry, or would you prefer a callback instead?',
+      500,
+      [
+        { label: 'Call Me Instead', value: 'callback', icon: '📞' },
+        { label: 'Stay & Chat Now', value: 'chat', icon: '💬' },
+      ]
+    );
+  };
+
+  // 2. STEP 2: User picks Callback vs Chat
+  const handleCallbackChoice = (choice: string) => {
+    if (choice === 'callback') {
+      addUserMessage('📞 Call Me Instead');
+      setErrorMessage('');
+
+      // Step 3: Arrange callback & ask name
+      setIsTyping(true);
       setTimeout(() => {
-        openMazWidget();
-      }, 100);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-${Date.now()}-1`,
+            sender: 'bot',
+            text: "Perfect, I'm arranging a callback for you 😊",
+            time: getCurrentTime(),
+          },
+        ]);
+
+        setTimeout(() => {
+          setIsTyping(false);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-${Date.now()}-2`,
+              sender: 'bot',
+              text: 'Could you kindly share your name?',
+              time: getCurrentTime(),
+            },
+          ]);
+          setStep('ASK_NAME');
+        }, 550);
+      }, 500);
     } else {
-      setPasswordError('Incorrect passcode. Please try again.');
+      addUserMessage('💬 Stay & Chat Now');
+      setStep('FREE_CHAT');
+      addBotMessageWithDelay(
+        "Wonderful! I'm here to help. Feel free to ask me about system sizes, Tesla/Sigenergy batteries, Victorian rebates ($1,400 solar rebate + $1,400 loan), or pricing!",
+        500,
+        [
+          { label: '6.6kW System Pricing', value: 'How much is a 6.6kW solar system?', icon: '💰' },
+          { label: 'Battery Options', value: 'Tell me about solar batteries', icon: '🔋' },
+          { label: 'Victorian Rebates', value: 'How do Victorian solar rebates work?', icon: '🏛️' },
+          { label: 'Request a Callback', value: 'callback', icon: '📞' },
+        ]
+      );
+    }
+  };
+
+  // 3. STEP 3: Handle Name Submission
+  const handleNameSubmit = (enteredName: string) => {
+    const cleanName = enteredName.trim();
+    if (!cleanName) {
+      setErrorMessage('Please enter your name so we know who to ask for.');
+      return;
+    }
+    setName(cleanName);
+    addUserMessage(cleanName);
+    setInputValue('');
+    setErrorMessage('');
+
+    setStep('ASK_PHONE');
+    addBotMessageWithDelay(
+      'What is the best phone or mobile number to reach you on? 📲',
+      500
+    );
+  };
+
+  // 4. STEP 4: Handle Phone Submission -> IMMEDIATELY creates lead in Odoo & sends Email!
+  const handlePhoneSubmit = async (enteredPhone: string) => {
+    const cleanPhone = enteredPhone.trim();
+    const digitsOnly = cleanPhone.replace(/\D/g, '');
+
+    if (!cleanPhone || digitsOnly.length < 8) {
+      setErrorMessage('Please enter a valid phone or mobile number (at least 8 digits).');
+      return;
+    }
+
+    setPhone(cleanPhone);
+    addUserMessage(cleanPhone);
+    setInputValue('');
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    // Save lead IMMEDIATELY so it is never lost even if user drops off here
+    try {
+      const res = await fetch('/api/chat-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          category: selectedCategory || 'Prices & Quotes',
+          phone: cleanPhone,
+          name: name || 'Valued Customer',
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setLeadId(data.leadId);
+        if (data.odooLeadId) {
+          setOdooLeadId(data.odooLeadId);
+        }
+      }
+    } catch (err) {
+      console.error('Lead auto-save background error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    // Advance to Step 5: Ask Email
+    setStep('ASK_EMAIL');
+    addBotMessageWithDelay('And what is your email address too? 📩', 500, [
+      { label: 'Skip for now', value: 'skip', icon: '⏩' },
+    ]);
+  };
+
+  // 5. STEP 5: Handle Email Submission (or skip)
+  const handleEmailSubmit = (enteredEmail: string, isSkip = false) => {
+    setErrorMessage('');
+    if (isSkip || enteredEmail.toLowerCase() === 'skip') {
+      addUserMessage('Skip');
+      setEmail('');
+    } else {
+      const cleanEmail = enteredEmail.trim();
+      if (cleanEmail && !cleanEmail.includes('@')) {
+        setErrorMessage('Please enter a valid email address or tap Skip.');
+        return;
+      }
+      addUserMessage(cleanEmail);
+      setEmail(cleanEmail);
+    }
+
+    setInputValue('');
+
+    // Advance to Step 6: Postcode/Address
+    setIsTyping(true);
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}-1`,
+          sender: 'bot',
+          text: "Great! We're almost there 😁",
+          time: getCurrentTime(),
+        },
+      ]);
+
+      setTimeout(() => {
+        setIsTyping(false);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-${Date.now()}-2`,
+            sender: 'bot',
+            text: 'And what is the postcode, suburb or address of your property? 🏡',
+            time: getCurrentTime(),
+            options: [{ label: 'Skip for now', value: 'skip', icon: '⏩' }],
+          },
+        ]);
+        setStep('ASK_ADDRESS');
+      }, 500);
+    }, 450);
+  };
+
+  // 6. STEP 6: Handle Postcode / Suburb / Address Submission -> Updates lead in Odoo
+  const handleAddressSubmit = async (enteredAddress: string, isSkip = false) => {
+    setErrorMessage('');
+    let finalAddress = '';
+    if (isSkip || enteredAddress.toLowerCase() === 'skip') {
+      addUserMessage('Skip');
+    } else {
+      finalAddress = enteredAddress.trim();
+      addUserMessage(finalAddress);
+      setAddress(finalAddress);
+    }
+    setInputValue('');
+
+    // Update CRM Lead with Email & Address
+    try {
+      await fetch('/api/chat-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_step2',
+          leadId,
+          odooLeadId,
+          name,
+          phone,
+          category: selectedCategory,
+          email,
+          address: finalAddress,
+        }),
+      });
+    } catch (err) {
+      console.error('Lead update error:', err);
+    }
+
+    // Final confirmation message
+    setStep('CONFIRMED');
+    addBotMessageWithDelay(
+      'From here, one of our experts will get back in touch with you to help with your enquiry 😎',
+      600,
+      [
+        { label: '📞 Call (03) 9000 9788', value: 'call_office' },
+        { label: '💬 Chat on WhatsApp', value: 'open_whatsapp' },
+        { label: '🔄 Start New Enquiry', value: 'reset_chat' },
+      ]
+    );
+  };
+
+  // 7. Free Chat Solar Knowledge Engine
+  const handleFreeChatQuery = (query: string) => {
+    const q = query.trim().toLowerCase();
+    addUserMessage(query.trim());
+    setInputValue('');
+
+    if (q.includes('call') || q.includes('quote') || q.includes('price') || q.includes('contact')) {
+      addBotMessageWithDelay(
+        "I'd love to organize an exact quote and rebate calculation for you! Would you like me to arrange a quick callback from one of our solar specialists?",
+        500,
+        [
+          { label: 'Yes, Call Me', value: 'callback', icon: '📞' },
+          { label: 'Keep Chatting', value: 'chat', icon: '💬' },
+        ]
+      );
+      return;
+    }
+
+    let response = "That's a great question! Billabong Solar provides premium CEC-accredited solar installations, Tier-1 panels, and Sigenergy/Tesla batteries with 10-year workmanship warranties.";
+
+    if (q.includes('6.6') || q.includes('system size') || q.includes('how much') || q.includes('cost')) {
+      response =
+        'A standard Tier-1 6.6kW solar system typically ranges between $3,500 – $5,500 after the Victorian Solar Homes Rebate ($1,400) and STCs. Payback is usually 2.5 to 4 years!';
+    } else if (q.includes('battery') || q.includes('tesla') || q.includes('sigen') || q.includes('storage')) {
+      response =
+        'We install both the modular Sigenergy SigenStor (5kWh–48kWh with built-in EV charger & blackout backup) and Tesla Powerwall 3 (13.5kWh). Batteries maximize self-consumption and protect during power outages!';
+    } else if (q.includes('rebate') || q.includes('solar homes') || q.includes('grant') || q.includes('government')) {
+      response =
+        'Victorian eligible homeowners can get up to a $1,400 Solar Homes Rebate plus an interest-free loan of up to $1,400. That reduces your out-of-pocket costs immediately!';
+    } else if (q.includes('warranty') || q.includes('guarantee')) {
+      response =
+        'We offer a 25-30 year performance warranty on solar panels, 10-year manufacturer warranty on inverters, and our industry-leading 10-year comprehensive Billabong workmanship warranty.';
+    } else if (q.includes('area') || q.includes('location') || q.includes('service') || q.includes('melbourne')) {
+      response =
+        'We service all of Greater Melbourne, Geelong, Ballarat, Bendigo, Latrobe Valley, and regional Victoria with our in-house CEC accredited installation teams.';
+    }
+
+    addBotMessageWithDelay(response, 550, [
+      { label: '📞 Request a Fast Callback', value: 'callback', icon: '📞' },
+      { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
+      { label: 'Ask About Rebates', value: 'How do Victorian solar rebates work?', icon: '🏛️' },
+    ]);
+  };
+
+  // Main text submit router
+  const handleTextSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    if (step === 'ASK_NAME') {
+      handleNameSubmit(inputValue);
+    } else if (step === 'ASK_PHONE') {
+      handlePhoneSubmit(inputValue);
+    } else if (step === 'ASK_EMAIL') {
+      handleEmailSubmit(inputValue);
+    } else if (step === 'ASK_ADDRESS') {
+      handleAddressSubmit(inputValue);
+    } else if (step === 'FREE_CHAT' || step === 'CONFIRMED') {
+      handleFreeChatQuery(inputValue);
+    } else {
+      // If user typed during options
+      handleCategoryChoice(inputValue);
+    }
+  };
+
+  // Option pill click router
+  const handleOptionClick = (optionValue: string) => {
+    if (optionValue === 'callback') {
+      handleCallbackChoice('callback');
+    } else if (optionValue === 'chat') {
+      handleCallbackChoice('chat');
+    } else if (optionValue === 'skip') {
+      if (step === 'ASK_EMAIL') handleEmailSubmit('', true);
+      else if (step === 'ASK_ADDRESS') handleAddressSubmit('', true);
+    } else if (optionValue === 'call_office') {
+      window.location.href = 'tel:0390009788';
+    } else if (optionValue === 'open_whatsapp') {
+      window.open('https://wa.me/61450941413?text=Hi%20Billabong%20Solar,%20I%20have%20an%20enquiry!', '_blank');
+    } else if (optionValue === 'reset_chat') {
+      setStep('CATEGORY');
+      setName('');
+      setPhone('');
+      setEmail('');
+      setAddress('');
+      setMessages([
+        {
+          id: `reset-1-${Date.now()}`,
+          sender: 'bot',
+          text: "Hello, I'm Billabong Solar 👋🙂",
+          time: getCurrentTime(),
+        },
+        {
+          id: `reset-2-${Date.now()}`,
+          sender: 'bot',
+          text: 'What are you interested in today?',
+          time: getCurrentTime(),
+          options: [
+            { label: 'Prices & Quotes', value: 'Prices & Quotes', icon: '💰' },
+            { label: 'Service Support', value: 'Service Support', icon: '🔧' },
+            { label: 'General Enquiry', value: 'General Enquiry', icon: '❓' },
+          ],
+        },
+      ]);
+    } else if (step === 'CATEGORY') {
+      handleCategoryChoice(optionValue);
+    } else if (step === 'CALLBACK_CHOICE') {
+      handleCallbackChoice(optionValue);
+    } else {
+      handleFreeChatQuery(optionValue);
+    }
+  };
+
+  // Dynamic input placeholder
+  const getInputPlaceholder = () => {
+    switch (step) {
+      case 'ASK_NAME':
+        return 'Type your name here...';
+      case 'ASK_PHONE':
+        return 'Mobile number (e.g. 0412 567 889)...';
+      case 'ASK_EMAIL':
+        return 'Email address (or tap Skip)...';
+      case 'ASK_ADDRESS':
+        return 'Postcode or suburb (e.g. 3020)...';
+      case 'FREE_CHAT':
+        return 'Ask any solar or battery question...';
+      case 'CONFIRMED':
+        return 'Type a message or ask another question...';
+      default:
+        return 'Type your message here...';
     }
   };
 
   return (
     <>
-      {/* Brand styling and mobile positioning overrides for Maz widget */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        #maz-launcher-btn {
-          display: none !important;
-        }
-        #maz-teaser {
-          display: none !important;
-        }
+      {/* Hide third-party maz.js launcher and panel so our native advisor component controls the UI */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            #maz-launcher-btn, #maz-teaser, #maz-chat-panel {
+              display: none !important;
+              visibility: hidden !important;
+            }
+          `,
+        }}
+      />
 
-        /* Ensure maz-chat-panel is cleanly positioned and visible when open */
-        #maz-chat-panel {
-          border-radius: 24px !important;
-          box-shadow: 0 24px 60px -12px rgba(23, 29, 77, 0.28), 0 0 0 1px rgba(255, 94, 0, 0.15) !important;
-          z-index: 9999998 !important;
-        }
-        #maz-chat-panel.maz-open {
-          display: flex !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-          pointer-events: auto !important;
-          transform: translateY(0) scale(1) !important;
-        }
-
-        /* Prevent chat panel from showing prematurely if locked */
-        ${!isUnlocked && isPreviewMode ? `
-        #maz-chat-panel {
-          display: none !important;
-          visibility: hidden !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-        }
-        ` : ''}
-
-        /* Mobile full-screen guarantee for iOS Safari with zero gaps */
-        @media (max-width: 640px) {
-          #maz-chat-panel,
-          #maz-chat-panel.maz-open {
-            position: fixed !important;
-            inset: 0px !important;
-            top: 0px !important;
-            bottom: 0px !important;
-            left: 0px !important;
-            right: 0px !important;
-            width: 100vw !important;
-            max-width: 100vw !important;
-            min-width: 100vw !important;
-            height: 100% !important;
-            height: 100dvh !important;
-            max-height: 100dvh !important;
-            border-radius: 0px !important;
-            margin: 0px !important;
-            padding: 0px !important;
-            box-sizing: border-box !important;
-            z-index: 9999998 !important;
-            display: flex !important;
-            flex-direction: column !important;
-          }
-        }
-
-        #maz-header {
-          background: linear-gradient(135deg, #171D4D 0%, #252E6D 60%, #FF5E00 130%) !important;
-        }
-        .maz-bubble-user {
-          background: #FF5E00 !important;
-        }
-        .maz-send-btn {
-          background: linear-gradient(135deg, #FF5E00 0%, #E05200 100%) !important;
-        }
-        .maz-input:focus {
-          border-color: #FF5E00 !important;
-          box-shadow: 0 0 0 3px rgba(255, 94, 0, 0.15) !important;
-        }
-
-        /* Physics drop-bounce keyframes from top of website */
-        @keyframes sunDropFromSky {
-          0% {
-            opacity: 0;
-            transform: translateY(-110vh) scale(0.6) rotate(-20deg);
-          }
-          60% {
-            opacity: 1;
-            transform: translateY(18px) scale(1.15) rotate(10deg);
-          }
-          75% {
-            transform: translateY(-12px) scale(0.92) rotate(-5deg);
-          }
-          90% {
-            transform: translateY(4px) scale(1.04) rotate(2deg);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1) rotate(0deg);
-          }
-        }
-
-        /* Floating solar ambient bounce */
-        @keyframes sunFloatGlow {
-          0%, 100% {
-            transform: translateY(0) rotate(0deg);
-            filter: drop-shadow(0 8px 24px rgba(255, 122, 0, 0.45));
-          }
-          50% {
-            transform: translateY(-6px) rotate(2deg);
-            filter: drop-shadow(0 14px 30px rgba(255, 94, 0, 0.6));
-          }
-        }
-
-        /* Slow gentle ray rotation */
-        @keyframes sunRaysSpin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-
-        /* Speech bubble bounce pop */
-        @keyframes bubblePopIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.4) translateY(20px);
-          }
-          70% {
-            opacity: 1;
-            transform: scale(1.06) translateY(-2px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-
-        .sun-falling-animation {
-          animation: sunDropFromSky 1.15s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-        }
-
-        .sun-floating-animation {
-          animation: sunFloatGlow 3.5s ease-in-out infinite;
-        }
-
-        .sun-rays-rotating {
-          animation: sunRaysSpin 24s linear infinite;
-        }
-
-        .bubble-popping-animation {
-          animation: bubblePopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}} />
-
+      {/* Floating Trigger Launcher at Bottom-Right */}
       <aside
-        aria-label="Solar AI Chatbot"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none"
+        aria-label="Solar Advisor Chat Launcher"
+        className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-none"
       >
-        {/* Speech Bubble: "I'm cool, ask me!" */}
-        {showSpeechBubble && !isBubbleDismissed && !isChatOpen && (
+        {/* Floating Greeting Speech Bubble */}
+        {!isOpen && showSpeechBubble && !isBubbleDismissed && (
           <div
-            onClick={handleToggleChat}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              handleToggleChat();
-            }}
-            className="pointer-events-auto cursor-pointer touch-manipulation mb-3 mr-1 bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-2xl border-2 border-orange-400 max-w-[240px] sm:max-w-[270px] relative bubble-popping-animation transition-transform duration-200 hover:scale-105 group"
-            style={{ filter: 'drop-shadow(0 10px 25px rgba(255, 94, 0, 0.25))' }}
+            role="status"
+            className="pointer-events-auto mb-3 max-w-[280px] sm:max-w-[320px] bg-white text-slate-800 rounded-2xl p-3.5 shadow-2xl border-2 border-orange-400 relative animate-in fade-in slide-in-from-bottom-3 duration-300"
           >
-            {/* Close / Dismiss */}
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsBubbleDismissed(true);
-              }}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-slate-100 hover:bg-red-500 hover:text-white rounded-full text-slate-500 text-xs flex items-center justify-center transition-colors shadow-sm cursor-pointer"
-              aria-label="Dismiss message"
+              onClick={() => setIsBubbleDismissed(true)}
+              className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+              aria-label="Dismiss greeting"
             >
               ✕
             </button>
-
             <div className="flex items-start gap-2.5">
-              <span className="text-xl shrink-0 group-hover:scale-125 transition-transform duration-200">
-                🕶️
-              </span>
+              <span className="text-xl leading-none">👋</span>
               <div>
-                <p className="text-xs sm:text-sm font-extrabold text-[#171D4D] leading-tight">
-                  I&apos;m cool, ask me! <span className="text-orange-500">☀️</span>
+                <p className="text-xs font-extrabold text-[#171D4D]">
+                  Hi, I&apos;m Sarah!
                 </p>
-                <p className="text-[11px] text-slate-600 font-medium mt-1 leading-snug">
-                  Ask me anything about solar, batteries, rebates or pricing!
+                <p className="text-xs text-slate-600 mt-0.5 leading-snug">
+                  Billabong Solar Advisor. How can I help you today? 🙂
                 </p>
-                <div className="mt-1.5 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide">
-                    Solar AI Assistant (Online)
-                  </span>
-                </div>
               </div>
             </div>
-
-            {/* Speech bubble pointer triangle pointing down to Sun */}
-            <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white/95 border-b-2 border-r-2 border-orange-400 transform rotate-45" />
+            {/* Arrow triangle pointing down to avatar */}
+            <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white border-b-2 border-r-2 border-orange-400 transform rotate-45" />
           </div>
         )}
 
-        {/* The Smiling Sun Character Button */}
-        <button
-          type="button"
-          onClick={handleToggleChat}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className={`pointer-events-auto relative focus:outline-none touch-manipulation transition-all duration-300 cursor-pointer ${
-            isChatOpen ? 'max-sm:hidden' : ''
-          } ${
-            hasLanded ? 'sun-floating-animation hover:scale-110 active:scale-95' : 'sun-falling-animation'
-          }`}
-          aria-label="Open Solar AI Assistant"
-          title="Solar AI Assistant - I'm cool, ask me!"
-        >
-          {/* Active Status Badge */}
-          <span className="absolute -top-1 -right-1 z-20 flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white shadow-xs"></span>
-          </span>
+        {/* Human Consultant Avatar Trigger Button */}
+        {!isOpen && (
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(true);
+              setIsBubbleDismissed(true);
+            }}
+            className="pointer-events-auto relative group focus:outline-hidden touch-manipulation transition-all duration-300 cursor-pointer transform hover:scale-105 active:scale-95"
+            aria-label="Chat with Billabong Solar Advisor"
+            title="Chat with Sarah - Billabong Solar Advisor"
+          >
+            {/* Soft Ambient Glow */}
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#FF5E00] to-amber-400 opacity-70 blur-md group-hover:opacity-100 transition-opacity" />
 
-          {/* SVG Smiling Sun with Sunglasses and Rotating Rays */}
-          <div className="relative w-16 h-16 sm:w-[72px] sm:h-[72px] flex items-center justify-center">
-            {/* Outer Rotating Rays */}
-            <svg
-              viewBox="0 0 100 100"
-              className="absolute inset-0 w-full h-full sun-rays-rotating pointer-events-none"
-              style={{ filter: 'drop-shadow(0 2px 8px rgba(255, 140, 0, 0.5))' }}
-            >
-              <g fill="#FFA700">
-                {/* 12 Radiant Sun Rays */}
-                {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
-                  <path
-                    key={deg}
-                    d="M 46 2 C 48 0 52 0 54 2 L 57 15 C 57 17 53 17 50 17 C 47 17 43 17 43 15 Z"
-                    transform={`rotate(${deg} 50 50)`}
-                    fill={deg % 60 === 0 ? '#FF5E00' : '#FFA700'}
-                  />
-                ))}
-              </g>
-            </svg>
-
-            {/* Main Sun Body with Radiant Warm Gradient */}
-            <svg
-              viewBox="0 0 100 100"
-              className="w-12 h-12 sm:w-14 sm:h-14 relative z-10 pointer-events-none"
-            >
-              <defs>
-                <radialGradient id="sunFaceGradient" cx="40%" cy="40%" r="60%">
-                  <stop offset="0%" stopColor="#FFF275" />
-                  <stop offset="60%" stopColor="#FF9900" />
-                  <stop offset="100%" stopColor="#FF5E00" />
-                </radialGradient>
-                <linearGradient id="glassesGloss" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#2D3748" />
-                  <stop offset="45%" stopColor="#1A202C" />
-                  <stop offset="100%" stopColor="#171D4D" />
-                </linearGradient>
-              </defs>
-
-              {/* Sun Face Circle */}
-              <circle
-                cx="50"
-                cy="50"
-                r="36"
-                fill="url(#sunFaceGradient)"
-                stroke="#FF4500"
-                strokeWidth="1.5"
+            {/* Avatar Circle Container */}
+            <div className="relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border-3 border-white shadow-2xl ring-3 ring-orange-500 bg-[#171D4D]">
+              <Image
+                src="/images/support-agent.jpg"
+                alt="Sarah - Billabong Solar Advisor"
+                fill
+                sizes="(max-width: 640px) 64px, 72px"
+                className="object-cover object-top"
+                priority
               />
+            </div>
 
-              {/* Rosy Cheeks */}
-              <circle cx="28" cy="62" r="5" fill="#FF4444" opacity="0.35" />
-              <circle cx="72" cy="62" r="5" fill="#FF4444" opacity="0.35" />
-
-              {/* Big Joyful Smile */}
-              <path
-                d="M 33 61 Q 50 78 67 61"
-                fill="#801000"
-                stroke="#6B0A00"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              {/* Cute white teeth in smile */}
-              <path
-                d="M 39 63 Q 50 71 61 63 Z"
-                fill="#FFFFFF"
-              />
-
-              {/* Cool Sunglasses */}
-              <g className={`transition-transform duration-300 ${isHovered ? 'scale-105' : ''}`} style={{ transformOrigin: '50px 44px' }}>
-                {/* Sunglasses Frame / Bridge */}
-                <path
-                  d="M 20 40 Q 50 36 80 40 Q 50 42 20 40 Z"
-                  fill="#0F172A"
-                />
-                <rect x="46" y="40" width="8" height="3" rx="1.5" fill="#0F172A" />
-
-                {/* Left Lens */}
-                <path
-                  d="M 22 41 C 21 41 20 46 22 52 C 24 57 32 58 44 54 C 47 50 47 43 45 41 Z"
-                  fill="url(#glassesGloss)"
-                  stroke="#0F172A"
-                  strokeWidth="2"
-                />
-                {/* Left Lens Gloss Highlight */}
-                <path
-                  d="M 26 44 L 32 44 L 27 52 L 24 52 Z"
-                  fill="#60A5FA"
-                  opacity="0.65"
-                />
-
-                {/* Right Lens */}
-                <path
-                  d="M 78 41 C 79 41 80 46 78 52 C 76 57 68 58 56 54 C 53 50 53 43 55 41 Z"
-                  fill="url(#glassesGloss)"
-                  stroke="#0F172A"
-                  strokeWidth="2"
-                />
-                {/* Right Lens Gloss Highlight */}
-                <path
-                  d="M 60 44 L 66 44 L 61 52 L 58 52 Z"
-                  fill="#60A5FA"
-                  opacity="0.65"
-                />
-              </g>
-            </svg>
-
-            {/* Chat Open / Close indicator toggle */}
-            {isChatOpen && (
-              <div className="absolute inset-0 bg-[#171D4D]/90 rounded-full flex items-center justify-center text-white font-bold text-lg z-20 border-2 border-orange-400">
-                ✕
-              </div>
-            )}
-          </div>
-        </button>
+            {/* Active Online Status Badge */}
+            <span className="absolute top-0 right-0 z-20 flex h-4 w-4">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white shadow-xs" />
+            </span>
+          </button>
+        )}
       </aside>
 
-      {/* Preview Passcode Lock Modal */}
-      {showPasswordModal && (
+      {/* Main Chatbot Window */}
+      {isOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[2147483647] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          aria-labelledby="chat-advisor-title"
+          className="fixed z-50 inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[410px] h-full sm:h-[630px] sm:max-h-[88vh] bg-white sm:rounded-3xl shadow-2xl border-0 sm:border-2 border-orange-400/40 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200"
         >
-          <div
-            className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border-2 border-orange-400 text-center relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => {
-                setShowPasswordModal(false);
-                const closeBtn = document.getElementById('maz-close-x');
-                if (closeBtn) closeBtn.click();
-              }}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 mx-auto flex items-center justify-center text-3xl shadow-lg shadow-orange-500/30 mb-3">
-              ☀️
+          {/* Header */}
+          <div className="bg-gradient-to-r from-[#171D4D] via-[#1F2766] to-[#252E6D] text-white p-4 flex items-center justify-between border-b-2 border-orange-500/50 shadow-md">
+            <div className="flex items-center gap-3">
+              {/* Consultant Avatar in Header */}
+              <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-orange-400 shadow-sm shrink-0">
+                <Image
+                  src="/images/support-agent.jpg"
+                  alt="Sarah - Billabong Solar Advisor"
+                  fill
+                  sizes="44px"
+                  className="object-cover object-top"
+                />
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white" />
+              </div>
+              <div>
+                <h2 id="chat-advisor-title" className="text-sm font-black tracking-wide text-white flex items-center gap-1.5">
+                  Sarah • Solar Advisor
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-400" />
+                </h2>
+                <p className="text-[11px] text-slate-300 font-medium">
+                  Billabong Solar • Typically replies in 1 min
+                </p>
+              </div>
             </div>
 
-            <h3 className="text-lg font-black text-[#171D4D]">
-              Solar AI Assistant
-            </h3>
-            <span className="inline-block mt-1 px-3 py-0.5 bg-orange-100 text-[#FF5E00] text-xs font-extrabold rounded-full">
-              Testing &amp; Training Mode
-            </span>
-
-            <p className="text-xs text-slate-600 mt-2.5 mb-4 leading-relaxed">
-              This chatbot is locked for testing while we teach and train the AI. Please enter the passcode to access.
-            </p>
-
-            <form
-              action="javascript:void(0);"
-              onSubmit={handlePasswordSubmit}
-              className="space-y-3.5 text-left"
-            >
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Preview Passcode
-                </label>
-                <input
-                  type="password"
-                  inputMode="numeric"
-                  value={passwordInput}
-                  onChange={(e) => {
-                    setPasswordInput(e.target.value);
-                    setPasswordError('');
-                  }}
-                  placeholder="Enter passcode (112)"
-                  className="w-full px-4 py-3 text-sm text-center tracking-widest font-mono font-bold border-2 border-slate-200 rounded-xl focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-hidden transition-all text-slate-900"
-                />
-              </div>
-
-              {passwordError && (
-                <p className="text-xs text-red-600 font-bold text-center">
-                  {passwordError}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-orange-500/30 transition-all transform active:scale-98 cursor-pointer touch-manipulation"
+            <div className="flex items-center gap-1.5">
+              {/* Direct Phone Call Button */}
+              <a
+                href="tel:0390009788"
+                aria-label="Call Billabong Solar"
+                title="Call (03) 9000 9788"
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
               >
-                Unlock Chatbot →
-              </button>
+                📞
+              </a>
+              {/* Close Button */}
               <button
                 type="button"
-                onClick={() => {
-                  setShowPasswordModal(false);
-                  const closeBtn = document.getElementById('maz-close-x');
-                  if (closeBtn) closeBtn.click();
-                }}
-                className="w-full py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors text-center cursor-pointer touch-manipulation block"
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold transition-colors cursor-pointer text-sm"
+                aria-label="Close chat"
               >
-                Cancel
+                ✕
+              </button>
+            </div>
+          </div>
+
+          {/* Chat Stream Body */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-50/70">
+            {/* Trust badge banner */}
+            <div className="text-center my-1">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-100/80 text-[#FF5E00] text-[10px] font-extrabold uppercase tracking-wider">
+                ☀️ Clean Energy Council Accredited Master Installers
+              </span>
+            </div>
+
+            {/* Message Stream */}
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-in fade-in duration-200`}
+              >
+                {/* Message Bubble */}
+                <div
+                  className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
+                    msg.sender === 'user'
+                      ? 'bg-gradient-to-r from-[#FF5E00] to-orange-600 text-white rounded-2xl rounded-tr-xs shadow-md shadow-orange-500/20 font-medium'
+                      : 'bg-white text-slate-800 rounded-2xl rounded-tl-xs border border-slate-200/80 shadow-sm font-normal'
+                  }`}
+                >
+                  <p className="whitespace-pre-wrap">{msg.text}</p>
+                </div>
+
+                {/* Timestamp */}
+                <span className="text-[10px] text-slate-400 mt-1 px-1">
+                  {msg.time}
+                </span>
+
+                {/* Interactive Options Pills attached to this message */}
+                {msg.options && msg.options.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2 max-w-[95%]">
+                    {msg.options.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => handleOptionClick(opt.value)}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-orange-50 hover:border-[#FF5E00] active:scale-95 text-slate-800 hover:text-[#FF5E00] text-xs font-bold rounded-full border-2 border-slate-200 shadow-xs transition-all cursor-pointer touch-manipulation"
+                      >
+                        {opt.icon && <span>{opt.icon}</span>}
+                        <span>{opt.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex items-center gap-1.5 bg-white border border-slate-200/80 rounded-2xl rounded-tl-xs px-4 py-3 w-fit shadow-xs animate-in fade-in duration-150">
+                <span className="w-2 h-2 rounded-full bg-orange-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 rounded-full bg-orange-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 rounded-full bg-orange-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Validation Error Banner */}
+          {errorMessage && (
+            <div className="bg-red-50 text-red-700 px-4 py-2 text-xs font-bold border-t border-red-200 flex items-center justify-between">
+              <span>⚠️ {errorMessage}</span>
+              <button
+                type="button"
+                onClick={() => setErrorMessage('')}
+                className="text-red-500 hover:text-red-800 text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Chat Input & Action Bar */}
+          <div className="p-3 bg-white border-t border-slate-200 safe-bottom">
+            <form onSubmit={handleTextSubmit} className="flex items-center gap-2">
+              <input
+                ref={inputRef}
+                type={step === 'ASK_PHONE' ? 'tel' : step === 'ASK_EMAIL' ? 'email' : 'text'}
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                  if (errorMessage) setErrorMessage('');
+                }}
+                placeholder={getInputPlaceholder()}
+                className="flex-1 px-4 py-2.5 bg-slate-100 hover:bg-slate-50 focus:bg-white text-sm text-slate-900 rounded-full border-2 border-transparent focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-100 outline-hidden transition-all"
+              />
+              <button
+                type="submit"
+                disabled={!inputValue.trim() || isSubmitting}
+                className="px-4 py-2.5 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-sm rounded-full shadow-md shadow-orange-500/25 transition-all transform active:scale-95 cursor-pointer touch-manipulation shrink-0 flex items-center justify-center gap-1"
+                aria-label="Send message"
+              >
+                {isSubmitting ? (
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <span>Send</span>
+                )}
               </button>
             </form>
+
+            {/* Quick Skip or Direct WhatsApp Helper */}
+            {(step === 'ASK_EMAIL' || step === 'ASK_ADDRESS') && (
+              <div className="flex justify-end mt-2">
+                <button
+                  type="button"
+                  onClick={() => handleOptionClick('skip')}
+                  className="text-xs text-slate-500 hover:text-[#FF5E00] font-semibold underline cursor-pointer"
+                >
+                  Skip this step →
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
