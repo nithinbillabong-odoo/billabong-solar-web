@@ -4,8 +4,9 @@ import Image from 'next/image';
 
 const quickLinks = [
   { label: 'Residential Solar', href: '/residential' },
-  { label: 'Commercial Solar', href: '/commercial' },
+  { label: 'Commercial Solar Hub', href: '/commercial' },
   { label: 'Battery Storage', href: '/battery-storage' },
+  { label: 'Victorian Service Areas', href: '/locations' },
   { label: 'About Us', href: '/about-us' },
   { label: 'Solar Blog', href: '/blog' },
   { label: 'FAQs', href: '/faq' },
@@ -13,9 +14,10 @@ const quickLinks = [
 ];
 
 const serviceLinks = [
-  { label: '10kW - 20kW Residential Solar', href: '/residential' },
-  { label: 'Commercial Solar (30kW - 1,000kW)', href: '/commercial' },
-  { label: 'Battery Storage (Sigenergy, GoodWe)', href: '/battery-storage' },
+  { label: 'Warehouses & Logistics', href: '/commercial/warehouses-logistics-manufacturing' },
+  { label: 'Cold Storage & Food', href: '/commercial/cold-storage-food-processing' },
+  { label: 'Farms & Agribusiness', href: '/commercial/farms-wineries-agribusiness' },
+  { label: 'Retail, Offices & Clubs', href: '/commercial/retail-offices-clubs' },
   { label: 'Complaints Procedure', href: '/complaints-procedure' },
 ];
 
@@ -104,15 +106,15 @@ export default function Footer() {
             <li className="flex items-start">
               <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
               <div>
-                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Head Office</strong>
+                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Head Office (Melbourne East)</strong>
                 <span>Suite 029 Waterman Caribbean Park, 44 Lakeview Drive, Scoresby VIC 3179</span>
               </div>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-[#FF660D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
               <div>
-                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Gippsland Office</strong>
-                <span>34-38 MacFarlane Street, Heyfield, Victoria 3858</span>
+                <strong className="text-white block text-xs uppercase tracking-wider text-orange-400">Regional Support Hub</strong>
+                <span>Cobblebank Engineering Depot, Cobblebank VIC 3338</span>
               </div>
             </li>
             <li className="flex items-center">

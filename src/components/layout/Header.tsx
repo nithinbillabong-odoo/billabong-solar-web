@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { label: 'Residential', href: '/residential' },
   { label: 'Commercial', href: '/commercial' },
   { label: 'Battery Storage', href: '/battery-storage' },
+  { label: 'Service Areas', href: '/locations' },
   { label: 'About', href: '/about-us' },
   { label: 'Blog', href: '/blog' },
   { label: 'FAQs', href: '/faq' },
