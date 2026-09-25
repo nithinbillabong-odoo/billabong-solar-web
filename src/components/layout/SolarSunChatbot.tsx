@@ -9,6 +9,7 @@ interface ChatMessage {
   text: string;
   time: string;
   options?: Array<{ label: string; value: string; icon?: string }>;
+  showContactCard?: boolean;
 }
 
 type FlowStep =
@@ -36,6 +37,15 @@ export default function SolarAdvisorChatbot() {
   const [address, setAddress] = useState('');
   const [leadId, setLeadId] = useState('');
   const [odooLeadId, setOdooLeadId] = useState<number | null>(null);
+
+  // Contact Card state
+  const [cardName, setCardName] = useState('');
+  const [cardPhone, setCardPhone] = useState('');
+  const [cardEmail, setCardEmail] = useState('');
+  const [cardAddress, setCardAddress] = useState('');
+  const [cardError, setCardError] = useState('');
+  const [cardSubmitting, setCardSubmitting] = useState(false);
+  const [cardSubmitted, setCardSubmitted] = useState(false);
 
   // Input state
   const [inputValue, setInputValue] = useState('');
@@ -108,7 +118,7 @@ export default function SolarAdvisorChatbot() {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isTyping, isOpen]);
+  }, [messages, isTyping, isOpen, cardSubmitted]);
 
   // Focus input when step changes to a text entry step
   useEffect(() => {
@@ -131,7 +141,8 @@ export default function SolarAdvisorChatbot() {
   const addBotMessageWithDelay = (
     text: string,
     delayMs = 450,
-    options?: Array<{ label: string; value: string; icon?: string }>
+    options?: Array<{ label: string; value: string; icon?: string }>,
+    showContactCard = false
   ) => {
     setIsTyping(true);
     setTimeout(() => {
@@ -144,6 +155,7 @@ export default function SolarAdvisorChatbot() {
           text,
           time: getCurrentTime(),
           options,
+          showContactCard,
         },
       ]);
     }, delayMs);
@@ -188,33 +200,13 @@ export default function SolarAdvisorChatbot() {
       addUserMessage('📞 Call Me Instead');
       setErrorMessage('');
 
-      // Step 3: Arrange callback & ask name
-      setIsTyping(true);
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `bot-${Date.now()}-1`,
-            sender: 'bot',
-            text: "Perfect, I'm arranging a callback for you 😊",
-            time: getCurrentTime(),
-          },
-        ]);
-
-        setTimeout(() => {
-          setIsTyping(false);
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: `bot-${Date.now()}-2`,
-              sender: 'bot',
-              text: 'Could you kindly share your name?',
-              time: getCurrentTime(),
-            },
-          ]);
-          setStep('ASK_NAME');
-        }, 550);
-      }, 500);
+      // Step 3: Arrange callback & show Contact Card directly
+      addBotMessageWithDelay(
+        "Perfect, I'm arranging a callback for you 😊 Please fill out your details below and our specialist will reach out to you promptly:",
+        500,
+        undefined,
+        true // Trigger Contact Card
+      );
     } else {
       addUserMessage('💬 Stay & Chat Now');
       setStep('FREE_CHAT');
@@ -228,6 +220,79 @@ export default function SolarAdvisorChatbot() {
           { label: 'Request a Callback', value: 'callback', icon: '📞' },
         ]
       );
+    }
+  };
+
+  // Handle Contact Card Submission
+  const handleCardSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setCardError('');
+
+    const cleanPhone = cardPhone.trim();
+    const digitsOnly = cleanPhone.replace(/\D/g, '');
+    if (!cleanPhone || digitsOnly.length < 8) {
+      setCardError('Please enter a valid phone number (at least 8 digits).');
+      return;
+    }
+
+    setCardSubmitting(true);
+
+    try {
+      // 1. Create Lead in Odoo
+      const res = await fetch('/api/chat-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          category: selectedCategory || 'Callback Request',
+          phone: cleanPhone,
+          name: cardName.trim() || 'Valued Customer',
+        }),
+      });
+
+      const data = await res.json();
+      const newLeadId = data.leadId;
+      const newOdooLeadId = data.odooLeadId;
+
+      // 2. Update Step 2 with email & address if provided
+      if (cardEmail.trim() || cardAddress.trim()) {
+        await fetch('/api/chat-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update_step2',
+            leadId: newLeadId,
+            odooLeadId: newOdooLeadId,
+            name: cardName.trim(),
+            phone: cleanPhone,
+            category: selectedCategory || 'Callback Request',
+            email: cardEmail.trim(),
+            address: cardAddress.trim(),
+          }),
+        });
+      }
+
+      setCardSubmitted(true);
+      setLeadId(newLeadId);
+      if (newOdooLeadId) setOdooLeadId(newOdooLeadId);
+
+      // Add confirmed message from bot
+      setTimeout(() => {
+        addBotMessageWithDelay(
+          `From here, one of our experts will get back in touch with you shortly on ${cleanPhone} to help with your enquiry 😎`,
+          400,
+          [
+            { label: '📞 Call Office', value: 'call_office' },
+            { label: '💬 WhatsApp Us', value: 'open_whatsapp' },
+            { label: 'Ask Another Question', value: 'chat' },
+          ]
+        );
+      }, 500);
+    } catch (err) {
+      console.error('Contact card submission error:', err);
+      setCardError('Network issue. Please call us directly on (03) 9000 9788.');
+    } finally {
+      setCardSubmitting(false);
     }
   };
 
@@ -392,7 +457,7 @@ export default function SolarAdvisorChatbot() {
     );
   };
 
-  // 7. Dynamic Maz AI Knowledge Engine
+  // 7. Dynamic Maz AI Knowledge Engine with Smart Contact Card Triggering
   const handleFreeChatQuery = async (query: string) => {
     const q = query.trim();
     if (!q) return;
@@ -401,16 +466,6 @@ export default function SolarAdvisorChatbot() {
     setInputValue('');
 
     const lowerQ = q.toLowerCase();
-    // If visitor is explicitly asking for a callback or phone consultation
-    if (
-      lowerQ.includes('call me') ||
-      lowerQ.includes('callback') ||
-      lowerQ.includes('book a call') ||
-      lowerQ.includes('phone me')
-    ) {
-      handleCallbackChoice('callback');
-      return;
-    }
 
     setIsTyping(true);
 
@@ -430,6 +485,19 @@ export default function SolarAdvisorChatbot() {
         data.reply ||
         "Thank you for reaching out! Billabong Solar provides premium CEC-accredited solar installations, Tier-1 panels, and Sigenergy/Tesla batteries with 10-year workmanship warranties.";
 
+      // Check if user or AI intent suggests showing the Contact Card
+      const userWantsCallback = [
+        'call', 'callback', 'book', 'schedule', 'speak', 'phone', 'contact card', 'reach me', 'quote', 'contact'
+      ].some((w) => lowerQ.includes(w));
+
+      const aiSuggestedCard = [
+        'contact card', 'fill out our', 'schedule a call', 'specialist will reach out',
+        'share your preferred phone', 'enter your email or phone', 'our team directly',
+        'quick quote form', 'below'
+      ].some((w) => aiReply.toLowerCase().includes(w));
+
+      const shouldShowCard = userWantsCallback || aiSuggestedCard;
+
       // Keep ongoing conversation history for multi-turn context
       setConversationHistory((prev) => [
         ...prev,
@@ -445,6 +513,7 @@ export default function SolarAdvisorChatbot() {
           sender: 'bot',
           text: aiReply,
           time: getCurrentTime(),
+          showContactCard: shouldShowCard && !cardSubmitted,
           options: [
             { label: 'Request a Fast Callback', value: 'callback', icon: '📞' },
             { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
@@ -463,6 +532,7 @@ export default function SolarAdvisorChatbot() {
           text:
             "Thank you for your question! Billabong Solar installs premium Tier-1 solar systems, Sigenergy SigenStor, and Tesla Powerwall 3 batteries across Victoria with 10-year workmanship warranties.",
           time: getCurrentTime(),
+          showContactCard: true,
           options: [
             { label: 'Request a Fast Callback', value: 'callback', icon: '📞' },
             { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
@@ -519,6 +589,7 @@ export default function SolarAdvisorChatbot() {
       setPhone('');
       setEmail('');
       setAddress('');
+      setCardSubmitted(false);
       setMessages([
         {
           id: `reset-1-${Date.now()}`,
@@ -603,7 +674,7 @@ export default function SolarAdvisorChatbot() {
         {!isOpen && showSpeechBubble && !isBubbleDismissed && (
           <div
             role="status"
-            className="pointer-events-auto mb-3 max-w-[270px] sm:max-w-[300px] bg-white/95 backdrop-blur-md text-slate-800 rounded-3xl p-3.5 shadow-[0_12px_36px_rgba(255,94,0,0.18)] border border-orange-200/80 relative animate-in fade-in slide-in-from-bottom-3 duration-300"
+            className="pointer-events-auto mb-3 max-w-[260px] sm:max-w-[280px] bg-white/95 backdrop-blur-md text-slate-800 rounded-3xl p-3.5 shadow-[0_12px_36px_rgba(255,94,0,0.18)] border border-orange-200/80 relative animate-in fade-in slide-in-from-bottom-3 duration-300"
           >
             <button
               type="button"
@@ -646,65 +717,65 @@ export default function SolarAdvisorChatbot() {
             <div className="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-[#FF5E00] via-amber-400 to-orange-400 opacity-60 blur-md group-hover:opacity-90 group-hover:blur-lg transition-all" />
 
             {/* Avatar Circle Container */}
-            <div className="relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border-2.5 border-white shadow-[0_8px_24px_rgba(23,29,77,0.3)] ring-3 ring-orange-500/80 bg-[#171D4D]">
+            <div className="relative w-15 h-15 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2.5 border-white shadow-[0_8px_24px_rgba(23,29,77,0.3)] ring-3 ring-orange-500/80 bg-[#171D4D]">
               <Image
                 src="/images/support-agent.jpg"
                 alt="Sarah - Billabong Solar Advisor"
                 fill
-                sizes="(max-width: 640px) 64px, 72px"
+                sizes="(max-width: 640px) 60px, 64px"
                 className="object-cover object-top"
                 priority
               />
             </div>
 
             {/* Active Online Status Badge */}
-            <span className="absolute top-0 right-0 z-20 flex h-4 w-4">
+            <span className="absolute top-0 right-0 z-20 flex h-3.5 w-3.5 sm:h-4 sm:w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white shadow-xs" />
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 bg-emerald-500 border-2 border-white shadow-xs" />
             </span>
           </button>
         )}
       </aside>
 
-      {/* Main Chatbot Window */}
+      {/* Main Chatbot Window - Sleek, Compact Desktop Dimension & 100% Mobile Edge-to-Edge */}
       {isOpen && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="chat-advisor-title"
-          className="fixed z-50 inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[410px] h-full sm:h-[630px] sm:max-h-[88vh] bg-gradient-to-b from-[#FDFCFB] via-[#F8F9FD] to-[#F1F3FA] sm:rounded-[32px] shadow-[0_24px_70px_rgba(23,29,77,0.25)] border-0 sm:border border-white/70 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          className="fixed z-50 inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[365px] h-full sm:h-[530px] sm:max-h-[82vh] bg-gradient-to-b from-[#FDFCFB] via-[#F8F9FD] to-[#F1F3FA] sm:rounded-[28px] shadow-[0_20px_60px_rgba(23,29,77,0.22)] border-0 sm:border border-white/80 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#171D4D] via-[#202868] to-[#2B3580] text-white p-4 sm:px-5 flex items-center justify-between border-b border-orange-500/20 relative overflow-hidden shadow-sm shrink-0">
-            {/* Subtle decorative background sunburst glow */}
-            <div className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-gradient-to-br from-orange-500/25 to-amber-400/10 blur-2xl pointer-events-none" />
+          <div className="bg-gradient-to-r from-[#171D4D] via-[#202868] to-[#2B3580] text-white p-3.5 sm:px-4 flex items-center justify-between border-b border-orange-500/20 relative overflow-hidden shadow-sm shrink-0">
+            {/* Decorative background sunburst glow */}
+            <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-gradient-to-br from-orange-500/25 to-amber-400/10 blur-2xl pointer-events-none" />
 
-            <div className="flex items-center gap-3 relative z-10">
+            <div className="flex items-center gap-2.5 relative z-10">
               {/* Consultant Avatar in Header */}
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-orange-400/80 shadow-[0_0_12px_rgba(255,94,0,0.3)] shrink-0 bg-[#171D4D]">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400/80 shadow-[0_0_10px_rgba(255,94,0,0.3)] shrink-0 bg-[#171D4D]">
                 <Image
                   src="/images/support-agent.jpg"
                   alt="Sarah - Billabong Solar Advisor"
                   fill
-                  sizes="48px"
+                  sizes="40px"
                   className="object-cover object-top"
                 />
-                <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white shadow-xs" />
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-1.5 border-white shadow-xs" />
               </div>
 
               <div>
                 <div className="flex items-center gap-1.5">
                   <h2
                     id="chat-advisor-title"
-                    className="text-sm font-black tracking-wide text-white flex items-center gap-1"
+                    className="text-xs sm:text-sm font-black tracking-wide text-white flex items-center gap-1"
                   >
                     Sarah
                   </h2>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/30 border border-orange-400/40 text-orange-200 font-extrabold flex items-center gap-0.5">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-orange-500/30 border border-orange-400/40 text-orange-200 font-extrabold flex items-center gap-0.5">
                     ✨ Solar Advisor
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-300 font-medium flex items-center gap-1 mt-0.5">
+                <p className="text-[10px] text-slate-300 font-medium flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Billabong Solar • Typically replies in seconds
                 </p>
@@ -717,7 +788,7 @@ export default function SolarAdvisorChatbot() {
                 href="tel:0390009788"
                 aria-label="Call Billabong Solar"
                 title="Call (03) 9000 9788"
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white transition-all cursor-pointer border border-white/10 text-sm shadow-xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white transition-all cursor-pointer border border-white/10 text-xs sm:text-sm shadow-xs"
               >
                 📞
               </a>
@@ -725,7 +796,7 @@ export default function SolarAdvisorChatbot() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white font-bold transition-all cursor-pointer border border-white/10 text-xs shadow-xs"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 flex items-center justify-center text-white font-bold transition-all cursor-pointer border border-white/10 text-xs shadow-xs"
                 aria-label="Close chat"
               >
                 ✕
@@ -734,10 +805,10 @@ export default function SolarAdvisorChatbot() {
           </div>
 
           {/* Chat Stream Body */}
-          <div className="chat-scroll-area flex-1 overflow-y-auto p-4 space-y-3.5">
+          <div className="chat-scroll-area flex-1 overflow-y-auto p-3.5 space-y-3">
             {/* Cute Trust Badge Ribbon */}
-            <div className="text-center my-1">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-200/70 text-orange-900 text-[10px] font-bold shadow-xs">
+            <div className="text-center my-0.5">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-200/70 text-orange-900 text-[9px] sm:text-[10px] font-bold shadow-xs">
                 <span>✨</span>
                 <span>Clean Energy Council Accredited Master Installers</span>
                 <span>☀️</span>
@@ -752,8 +823,8 @@ export default function SolarAdvisorChatbot() {
               >
                 {/* Bot Message with Sarah's Mini Avatar */}
                 {msg.sender === 'bot' ? (
-                  <div className="flex items-end gap-2 max-w-[88%]">
-                    <div className="relative w-7 h-7 rounded-full overflow-hidden border-1.5 border-orange-300 shadow-xs shrink-0 mb-1 bg-[#171D4D]">
+                  <div className="flex items-end gap-2 max-w-[90%]">
+                    <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden border-1.5 border-orange-300 shadow-xs shrink-0 mb-1 bg-[#171D4D]">
                       <Image
                         src="/images/support-agent.jpg"
                         alt="Sarah"
@@ -762,22 +833,109 @@ export default function SolarAdvisorChatbot() {
                         className="object-cover object-top"
                       />
                     </div>
-                    <div className="flex flex-col items-start">
-                      <div className="bg-white/95 text-slate-800 rounded-[20px] rounded-tl-sm px-4 py-3 text-sm leading-relaxed border border-orange-100/70 shadow-[0_2px_12px_rgba(23,29,77,0.05)] font-normal">
+                    <div className="flex flex-col items-start w-full">
+                      <div className="bg-white/95 text-slate-800 rounded-[18px] rounded-tl-sm px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed border border-orange-100/70 shadow-[0_2px_10px_rgba(23,29,77,0.04)] font-normal">
                         <p className="whitespace-pre-wrap">{msg.text}</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 mt-1 ml-1.5 font-medium">
+                      <span className="text-[9px] text-slate-400 mt-1 ml-1.5 font-medium">
                         {msg.time}
                       </span>
+
+                      {/* INLINE CONTACT CARD - Rendered right inside the chat! */}
+                      {msg.showContactCard && !cardSubmitted && (
+                        <div className="w-full mt-2 bg-gradient-to-br from-white via-orange-50/40 to-amber-50/50 rounded-2xl border-2 border-orange-300/80 p-3.5 shadow-md space-y-2.5 animate-in fade-in zoom-in-95">
+                          <div className="flex items-center gap-2">
+                            <span className="w-7 h-7 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-sm font-bold shrink-0">
+                              📋
+                            </span>
+                            <div>
+                              <h4 className="text-xs font-black text-[#171D4D]">
+                                Quick Contact Card
+                              </h4>
+                              <p className="text-[10px] text-slate-500">
+                                Leave details below for our specialist callback
+                              </p>
+                            </div>
+                          </div>
+
+                          <form onSubmit={handleCardSubmit} className="space-y-2">
+                            <input
+                              type="text"
+                              placeholder="Your Name *"
+                              value={cardName}
+                              onChange={(e) => setCardName(e.target.value)}
+                              className="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200 focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-none transition-all placeholder-slate-400"
+                              required
+                            />
+                            <input
+                              type="tel"
+                              placeholder="Mobile / Phone Number *"
+                              value={cardPhone}
+                              onChange={(e) => setCardPhone(e.target.value)}
+                              className="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200 focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-none transition-all placeholder-slate-400"
+                              required
+                            />
+                            <div className="grid grid-cols-2 gap-1.5">
+                              <input
+                                type="email"
+                                placeholder="Email (optional)"
+                                value={cardEmail}
+                                onChange={(e) => setCardEmail(e.target.value)}
+                                className="w-full px-2.5 py-1.5 text-xs bg-white rounded-xl border border-slate-200 focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-none transition-all placeholder-slate-400"
+                              />
+                              <input
+                                type="text"
+                                placeholder="Postcode / Suburb"
+                                value={cardAddress}
+                                onChange={(e) => setCardAddress(e.target.value)}
+                                className="w-full px-2.5 py-1.5 text-xs bg-white rounded-xl border border-slate-200 focus:border-[#FF5E00] focus:ring-2 focus:ring-orange-200 outline-none transition-all placeholder-slate-400"
+                              />
+                            </div>
+
+                            {cardError && (
+                              <p className="text-[10px] text-red-600 font-bold">
+                                ⚠️ {cardError}
+                              </p>
+                            )}
+
+                            <button
+                              type="submit"
+                              disabled={cardSubmitting}
+                              className="w-full py-2 bg-gradient-to-r from-[#FF5E00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-orange-500/25 active:scale-98 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                            >
+                              {cardSubmitting ? (
+                                <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              ) : (
+                                <>
+                                  <span>Schedule Callback Now</span>
+                                  <span>→</span>
+                                </>
+                              )}
+                            </button>
+                          </form>
+                        </div>
+                      )}
+
+                      {/* Confirmed Success Banner */}
+                      {msg.showContactCard && cardSubmitted && (
+                        <div className="w-full mt-2 bg-emerald-50 border-1.5 border-emerald-300 rounded-xl p-3 text-center animate-in fade-in">
+                          <p className="text-xs font-black text-emerald-800 flex items-center justify-center gap-1">
+                            <span>✅</span> Callback Scheduled!
+                          </p>
+                          <p className="text-[10px] text-emerald-700 mt-0.5">
+                            Our team will call you shortly on <strong>{cardPhone}</strong>.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (
                   /* User Message */
                   <div className="flex flex-col items-end max-w-[85%] self-end">
-                    <div className="bg-gradient-to-r from-[#FF5E00] via-[#FF6E00] to-[#FFA000] text-white rounded-[20px] rounded-tr-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_4px_14px_rgba(255,94,0,0.25)] font-medium">
+                    <div className="bg-gradient-to-r from-[#FF5E00] via-[#FF6E00] to-[#FFA000] text-white rounded-[18px] rounded-tr-sm px-3.5 py-2 text-xs sm:text-sm leading-relaxed shadow-[0_3px_12px_rgba(255,94,0,0.22)] font-medium">
                       <p className="whitespace-pre-wrap">{msg.text}</p>
                     </div>
-                    <span className="text-[10px] text-slate-400 mt-1 mr-1.5 font-medium">
+                    <span className="text-[9px] text-slate-400 mt-1 mr-1.5 font-medium">
                       {msg.time}
                     </span>
                   </div>
@@ -785,16 +943,16 @@ export default function SolarAdvisorChatbot() {
 
                 {/* Interactive Options Pills attached to this message */}
                 {msg.options && msg.options.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2 ml-9 max-w-[95%]">
+                  <div className="flex flex-wrap gap-1.5 mt-2 ml-8 max-w-[95%]">
                     {msg.options.map((opt) => (
                       <button
                         key={opt.value}
                         type="button"
                         onClick={() => handleOptionClick(opt.value)}
-                        className="group inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 active:scale-95 text-slate-700 hover:text-[#FF5E00] text-xs font-bold rounded-full border-1.5 border-orange-200/80 hover:border-[#FF5E00] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(255,94,0,0.15)] transition-all duration-200 cursor-pointer touch-manipulation"
+                        className="group inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 active:scale-95 text-slate-700 hover:text-[#FF5E00] text-[11px] font-bold rounded-full border border-orange-200/80 hover:border-[#FF5E00] shadow-[0_1px_6px_rgba(0,0,0,0.03)] hover:shadow-[0_3px_10px_rgba(255,94,0,0.12)] transition-all duration-200 cursor-pointer touch-manipulation"
                       >
                         {opt.icon && (
-                          <span className="w-5 h-5 rounded-full bg-orange-100/70 group-hover:bg-orange-200 flex items-center justify-center text-xs transition-colors shrink-0">
+                          <span className="w-4 h-4 rounded-full bg-orange-100/70 group-hover:bg-orange-200 flex items-center justify-center text-[10px] transition-colors shrink-0">
                             {opt.icon}
                           </span>
                         )}
@@ -809,7 +967,7 @@ export default function SolarAdvisorChatbot() {
             {/* Cute Typing Indicator */}
             {isTyping && (
               <div className="flex items-end gap-2 w-fit animate-in fade-in duration-200">
-                <div className="relative w-7 h-7 rounded-full overflow-hidden border-1.5 border-orange-300 shadow-xs shrink-0 mb-1 bg-[#171D4D]">
+                <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden border-1.5 border-orange-300 shadow-xs shrink-0 mb-1 bg-[#171D4D]">
                   <Image
                     src="/images/support-agent.jpg"
                     alt="Sarah typing"
@@ -818,17 +976,17 @@ export default function SolarAdvisorChatbot() {
                     className="object-cover object-top"
                   />
                 </div>
-                <div className="flex items-center gap-1.5 bg-white border border-orange-100/80 rounded-[18px] rounded-tl-sm px-4 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
+                <div className="flex items-center gap-1.5 bg-white border border-orange-100/80 rounded-[16px] rounded-tl-sm px-3.5 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                   <span
-                    className="w-2 h-2 rounded-full bg-[#FF5E00] animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-[#FF5E00] animate-bounce"
                     style={{ animationDelay: '0ms' }}
                   />
                   <span
-                    className="w-2 h-2 rounded-full bg-[#FFA000] animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-[#FFA000] animate-bounce"
                     style={{ animationDelay: '160ms' }}
                   />
                   <span
-                    className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce"
+                    className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce"
                     style={{ animationDelay: '320ms' }}
                   />
                 </div>
@@ -840,7 +998,7 @@ export default function SolarAdvisorChatbot() {
 
           {/* Validation Error Banner */}
           {errorMessage && (
-            <div className="bg-red-50 text-red-700 px-4 py-2 text-xs font-bold border-t border-red-200 flex items-center justify-between animate-in fade-in">
+            <div className="bg-red-50 text-red-700 px-3.5 py-1.5 text-xs font-bold border-t border-red-200 flex items-center justify-between animate-in fade-in">
               <span>⚠️ {errorMessage}</span>
               <button
                 type="button"
@@ -853,7 +1011,7 @@ export default function SolarAdvisorChatbot() {
           )}
 
           {/* Cute Chat Input & Action Bar */}
-          <div className="p-3.5 bg-white border-t border-orange-100/70 safe-bottom shadow-[0_-4px_16px_rgba(0,0,0,0.03)] shrink-0">
+          <div className="p-3 bg-white border-t border-orange-100/70 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-3px_12px_rgba(0,0,0,0.03)] shrink-0">
             <form onSubmit={handleTextSubmit} className="flex items-center gap-2">
               <div className="relative flex-1">
                 <input
@@ -865,20 +1023,20 @@ export default function SolarAdvisorChatbot() {
                     if (errorMessage) setErrorMessage('');
                   }}
                   placeholder={getInputPlaceholder()}
-                  className="w-full px-4 py-2.5 bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-sm text-slate-900 rounded-full border-2 border-orange-100/80 focus:border-[#FF5E00] focus:ring-4 focus:ring-orange-500/15 outline-none transition-all shadow-inner placeholder-slate-400"
+                  className="w-full px-3.5 py-2 bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-xs sm:text-sm text-slate-900 rounded-full border border-orange-100/80 focus:border-[#FF5E00] focus:ring-3 focus:ring-orange-500/15 outline-none transition-all shadow-inner placeholder-slate-400"
                 />
               </div>
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isSubmitting}
-                className="w-10 h-10 bg-gradient-to-r from-[#FF5E00] to-[#FF8A00] hover:from-orange-600 hover:to-orange-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full shadow-md shadow-orange-500/30 transition-all transform hover:scale-105 active:scale-95 cursor-pointer touch-manipulation shrink-0 flex items-center justify-center"
+                className="w-9 h-9 bg-gradient-to-r from-[#FF5E00] to-[#FF8A00] hover:from-orange-600 hover:to-orange-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full shadow-md shadow-orange-500/30 transition-all transform hover:scale-105 active:scale-95 cursor-pointer touch-manipulation shrink-0 flex items-center justify-center"
                 aria-label="Send message"
               >
                 {isSubmitting ? (
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <svg
-                    className="w-4 h-4 translate-x-0.5 -rotate-45"
+                    className="w-3.5 h-3.5 translate-x-0.5 -rotate-45"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -890,13 +1048,13 @@ export default function SolarAdvisorChatbot() {
 
             {/* Quick Skip helper */}
             {(step === 'ASK_EMAIL' || step === 'ASK_ADDRESS') && (
-              <div className="flex justify-end mt-2 pr-1">
+              <div className="flex justify-end mt-1.5 pr-1">
                 <button
                   type="button"
                   onClick={() => handleOptionClick('skip')}
-                  className="text-xs text-slate-400 hover:text-[#FF5E00] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                  className="text-[11px] text-slate-400 hover:text-[#FF5E00] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
                 >
-                  Skip for now <span className="text-sm leading-none">⏩</span>
+                  Skip for now <span className="text-xs leading-none">⏩</span>
                 </button>
               </div>
             )}
