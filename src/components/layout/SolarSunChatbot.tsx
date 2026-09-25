@@ -50,6 +50,25 @@ export default function SolarAdvisorChatbot() {
     return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  // Dynamic AI conversation history for Maz AI backend
+  const [conversationHistory, setConversationHistory] = useState<
+    Array<{ role: 'user' | 'assistant'; content: string }>
+  >([]);
+  const [sessionToken, setSessionToken] = useState<string>('');
+
+  useEffect(() => {
+    try {
+      let token = sessionStorage.getItem('maz_session_token_blb');
+      if (!token) {
+        token = `sess_${Math.random().toString(36).substring(2)}${Date.now().toString(36)}`;
+        sessionStorage.setItem('maz_session_token_blb', token);
+      }
+      setSessionToken(token);
+    } catch {
+      setSessionToken(`sess_${Date.now()}`);
+    }
+  }, []);
+
   // Initial welcome messages
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
@@ -373,49 +392,85 @@ export default function SolarAdvisorChatbot() {
     );
   };
 
-  // 7. Free Chat Solar Knowledge Engine
-  const handleFreeChatQuery = (query: string) => {
-    const q = query.trim().toLowerCase();
-    addUserMessage(query.trim());
+  // 7. Dynamic Maz AI Knowledge Engine
+  const handleFreeChatQuery = async (query: string) => {
+    const q = query.trim();
+    if (!q) return;
+
+    addUserMessage(q);
     setInputValue('');
 
-    if (q.includes('call') || q.includes('quote') || q.includes('price') || q.includes('contact')) {
-      addBotMessageWithDelay(
-        "I'd love to organize an exact quote and rebate calculation for you! Would you like me to arrange a quick callback from one of our solar specialists?",
-        500,
-        [
-          { label: 'Yes, Call Me', value: 'callback', icon: '📞' },
-          { label: 'Keep Chatting', value: 'chat', icon: '💬' },
-        ]
-      );
+    const lowerQ = q.toLowerCase();
+    // If visitor is explicitly asking for a callback or phone consultation
+    if (
+      lowerQ.includes('call me') ||
+      lowerQ.includes('callback') ||
+      lowerQ.includes('book a call') ||
+      lowerQ.includes('phone me')
+    ) {
+      handleCallbackChoice('callback');
       return;
     }
 
-    let response =
-      "That's a great question! Billabong Solar provides premium CEC-accredited solar installations, Tier-1 panels, and Sigenergy/Tesla batteries with 10-year workmanship warranties.";
+    setIsTyping(true);
 
-    if (q.includes('6.6') || q.includes('system size') || q.includes('how much') || q.includes('cost')) {
-      response =
-        'A standard Tier-1 6.6kW solar system typically ranges between $3,500 – $5,500 after the Victorian Solar Homes Rebate ($1,400) and STCs. Payback is usually 2.5 to 4 years!';
-    } else if (q.includes('battery') || q.includes('tesla') || q.includes('sigen') || q.includes('storage')) {
-      response =
-        'We install both the modular Sigenergy SigenStor (5kWh–48kWh with built-in EV charger & blackout backup) and Tesla Powerwall 3 (13.5kWh). Batteries maximize self-consumption and protect during power outages!';
-    } else if (q.includes('rebate') || q.includes('solar homes') || q.includes('grant') || q.includes('government')) {
-      response =
-        'Victorian eligible homeowners can get up to a $1,400 Solar Homes Rebate plus an interest-free loan of up to $1,400. That reduces your out-of-pocket costs immediately!';
-    } else if (q.includes('warranty') || q.includes('guarantee')) {
-      response =
-        'We offer a 25-30 year performance warranty on solar panels, 10-year manufacturer warranty on inverters, and our industry-leading 10-year comprehensive Billabong workmanship warranty.';
-    } else if (q.includes('area') || q.includes('location') || q.includes('service') || q.includes('melbourne')) {
-      response =
-        'We service all of Greater Melbourne, Geelong, Ballarat, Bendigo, Latrobe Valley, and regional Victoria with our in-house CEC accredited installation teams.';
+    try {
+      const res = await fetch('/api/chat-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: q,
+          history: conversationHistory.slice(-6),
+          sessionToken,
+        }),
+      });
+
+      const data = await res.json();
+      const aiReply =
+        data.reply ||
+        "Thank you for reaching out! Billabong Solar provides premium CEC-accredited solar installations, Tier-1 panels, and Sigenergy/Tesla batteries with 10-year workmanship warranties.";
+
+      // Keep ongoing conversation history for multi-turn context
+      setConversationHistory((prev) => [
+        ...prev,
+        { role: 'user', content: q },
+        { role: 'assistant', content: aiReply },
+      ]);
+
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-ai-${Date.now()}`,
+          sender: 'bot',
+          text: aiReply,
+          time: getCurrentTime(),
+          options: [
+            { label: 'Request a Fast Callback', value: 'callback', icon: '📞' },
+            { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
+            { label: 'Ask About Rebates', value: 'How do Victorian solar rebates work?', icon: '🏛️' },
+          ],
+        },
+      ]);
+    } catch (err) {
+      console.error('Error fetching dynamic Maz AI reply:', err);
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-fallback-${Date.now()}`,
+          sender: 'bot',
+          text:
+            "Thank you for your question! Billabong Solar installs premium Tier-1 solar systems, Sigenergy SigenStor, and Tesla Powerwall 3 batteries across Victoria with 10-year workmanship warranties.",
+          time: getCurrentTime(),
+          options: [
+            { label: 'Request a Fast Callback', value: 'callback', icon: '📞' },
+            { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
+            { label: 'Ask About Rebates', value: 'How do Victorian solar rebates work?', icon: '🏛️' },
+          ],
+        },
+      ]);
     }
-
-    addBotMessageWithDelay(response, 550, [
-      { label: '📞 Request a Fast Callback', value: 'callback', icon: '📞' },
-      { label: 'Ask About Batteries', value: 'Tell me about solar batteries', icon: '🔋' },
-      { label: 'Ask About Rebates', value: 'How do Victorian solar rebates work?', icon: '🏛️' },
-    ]);
   };
 
   // Main text submit router
